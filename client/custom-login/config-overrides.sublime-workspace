@@ -1,0 +1,376 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+		{
+			"contents": "Searching 33902 files for \"My Messages\"\n\n/home/sudouser/Documents/TEST/samples-js-react-master/okta-hosted-login/node_modules/.cache/babel-loader/71d818f40b005fac4a9a50a8d073027e.json:\n    1: {\"ast\":null,\"code\":\"var _jsxFileName = \\\"/home/sudouser/Documents/TEST/samples-js-react-master/okta-hosted-login/src/Messages.jsx\\\";\\n\\n/*\\n * Copyright (c) 2018, Okta, Inc. and/or its affiliates. All rights reserved.\\n * The Okta software accompanied by this notice is provided pursuant to the Apache License, Version 2.0 (the \\\"License.\\\")\\n *\\n * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.\\n * Unless required by applicable law or agreed to in writing, software\\n * distributed under the License is distributed on an \\\"AS IS\\\" BASIS, WITHOUT\\n * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\\n *\\n * See the License for the specific language governing permissions and limitations under the License.\\n */\\nimport { useOktaAuth } from '@okta/okta-react';\\nimport React, { useState, useEffect } from 'react';\\nimport { Header, Icon, Message, Table } from 'semantic-ui-react';\\nimport config from './config';\\n\\nconst Messages = () => {\\n  const {\\n    authState\\n  } = useOktaAuth();\\n  const [messages, setMessages] = useState(null);\\n  const [messageFetchFailed, setMessageFetchFailed] = useState(false); // fetch messages\\n\\n  useEffect(() => {\\n    if (authState.isAuthenticated) {\\n      const {\\n        accessToken\\n      } = authState;\\n      /* global fetch */\\n\\n      fetch(config.resourceServer.messagesUrl, {\\n        headers: {\\n          Authorization: `Bearer ${accessToken}`\\n        }\\n      }).then(response => {\\n        if (!response.ok) {\\n          return Promise.reject();\\n        }\\n\\n        return response.json();\\n      }).then(data => {\\n        let index = 0;\\n        const formattedMessages = data.messages.map(message => {\\n          const date = new Date(message.date);\\n          const day = date.toLocaleDateString();\\n          const time = date.toLocaleTimeString();\\n          index += 1;\\n          return {\\n            date: `${day} ${time}`,\\n            text: message.text,\\n            id: `message-${index}`\\n          };\\n        });\\n        setMessages(formattedMessages);\\n        setMessageFetchFailed(false);\\n      }).catch(err => {\\n        setMessageFetchFailed(true);\\n        /* eslint-disable no-console */\\n\\n        console.error(err);\\n      });\\n    }\\n  }, [authState]);\\n  const possibleErrors = ['You\\\\'ve downloaded one of our resource server examples, and it\\\\'s running on port 8000.', 'Your resource server example is using the same Okta authorization server (issuer) that you have configured this React application to use.'];\\n  return React.createElement(\\\"div\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 70\\n    },\\n    __self: this\\n  }, React.createElement(Header, {\\n    as: \\\"h1\\\",\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 71\\n    },\\n    __self: this\\n  }, React.createElement(Icon, {\\n    name: \\\"mail outline\\\",\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 72\\n    },\\n    __self: this\\n  }), \\\"My Messages\\\"), messageFetchFailed && React.createElement(Message, {\\n    error: true,\\n    header: \\\"Failed to fetch messages.  Please verify the following:\\\",\\n    list: possibleErrors,\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 75\\n    },\\n    __self: this\\n  }), !messages && !messageFetchFailed && React.createElement(\\\"p\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 76\\n    },\\n    __self: this\\n  }, \\\"Fetching Messages..\\\"), messages && React.createElement(\\\"div\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 79\\n    },\\n    __self: this\\n  }, React.createElement(\\\"p\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 80\\n    },\\n    __self: this\\n  }, \\\"This component makes a GET request to the resource server example, which must be running at\\\", React.createElement(\\\"code\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 82\\n    },\\n    __self: this\\n  }, \\\"localhost:8000/api/messages\\\")), React.createElement(\\\"p\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 84\\n    },\\n    __self: this\\n  }, \\\"It attaches your current access token in the\\\", ' ', React.createElement(\\\"code\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 87\\n    },\\n    __self: this\\n  }, \\\"Authorization\\\"), ' ', \\\"header on the request, and the resource server will attempt to authenticate this access token. If the token is valid the server will return a list of messages.  If the token is not valid or the resource server is incorrectly configured, you will see a 401\\\", ' ', React.createElement(\\\"code\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 94\\n    },\\n    __self: this\\n  }, \\\"Unauthorized response\\\"), \\\".\\\"), React.createElement(\\\"p\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 97\\n    },\\n    __self: this\\n  }, \\\"This route is protected with the\\\", ' ', React.createElement(\\\"code\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 100\\n    },\\n    __self: this\\n  }, \\\"<SecureRoute>\\\"), ' ', \\\"component, which will ensure that this page cannot be accessed until you have authenticated and have an access token in local storage.\\\"), React.createElement(Table, {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 105\\n    },\\n    __self: this\\n  }, React.createElement(\\\"thead\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 106\\n    },\\n    __self: this\\n  }, React.createElement(\\\"tr\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 107\\n    },\\n    __self: this\\n  }, React.createElement(\\\"th\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 108\\n    },\\n    __self: this\\n  }, \\\"Date\\\"), React.createElement(\\\"th\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 109\\n    },\\n    __self: this\\n  }, \\\"Message\\\"))), React.createElement(\\\"tbody\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 112\\n    },\\n    __self: this\\n  }, messages.map(message => React.createElement(\\\"tr\\\", {\\n    id: message.id,\\n    key: message.id,\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 114\\n    },\\n    __self: this\\n  }, React.createElement(\\\"td\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 115\\n    },\\n    __self: this\\n  }, message.date), React.createElement(\\\"td\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 116\\n    },\\n    __self: this\\n  }, message.text)))))));\\n};\\n\\nexport default Messages;\",\"map\":{\"version\":3,\"sources\":[\"/home/sudouser/Documents/TEST/samples-js-react-master/okta-hosted-login/src/Messages.jsx\"],\"names\":[\"useOktaAuth\",\"React\",\"useState\",\"useEffect\",\"Header\",\"Icon\",\"Message\",\"Table\",\"config\",\"Messages\",\"authState\",\"messages\",\"setMessages\",\"messageFetchFailed\",\"setMessageFetchFailed\",\"isAuthenticated\",\"accessToken\",\"fetch\",\"resourceServer\",\"messagesUrl\",\"headers\",\"Authorization\",\"then\",\"response\",\"ok\",\"Promise\",\"reject\",\"json\",\"data\",\"index\",\"formattedMessages\",\"map\",\"message\",\"date\",\"Date\",\"day\",\"toLocaleDateString\",\"time\",\"toLocaleTimeString\",\"text\",\"id\",\"catch\",\"err\",\"console\",\"error\",\"possibleErrors\"],\"mappings\":\"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\",\"sourcesContent\":[\"/*\\n * Copyright (c) 2018, Okta, Inc. and/or its affiliates. All rights reserved.\\n * The Okta software accompanied by this notice is provided pursuant to the Apache License, Version 2.0 (the \\\"License.\\\")\\n *\\n * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.\\n * Unless required by applicable law or agreed to in writing, software\\n * distributed under the License is distributed on an \\\"AS IS\\\" BASIS, WITHOUT\\n * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\\n *\\n * See the License for the specific language governing permissions and limitations under the License.\\n */\\n\\nimport { useOktaAuth } from '@okta/okta-react';\\nimport React, { useState, useEffect } from 'react';\\nimport { Header, Icon, Message, Table } from 'semantic-ui-react';\\n\\nimport config from './config';\\n\\nconst Messages = () => {\\n  const { authState } = useOktaAuth();\\n  const [messages, setMessages] = useState(null);\\n  const [messageFetchFailed, setMessageFetchFailed] = useState(false);\\n\\n  // fetch messages\\n  useEffect(() => {\\n    if (authState.isAuthenticated) {\\n      const { accessToken } = authState;\\n      /* global fetch */\\n      fetch(config.resourceServer.messagesUrl, {\\n        headers: {\\n          Authorization: `Bearer ${accessToken}`,\\n        },\\n      })\\n        .then((response) => {\\n          if (!response.ok) {\\n            return Promise.reject();\\n          }\\n          return response.json();\\n        })\\n        .then((data) => {\\n          let index = 0;\\n          const formattedMessages = data.messages.map((message) => {\\n            const date = new Date(message.date);\\n            const day = date.toLocaleDateString();\\n            const time = date.toLocaleTimeString();\\n            index += 1;\\n            return {\\n              date: `${day} ${time}`,\\n              text: message.text,\\n              id: `message-${index}`,\\n            };\\n          });\\n          setMessages(formattedMessages);\\n          setMessageFetchFailed(false);\\n        })\\n        .catch((err) => {\\n          setMessageFetchFailed(true);\\n          /* eslint-disable no-console */\\n          console.error(err);\\n        });\\n    }\\n  }, [authState]);\\n\\n  const possibleErrors = [\\n    'You\\\\'ve downloaded one of our resource server examples, and it\\\\'s running on port 8000.',\\n    'Your resource server example is using the same Okta authorization server (issuer) that you have configured this React application to use.',\\n  ];\\n\\n  return (\\n    <div>\\n      <Header as=\\\"h1\\\">\\n        <Icon name=\\\"mail outline\\\" />\\n        My Messages\\n      </Header>\\n      {messageFetchFailed && <Message error header=\\\"Failed to fetch messages.  Please verify the following:\\\" list={possibleErrors} />}\\n      {!messages && !messageFetchFailed && <p>Fetching Messages..</p>}\\n      {messages\\n      && (\\n      <div>\\n        <p>\\n          This component makes a GET request to the resource server example, which must be running at\\n          <code>localhost:8000/api/messages</code>\\n        </p>\\n        <p>\\n          It attaches your current access token in the\\n          {' '}\\n          <code>Authorization</code>\\n          {' '}\\n          header on the request,\\n          and the resource server will attempt to authenticate this access token.\\n          If the token is valid the server will return a list of messages.  If the token is not valid\\n          or the resource server is incorrectly configured, you will see a 401\\n          {' '}\\n          <code>Unauthorized response</code>\\n          .\\n        </p>\\n        <p>\\n          This route is protected with the\\n          {' '}\\n          <code>&lt;SecureRoute&gt;</code>\\n          {' '}\\n          component, which will\\n          ensure that this page cannot be accessed until you have authenticated and have an access token in local storage.\\n        </p>\\n        <Table>\\n          <thead>\\n            <tr>\\n              <th>Date</th>\\n              <th>Message</th>\\n            </tr>\\n          </thead>\\n          <tbody>\\n            {messages.map((message) => (\\n              <tr id={message.id} key={message.id}>\\n                <td>{message.date}</td>\\n                <td>{message.text}</td>\\n              </tr>\\n            ))}\\n          </tbody>\\n        </Table>\\n      </div>\\n      )}\\n    </div>\\n  );\\n};\\n\\nexport default Messages;\\n\"]},\"metadata\":{},\"sourceType\":\"module\"}\n\n/home/sudouser/Documents/TEST/samples-js-react-master/okta-hosted-login/node_modules/.cache/babel-loader/816bd3254ebf8fa1da06b88d17067962.json:\n    1: {\"ast\":null,\"code\":\"var _jsxFileName = \\\"/home/sudouser/Documents/TEST/samples-js-react-master/okta-hosted-login/src/Home.jsx\\\";\\n\\n/*\\n * Copyright (c) 2018, Okta, Inc. and/or its affiliates. All rights reserved.\\n * The Okta software accompanied by this notice is provided pursuant to the Apache License, Version 2.0 (the \\\"License.\\\")\\n *\\n * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.\\n * Unless required by applicable law or agreed to in writing, software\\n * distributed under the License is distributed on an \\\"AS IS\\\" BASIS, WITHOUT\\n * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\\n *\\n * See the License for the specific language governing permissions and limitations under the License.\\n */\\nimport { useOktaAuth } from '@okta/okta-react';\\nimport React, { useState, useEffect } from 'react';\\nimport { Button, Header } from 'semantic-ui-react';\\n\\nconst Home = () => {\\n  const {\\n    authState,\\n    authService\\n  } = useOktaAuth();\\n  const [userInfo, setUserInfo] = useState(null);\\n  useEffect(() => {\\n    if (!authState.isAuthenticated) {\\n      // When user isn't authenticated, forget any user info\\n      setUserInfo(null);\\n    } else {\\n      authService.getUser().then(info => {\\n        setUserInfo(info);\\n      });\\n    }\\n  }, [authState, authService]); // Update if authState changes\\n\\n  const login = async () => {\\n    authService.login('/');\\n  };\\n\\n  const resourceServerExamples = [{\\n    label: 'Node/Express Resource Server Example',\\n    url: 'https://github.com/okta/samples-nodejs-express-4/tree/master/resource-server'\\n  }, {\\n    label: 'Java/Spring MVC Resource Server Example',\\n    url: 'https://github.com/okta/samples-java-spring-mvc/tree/master/resource-server'\\n  }];\\n\\n  if (authState.isPending) {\\n    return React.createElement(\\\"div\\\", {\\n      __source: {\\n        fileName: _jsxFileName,\\n        lineNumber: 49\\n      },\\n      __self: this\\n    }, \\\"Loading...\\\");\\n  }\\n\\n  return React.createElement(\\\"div\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 54\\n    },\\n    __self: this\\n  }, React.createElement(\\\"div\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 55\\n    },\\n    __self: this\\n  }, React.createElement(Header, {\\n    as: \\\"h1\\\",\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 56\\n    },\\n    __self: this\\n  }, \\\"PKCE Flow w/ Okta Hosted Login Page\\\"), authState.isAuthenticated && !userInfo && React.createElement(\\\"div\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 59\\n    },\\n    __self: this\\n  }, \\\"Loading user information...\\\"), authState.isAuthenticated && userInfo && React.createElement(\\\"div\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 63\\n    },\\n    __self: this\\n  }, React.createElement(\\\"p\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 64\\n    },\\n    __self: this\\n  }, \\\"Welcome back,\\\", userInfo.name, \\\"!\\\"), React.createElement(\\\"p\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 69\\n    },\\n    __self: this\\n  }, \\\"You have successfully authenticated against your Okta org, and have been redirected back to this application.  You now have an ID token and access token in local storage. Visit the\\\", ' ', React.createElement(\\\"a\\\", {\\n    href: \\\"/profile\\\",\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 73\\n    },\\n    __self: this\\n  }, \\\"My Profile\\\"), ' ', \\\"page to take a look inside the ID token.\\\"), React.createElement(\\\"h3\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 77\\n    },\\n    __self: this\\n  }, \\\"Next Steps\\\"), React.createElement(\\\"p\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 78\\n    },\\n    __self: this\\n  }, \\\"Currently this application is a stand-alone front end application.  At this point you can use the access token to authenticate yourself against resource servers that you control.\\\"), React.createElement(\\\"p\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 79\\n    },\\n    __self: this\\n  }, \\\"This sample is designed to work with one of our resource server examples.  To see access token authentication in action, please download one of these resource server examples:\\\"), React.createElement(\\\"ul\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 80\\n    },\\n    __self: this\\n  }, resourceServerExamples.map(example => React.createElement(\\\"li\\\", {\\n    key: example.url,\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 81\\n    },\\n    __self: this\\n  }, React.createElement(\\\"a\\\", {\\n    href: example.url,\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 81\\n    },\\n    __self: this\\n  }, example.label)))), React.createElement(\\\"p\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 83\\n    },\\n    __self: this\\n  }, \\\"Once you have downloaded and started the example resource server, you can visit the\\\", React.createElement(\\\"a\\\", {\\n    href: \\\"/messages\\\",\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 85\\n    },\\n    __self: this\\n  }, \\\"My Messages\\\"), ' ', \\\"page to see the authentication process in action.\\\")), !authState.isAuthenticated && React.createElement(\\\"div\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 94\\n    },\\n    __self: this\\n  }, React.createElement(\\\"p\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 95\\n    },\\n    __self: this\\n  }, \\\"If you\\\\u2018re viewing this page then you have successfully started this React application.\\\"), React.createElement(\\\"p\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 96\\n    },\\n    __self: this\\n  }, React.createElement(\\\"span\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 97\\n    },\\n    __self: this\\n  }, \\\"This example shows you how to use the \\\"), React.createElement(\\\"a\\\", {\\n    href: \\\"https://github.com/okta/okta-oidc-js/tree/master/packages/okta-react\\\",\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 98\\n    },\\n    __self: this\\n  }, \\\"Okta React Library\\\"), React.createElement(\\\"span\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 99\\n    },\\n    __self: this\\n  }, \\\" to add the \\\"), React.createElement(\\\"a\\\", {\\n    href: \\\"https://developer.okta.com/docs/guides/implement-auth-code-pkce\\\",\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 100\\n    },\\n    __self: this\\n  }, \\\"PKCE Flow\\\"), React.createElement(\\\"span\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 101\\n    },\\n    __self: this\\n  }, \\\" to your application.\\\")), React.createElement(\\\"p\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 103\\n    },\\n    __self: this\\n  }, \\\"When you click the login button below, you will be redirected to the login page on your Okta org. After you authenticate, you will be returned to this application with an ID token and access token.  These tokens will be stored in local storage and can be retrieved at a later time.\\\"), React.createElement(Button, {\\n    id: \\\"login-button\\\",\\n    primary: true,\\n    onClick: login,\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 107\\n    },\\n    __self: this\\n  }, \\\"Login\\\"))));\\n};\\n\\nexport default Home;\",\"map\":{\"version\":3,\"sources\":[\"/home/sudouser/Documents/TEST/samples-js-react-master/okta-hosted-login/src/Home.jsx\"],\"names\":[\"useOktaAuth\",\"React\",\"useState\",\"useEffect\",\"Button\",\"Header\",\"Home\",\"authState\",\"authService\",\"userInfo\",\"setUserInfo\",\"isAuthenticated\",\"getUser\",\"then\",\"info\",\"login\",\"resourceServerExamples\",\"label\",\"url\",\"isPending\",\"name\",\"map\",\"example\"],\"mappings\":\"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\",\"sourcesContent\":[\"/*\\n * Copyright (c) 2018, Okta, Inc. and/or its affiliates. All rights reserved.\\n * The Okta software accompanied by this notice is provided pursuant to the Apache License, Version 2.0 (the \\\"License.\\\")\\n *\\n * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.\\n * Unless required by applicable law or agreed to in writing, software\\n * distributed under the License is distributed on an \\\"AS IS\\\" BASIS, WITHOUT\\n * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\\n *\\n * See the License for the specific language governing permissions and limitations under the License.\\n */\\n\\nimport { useOktaAuth } from '@okta/okta-react';\\nimport React, { useState, useEffect } from 'react';\\nimport { Button, Header } from 'semantic-ui-react';\\n\\nconst Home = () => {\\n  const { authState, authService } = useOktaAuth();\\n  const [userInfo, setUserInfo] = useState(null);\\n\\n  useEffect(() => {\\n    if (!authState.isAuthenticated) {\\n      // When user isn't authenticated, forget any user info\\n      setUserInfo(null);\\n    } else {\\n      authService.getUser().then((info) => {\\n        setUserInfo(info);\\n      });\\n    }\\n  }, [authState, authService]); // Update if authState changes\\n\\n  const login = async () => {\\n    authService.login('/');\\n  };\\n\\n  const resourceServerExamples = [\\n    {\\n      label: 'Node/Express Resource Server Example',\\n      url: 'https://github.com/okta/samples-nodejs-express-4/tree/master/resource-server',\\n    },\\n    {\\n      label: 'Java/Spring MVC Resource Server Example',\\n      url: 'https://github.com/okta/samples-java-spring-mvc/tree/master/resource-server',\\n    },\\n  ];\\n\\n  if (authState.isPending) {\\n    return (\\n      <div>Loading...</div>\\n    );\\n  }\\n\\n  return (\\n    <div>\\n      <div>\\n        <Header as=\\\"h1\\\">PKCE Flow w/ Okta Hosted Login Page</Header>\\n\\n        { authState.isAuthenticated && !userInfo\\n        && <div>Loading user information...</div>}\\n\\n        {authState.isAuthenticated && userInfo\\n        && (\\n        <div>\\n          <p>\\n            Welcome back,\\n            {userInfo.name}\\n            !\\n          </p>\\n          <p>\\n            You have successfully authenticated against your Okta org, and have been redirected back to this application.  You now have an ID token and access token in local storage.\\n            Visit the\\n            {' '}\\n            <a href=\\\"/profile\\\">My Profile</a>\\n            {' '}\\n            page to take a look inside the ID token.\\n          </p>\\n          <h3>Next Steps</h3>\\n          <p>Currently this application is a stand-alone front end application.  At this point you can use the access token to authenticate yourself against resource servers that you control.</p>\\n          <p>This sample is designed to work with one of our resource server examples.  To see access token authentication in action, please download one of these resource server examples:</p>\\n          <ul>\\n            {resourceServerExamples.map((example) => <li key={example.url}><a href={example.url}>{example.label}</a></li>)}\\n          </ul>\\n          <p>\\n            Once you have downloaded and started the example resource server, you can visit the\\n            <a href=\\\"/messages\\\">My Messages</a>\\n            {' '}\\n            page to see the authentication process in action.\\n          </p>\\n        </div>\\n        )}\\n\\n        {!authState.isAuthenticated\\n        && (\\n        <div>\\n          <p>If you&lsquo;re viewing this page then you have successfully started this React application.</p>\\n          <p>\\n            <span>This example shows you how to use the </span>\\n            <a href=\\\"https://github.com/okta/okta-oidc-js/tree/master/packages/okta-react\\\">Okta React Library</a>\\n            <span> to add the </span>\\n            <a href=\\\"https://developer.okta.com/docs/guides/implement-auth-code-pkce\\\">PKCE Flow</a>\\n            <span> to your application.</span>\\n          </p>\\n          <p>\\n            When you click the login button below, you will be redirected to the login page on your Okta org.\\n            After you authenticate, you will be returned to this application with an ID token and access token.  These tokens will be stored in local storage and can be retrieved at a later time.\\n          </p>\\n          <Button id=\\\"login-button\\\" primary onClick={login}>Login</Button>\\n        </div>\\n        )}\\n\\n      </div>\\n    </div>\\n  );\\n};\\nexport default Home;\\n\"]},\"metadata\":{},\"sourceType\":\"module\"}\n\n/home/sudouser/Documents/TEST/samples-js-react-master/okta-hosted-login/src/Home.jsx:\n   83            <p>\n   84              Once you have downloaded and started the example resource server, you can visit the\n   85:             <a href=\"/messages\">My Messages</a>\n   86              {' '}\n   87              page to see the authentication process in action.\n\n/home/sudouser/Documents/TEST/samples-js-react-master/okta-hosted-login/src/Messages.jsx:\n   71        <Header as=\"h1\">\n   72          <Icon name=\"mail outline\" />\n   73:         My Messages\n   74        </Header>\n   75        {messageFetchFailed && <Message error header=\"Failed to fetch messages.  Please verify the following:\" list={possibleErrors} />}\n\n6 matches across 4 files\n\n\nSearching 33904 files for \"Home.jsx\"\n\n/home/sudouser/Documents/TEST/samples-js-react-master/okta-hosted-login/node_modules/.cache/babel-loader/816bd3254ebf8fa1da06b88d17067962.json:\n    1: {\"ast\":null,\"code\":\"var _jsxFileName = \\\"/home/sudouser/Documents/TEST/samples-js-react-master/okta-hosted-login/src/Home.jsx\\\";\\n\\n/*\\n * Copyright (c) 2018, Okta, Inc. and/or its affiliates. All rights reserved.\\n * The Okta software accompanied by this notice is provided pursuant to the Apache License, Version 2.0 (the \\\"License.\\\")\\n *\\n * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.\\n * Unless required by applicable law or agreed to in writing, software\\n * distributed under the License is distributed on an \\\"AS IS\\\" BASIS, WITHOUT\\n * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\\n *\\n * See the License for the specific language governing permissions and limitations under the License.\\n */\\nimport { useOktaAuth } from '@okta/okta-react';\\nimport React, { useState, useEffect } from 'react';\\nimport { Button, Header } from 'semantic-ui-react';\\n\\nconst Home = () => {\\n  const {\\n    authState,\\n    authService\\n  } = useOktaAuth();\\n  const [userInfo, setUserInfo] = useState(null);\\n  useEffect(() => {\\n    if (!authState.isAuthenticated) {\\n      // When user isn't authenticated, forget any user info\\n      setUserInfo(null);\\n    } else {\\n      authService.getUser().then(info => {\\n        setUserInfo(info);\\n      });\\n    }\\n  }, [authState, authService]); // Update if authState changes\\n\\n  const login = async () => {\\n    authService.login('/');\\n  };\\n\\n  const resourceServerExamples = [{\\n    label: 'Node/Express Resource Server Example',\\n    url: 'https://github.com/okta/samples-nodejs-express-4/tree/master/resource-server'\\n  }, {\\n    label: 'Java/Spring MVC Resource Server Example',\\n    url: 'https://github.com/okta/samples-java-spring-mvc/tree/master/resource-server'\\n  }];\\n\\n  if (authState.isPending) {\\n    return React.createElement(\\\"div\\\", {\\n      __source: {\\n        fileName: _jsxFileName,\\n        lineNumber: 49\\n      },\\n      __self: this\\n    }, \\\"Loading...\\\");\\n  }\\n\\n  return React.createElement(\\\"div\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 54\\n    },\\n    __self: this\\n  }, React.createElement(\\\"div\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 55\\n    },\\n    __self: this\\n  }, React.createElement(Header, {\\n    as: \\\"h1\\\",\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 56\\n    },\\n    __self: this\\n  }, \\\"PKCE Flow w/ Okta Hosted Login Page\\\"), authState.isAuthenticated && !userInfo && React.createElement(\\\"div\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 59\\n    },\\n    __self: this\\n  }, \\\"Loading user information...\\\"), authState.isAuthenticated && userInfo && React.createElement(\\\"div\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 63\\n    },\\n    __self: this\\n  }, React.createElement(\\\"p\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 64\\n    },\\n    __self: this\\n  }, \\\"Welcome back,\\\", userInfo.name, \\\"!\\\"), React.createElement(\\\"p\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 69\\n    },\\n    __self: this\\n  }, \\\"You have successfully authenticated against your Okta org, and have been redirected back to this application.  You now have an ID token and access token in local storage. Visit the\\\", ' ', React.createElement(\\\"a\\\", {\\n    href: \\\"/profile\\\",\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 73\\n    },\\n    __self: this\\n  }, \\\"My Profile\\\"), ' ', \\\"page to take a look inside the ID token.\\\"), React.createElement(\\\"h3\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 77\\n    },\\n    __self: this\\n  }, \\\"Next Steps\\\"), React.createElement(\\\"p\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 78\\n    },\\n    __self: this\\n  }, \\\"Currently this application is a stand-alone front end application.  At this point you can use the access token to authenticate yourself against resource servers that you control.\\\"), React.createElement(\\\"p\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 79\\n    },\\n    __self: this\\n  }, \\\"This sample is designed to work with one of our resource server examples.  To see access token authentication in action, please download one of these resource server examples:\\\"), React.createElement(\\\"ul\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 80\\n    },\\n    __self: this\\n  }, resourceServerExamples.map(example => React.createElement(\\\"li\\\", {\\n    key: example.url,\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 81\\n    },\\n    __self: this\\n  }, React.createElement(\\\"a\\\", {\\n    href: example.url,\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 81\\n    },\\n    __self: this\\n  }, example.label)))), React.createElement(\\\"p\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 83\\n    },\\n    __self: this\\n  }, \\\"Once you have downloaded and started the example resource server, you can visit the\\\", React.createElement(\\\"a\\\", {\\n    href: \\\"/messages\\\",\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 85\\n    },\\n    __self: this\\n  }, \\\"My Messages\\\"), ' ', \\\"page to see the authentication process in action.\\\")), !authState.isAuthenticated && React.createElement(\\\"div\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 94\\n    },\\n    __self: this\\n  }, React.createElement(\\\"p\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 95\\n    },\\n    __self: this\\n  }, \\\"If you\\\\u2018re viewing this page then you have successfully started this React application.\\\"), React.createElement(\\\"p\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 96\\n    },\\n    __self: this\\n  }, React.createElement(\\\"span\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 97\\n    },\\n    __self: this\\n  }, \\\"This example shows you how to use the \\\"), React.createElement(\\\"a\\\", {\\n    href: \\\"https://github.com/okta/okta-oidc-js/tree/master/packages/okta-react\\\",\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 98\\n    },\\n    __self: this\\n  }, \\\"Okta React Library\\\"), React.createElement(\\\"span\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 99\\n    },\\n    __self: this\\n  }, \\\" to add the \\\"), React.createElement(\\\"a\\\", {\\n    href: \\\"https://developer.okta.com/docs/guides/implement-auth-code-pkce\\\",\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 100\\n    },\\n    __self: this\\n  }, \\\"PKCE Flow\\\"), React.createElement(\\\"span\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 101\\n    },\\n    __self: this\\n  }, \\\" to your application.\\\")), React.createElement(\\\"p\\\", {\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 103\\n    },\\n    __self: this\\n  }, \\\"When you click the login button below, you will be redirected to the login page on your Okta org. After you authenticate, you will be returned to this application with an ID token and access token.  These tokens will be stored in local storage and can be retrieved at a later time.\\\"), React.createElement(Button, {\\n    id: \\\"login-button\\\",\\n    primary: true,\\n    onClick: login,\\n    __source: {\\n      fileName: _jsxFileName,\\n      lineNumber: 107\\n    },\\n    __self: this\\n  }, \\\"Login\\\"))));\\n};\\n\\nexport default Home;\",\"map\":{\"version\":3,\"sources\":[\"/home/sudouser/Documents/TEST/samples-js-react-master/okta-hosted-login/src/Home.jsx\"],\"names\":[\"useOktaAuth\",\"React\",\"useState\",\"useEffect\",\"Button\",\"Header\",\"Home\",\"authState\",\"authService\",\"userInfo\",\"setUserInfo\",\"isAuthenticated\",\"getUser\",\"then\",\"info\",\"login\",\"resourceServerExamples\",\"label\",\"url\",\"isPending\",\"name\",\"map\",\"example\"],\"mappings\":\"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\",\"sourcesContent\":[\"/*\\n * Copyright (c) 2018, Okta, Inc. and/or its affiliates. All rights reserved.\\n * The Okta software accompanied by this notice is provided pursuant to the Apache License, Version 2.0 (the \\\"License.\\\")\\n *\\n * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.\\n * Unless required by applicable law or agreed to in writing, software\\n * distributed under the License is distributed on an \\\"AS IS\\\" BASIS, WITHOUT\\n * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\\n *\\n * See the License for the specific language governing permissions and limitations under the License.\\n */\\n\\nimport { useOktaAuth } from '@okta/okta-react';\\nimport React, { useState, useEffect } from 'react';\\nimport { Button, Header } from 'semantic-ui-react';\\n\\nconst Home = () => {\\n  const { authState, authService } = useOktaAuth();\\n  const [userInfo, setUserInfo] = useState(null);\\n\\n  useEffect(() => {\\n    if (!authState.isAuthenticated) {\\n      // When user isn't authenticated, forget any user info\\n      setUserInfo(null);\\n    } else {\\n      authService.getUser().then((info) => {\\n        setUserInfo(info);\\n      });\\n    }\\n  }, [authState, authService]); // Update if authState changes\\n\\n  const login = async () => {\\n    authService.login('/');\\n  };\\n\\n  const resourceServerExamples = [\\n    {\\n      label: 'Node/Express Resource Server Example',\\n      url: 'https://github.com/okta/samples-nodejs-express-4/tree/master/resource-server',\\n    },\\n    {\\n      label: 'Java/Spring MVC Resource Server Example',\\n      url: 'https://github.com/okta/samples-java-spring-mvc/tree/master/resource-server',\\n    },\\n  ];\\n\\n  if (authState.isPending) {\\n    return (\\n      <div>Loading...</div>\\n    );\\n  }\\n\\n  return (\\n    <div>\\n      <div>\\n        <Header as=\\\"h1\\\">PKCE Flow w/ Okta Hosted Login Page</Header>\\n\\n        { authState.isAuthenticated && !userInfo\\n        && <div>Loading user information...</div>}\\n\\n        {authState.isAuthenticated && userInfo\\n        && (\\n        <div>\\n          <p>\\n            Welcome back,\\n            {userInfo.name}\\n            !\\n          </p>\\n          <p>\\n            You have successfully authenticated against your Okta org, and have been redirected back to this application.  You now have an ID token and access token in local storage.\\n            Visit the\\n            {' '}\\n            <a href=\\\"/profile\\\">My Profile</a>\\n            {' '}\\n            page to take a look inside the ID token.\\n          </p>\\n          <h3>Next Steps</h3>\\n          <p>Currently this application is a stand-alone front end application.  At this point you can use the access token to authenticate yourself against resource servers that you control.</p>\\n          <p>This sample is designed to work with one of our resource server examples.  To see access token authentication in action, please download one of these resource server examples:</p>\\n          <ul>\\n            {resourceServerExamples.map((example) => <li key={example.url}><a href={example.url}>{example.label}</a></li>)}\\n          </ul>\\n          <p>\\n            Once you have downloaded and started the example resource server, you can visit the\\n            <a href=\\\"/messages\\\">My Messages</a>\\n            {' '}\\n            page to see the authentication process in action.\\n          </p>\\n        </div>\\n        )}\\n\\n        {!authState.isAuthenticated\\n        && (\\n        <div>\\n          <p>If you&lsquo;re viewing this page then you have successfully started this React application.</p>\\n          <p>\\n            <span>This example shows you how to use the </span>\\n            <a href=\\\"https://github.com/okta/okta-oidc-js/tree/master/packages/okta-react\\\">Okta React Library</a>\\n            <span> to add the </span>\\n            <a href=\\\"https://developer.okta.com/docs/guides/implement-auth-code-pkce\\\">PKCE Flow</a>\\n            <span> to your application.</span>\\n          </p>\\n          <p>\\n            When you click the login button below, you will be redirected to the login page on your Okta org.\\n            After you authenticate, you will be returned to this application with an ID token and access token.  These tokens will be stored in local storage and can be retrieved at a later time.\\n          </p>\\n          <Button id=\\\"login-button\\\" primary onClick={login}>Login</Button>\\n        </div>\\n        )}\\n\\n      </div>\\n    </div>\\n  );\\n};\\nexport default Home;\\n\"]},\"metadata\":{},\"sourceType\":\"module\"}\n\n2 matches in 1 file\n",
+			"settings":
+			{
+				"buffer_size": 45858,
+				"line_ending": "Unix",
+				"name": "Find Results",
+				"scratch": true
+			}
+		},
+		{
+			"file": "/home/sudouser/Documents/TEST/samples-js-react-master/okta-hosted-login/src/Messages.jsx",
+			"settings":
+			{
+				"buffer_size": 4292,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/sudouser/Documents/TEST/samples-js-react-master/okta-hosted-login/src/Home.jsx",
+			"settings":
+			{
+				"buffer_size": 4360,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/sudouser/Documents/TEST/samples-js-react-master/okta-hosted-login/src/App.jsx",
+			"settings":
+			{
+				"buffer_size": 1434,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/sudouser/Documents/TEST/samples-js-react-master/okta-hosted-login",
+		"/home/sudouser/Documents/TEST/samples-js-react-master/okta-hosted-login/src"
+	],
+	"file_history":
+	[
+		"/home/sudouser/Documents/TEST/samples-js-react-master/custom-login/package.json"
+	],
+	"find":
+	{
+		"height": 26.0
+	},
+	"find_in_files":
+	{
+		"height": 101.0,
+		"where_history":
+		[
+			"/home/sudouser/Documents/TEST/samples-js-react-master/okta-hosted-login",
+			"/home/sudouser/Documents/TEST/samples-js-react-master/custom-login"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"Home.jsx",
+			"My Messages",
+			"PORT=8080",
+			"samples-js-react@0.2.0"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 45858,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										3204,
+										3215
+									],
+									[
+										13071,
+										13082
+									],
+									[
+										20285,
+										20296
+									],
+									[
+										28713,
+										28724
+									],
+									[
+										30234,
+										30245
+									],
+									[
+										30524,
+										30535
+									],
+									[
+										31035,
+										31043
+									],
+									[
+										38477,
+										38485
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								30729,
+								30729
+							]
+						],
+						"settings":
+						{
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 2,
+							"result_base_dir": "",
+							"result_file_regex": "^([^ \t].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 4245.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/home/sudouser/Documents/TEST/samples-js-react-master/okta-hosted-login/src/Messages.jsx",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4292,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2559,
+								2559
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 862.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/home/sudouser/Documents/TEST/samples-js-react-master/okta-hosted-login/src/Home.jsx",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4360,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3961,
+								3961
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1326.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/home/sudouser/Documents/TEST/samples-js-react-master/okta-hosted-login/src/App.jsx",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 1434,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								757,
+								757
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 26.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "config-overrides.sublime-project",
+	"replace":
+	{
+		"height": 48.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
