@@ -18,10 +18,14 @@ dependencies {
 	compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
 	compile 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	// database
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	implementation 'mysql:mysql-connector-java:8.0.15'
+
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
-
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 

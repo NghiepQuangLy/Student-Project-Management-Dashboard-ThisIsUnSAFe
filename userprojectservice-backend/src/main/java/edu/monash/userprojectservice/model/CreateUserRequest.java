@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRequest {
+public class CreateUserRequest {
 
     @NotBlank
     private String firstName;
@@ -20,5 +20,8 @@ public class UserRequest {
     private String lastName;
 
     @NotBlank
-    private String email;
+    private String emailAddress;
+
+    @NotBlank
+    private String userGroup;
 }
