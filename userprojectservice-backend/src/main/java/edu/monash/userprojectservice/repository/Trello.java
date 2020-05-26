@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class Project {
+public class Trello {
+    private int trelloId;
     private int projectId;
-    private String projectName;
 }

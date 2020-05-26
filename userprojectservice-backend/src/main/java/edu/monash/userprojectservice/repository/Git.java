@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class Project {
+public class Git {
+    private int gitId;
     private int projectId;
-    private String projectName;
 }
