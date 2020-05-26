@@ -24,7 +24,7 @@ import static org.springframework.http.HttpStatus.OK;
 public class UserController {
 
     private UserService userService;
-    private ProjectService projectService;
+    //private ProjectService projectService;
 
     @ResponseStatus(CREATED)
     @PostMapping("/create-user")
