@@ -19,7 +19,7 @@ public class ProjectService {
     @Autowired
     private ProjectRepository projectRepository;
 
-    public void getProject(int projectId) {
+    public ResponseEntity<GetProjectResponse> getProject(int projectId) {
         log.info("{\"message\":\"Getting project\", \"project\":\"{}\"}", projectId);
 
         // get from database
@@ -34,12 +34,12 @@ public class ProjectService {
             );
         }
 
-        System.out.println(projectResponse.getProject_id());
-        System.out.println(projectResponse.getProject_name());
-        log.info("{\"message\":\"Got project\", \"project\":\"{}\"", projectID);
+        System.out.println(projectResponse.getProjectId());
+        System.out.println(projectResponse.getProjectName());
+        log.info("{\"message\":\"Got project\", \"project\":\"{}\"", projectId);
 
         return new ResponseEntity<GetProjectResponse>(
-                new GetProjectResponse(projectResponse.getProject_id(), projectResponse.getProject_name()), OK
+                new GetProjectResponse(projectResponse.getProjectId(), projectResponse.getProjectName()), OK
         );
     }
 }
