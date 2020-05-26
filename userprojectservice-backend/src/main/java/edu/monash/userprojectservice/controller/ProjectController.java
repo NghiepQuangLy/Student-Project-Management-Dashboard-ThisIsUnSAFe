@@ -21,20 +21,13 @@ import static org.springframework.http.HttpStatus.OK;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
 @RequestMapping("/")
-public class UserController {
+public class ProjectController {
 
-    private UserService userService;
     private ProjectService projectService;
 
-    @ResponseStatus(CREATED)
-    @PostMapping("/create-user")
-    public void createUser(@RequestBody @Valid CreateUserRequest createUserRequest) {
-        userService.createUser(createUserRequest);
-    }
-
     @ResponseStatus(OK)
-    @GetMapping("/get-user")
-    public void getUser(@RequestParam("email") String emailAddress) {
-        userService.getUserByEmail(emailAddress);
+    @GetMapping("/get-project")
+    public void getUser(@RequestParam("id") int projectid) {
+        projectService.getProject(projectid);
     }
 }
