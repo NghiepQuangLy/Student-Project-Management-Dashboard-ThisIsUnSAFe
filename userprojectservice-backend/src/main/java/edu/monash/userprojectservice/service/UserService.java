@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -30,6 +29,9 @@ public class UserService {
     }
 
     public GetUserResponse getUserByEmail(String emailAddress) {
+        if (emailAddress.equals("")) {
+            return null;
+        }
         log.info("{\"message\":\"Getting user\", \"user\":\"{}\"}", emailAddress);
 
         User user = userRepository.findUserByEmail(emailAddress).orElse(null);
@@ -46,7 +48,7 @@ public class UserService {
             log.info("{\"message\":\"Getting projects list\", \"user\":\"{}\"}", emailAddress);
 
             List<ProjectShortDetail> projectShortDetails = userRepository.findProjectByEmail(emailAddress);
-            List<ProjectListResponse> projectListResponses =  projectShortDetails.stream()
+            List<ProjectListResponse> projectListResponses = projectShortDetails.stream()
                     .map(this::convertToProjectListResponse)
                     .collect(Collectors.toList());
 
@@ -60,7 +62,7 @@ public class UserService {
         }
     }
 
-    private ProjectListResponse convertToProjectListResponse(ProjectShortDetail projectShortDetail){
+    private ProjectListResponse convertToProjectListResponse(ProjectShortDetail projectShortDetail) {
         return ProjectListResponse.builder()
                 .projectId(projectShortDetail.getProject_id())
                 .projectName(projectShortDetail.getProject_name())
