@@ -18,5 +18,5 @@ public class GetUserResponse {
     private String lastName;
     private String emailAddress;
     private String userGroup;
-    private Array projects;
+    private List<ProjectListResponse> projects;
 }
