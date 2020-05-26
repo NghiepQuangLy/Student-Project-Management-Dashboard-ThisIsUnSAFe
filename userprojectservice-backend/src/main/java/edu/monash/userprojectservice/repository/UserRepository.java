@@ -1,5 +1,6 @@
 package edu.monash.userprojectservice.repository;
 
+import edu.monash.userprojectservice.model.CreateUserRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -14,9 +15,12 @@ public class UserRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-//    public User create(User user) {
-//
-//    };
+    public void create(CreateUserRequest user) {
+        jdbcTemplate.update(
+                "INSERT INTO Users (email_address, given_name, family_name, user_group) VALUES (?, ?, ?, ?)",
+                user.getEmailAddress(), user.getGivenName(),user.getFamilyName(), user.getUserGroup()
+        );
+    };
 
     public Optional<User> findUserByEmail(String email_address) {
         return jdbcTemplate.queryForObject(

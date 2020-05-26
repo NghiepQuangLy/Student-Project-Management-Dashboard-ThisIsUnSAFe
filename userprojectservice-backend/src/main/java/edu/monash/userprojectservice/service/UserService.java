@@ -24,8 +24,9 @@ public class UserService {
         log.info("{\"message\":\"Creating user\", \"user\":\"{}\"}", createUserRequest);
 
         // save to database
+        userRepository.create(createUserRequest);
 
-        // log.info("{\"message\":\"Saved user\", \"user\":\"{}\"", saved);
+        log.info("{\"message\":\"Saved user\"}");
     }
 
     public GetUserResponse getUserByEmail(String emailAddress) {
