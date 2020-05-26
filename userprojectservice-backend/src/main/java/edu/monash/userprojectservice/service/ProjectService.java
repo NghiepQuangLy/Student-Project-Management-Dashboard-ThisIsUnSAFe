@@ -1,8 +1,7 @@
 package edu.monash.userprojectservice.service;
 
-import edu.monash.userprojectservice.model.CreateUserRequest;
+import edu.monash.userprojectservice.repository.Project;
 import edu.monash.userprojectservice.repository.ProjectRepository;
-import edu.monash.userprojectservice.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,9 +19,9 @@ public class ProjectService {
         log.info("{\"message\":\"Getting project\", \"project\":\"{}\"}", projectID);
 
         // get from database
-        Optional<ProjectDetail> projectDetail = projectRepository.findbyProject(projectID);
+        Optional<Project> projectDetail = projectRepository.findbyProject(projectID);
 
-        ProjectDetail projectResponse = projectDetail.orElse(null);
+        Project projectResponse = projectDetail.orElse(null);
         if (projectResponse != null){
             System.out.println(projectResponse.getProject_id());
             System.out.println(projectResponse.getProject_name());
