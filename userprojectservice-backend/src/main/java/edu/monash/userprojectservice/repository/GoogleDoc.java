@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class Project {
+public class GoogleDoc {
+    private int googleDocId;
     private int projectId;
-    private String projectName;
 }

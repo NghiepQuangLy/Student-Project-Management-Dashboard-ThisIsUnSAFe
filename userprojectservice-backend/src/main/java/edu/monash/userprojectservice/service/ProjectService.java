@@ -15,18 +15,18 @@ public class ProjectService {
     @Autowired
     private ProjectRepository projectRepository;
 
-    public void getProject(int projectID) {
-        log.info("{\"message\":\"Getting project\", \"project\":\"{}\"}", projectID);
+    public void getProject(int projectId) {
+        log.info("{\"message\":\"Getting project\", \"project\":\"{}\"}", projectId);
 
         // get from database
-        Optional<Project> projectDetail = projectRepository.findbyProject(projectID);
+        Optional<Project> projectDetail = projectRepository.findbyProject(projectId);
 
         Project projectResponse = projectDetail.orElse(null);
         if (projectResponse != null){
-            System.out.println(projectResponse.getProject_id());
-            System.out.println(projectResponse.getProject_name());
+            System.out.println(projectResponse.getProjectId());
+            System.out.println(projectResponse.getProjectName());
         }
 
-        log.info("{\"message\":\"Got project\", \"project\":\"{}\"", projectID);
+        log.info("{\"message\":\"Got project\", \"project\":\"{}\"", projectId);
     }
 }
