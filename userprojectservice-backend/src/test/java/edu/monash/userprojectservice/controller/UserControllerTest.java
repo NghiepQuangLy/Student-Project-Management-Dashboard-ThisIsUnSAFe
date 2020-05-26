@@ -23,13 +23,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 public class UserControllerTest {
 
-    private static String FIRST_NAME_KEY = "{firstName}";
-    private static String LAST_NAME_KEY = "{lastName}";
-    private static String EMAIL_KEY = "{email}";
+    private static String FAMILY_NAME_KEY = "{family_Name}";
+    private static String GIVEN_NAME_KEY = "{given_name}";
+    private static String EMAIL_KEY = "{email_address}";
+    private static String USER_GROUP_KEY = "{user_group}";
 
-    private static String TEST_FIRST_NAME = "test firstName";
-    private static String TEST_LAST_NAME = "test lastName";
+    private static String TEST_GIVEN_NAME = "test firstName";
+    private static String TEST_FAMILY_NAME = "test lastName";
     private static String TEST_EMAIL = "test email";
+    private static String TEST_USER_GROUP = "test user group";
 
     private static String CREATE_USER_URL = "/create-user";
 
@@ -58,15 +60,15 @@ public class UserControllerTest {
     }
 
     @Test
-    public void shouldFailWithoutUserFrisName() throws Exception {
-        mockServer.perform(request(CREATE_USER_URL, userRequestPayload_noFirstName()))
+    public void shouldFailWithoutUserGivenName() throws Exception {
+        mockServer.perform(request(CREATE_USER_URL, userRequestPayload_noGivenName()))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
     }
 
-        @Test
-    public void shouldFailWithoutLastName() throws Exception {
-            mockServer.perform(request(CREATE_USER_URL, userRequestPayload_noLastName()))
+    @Test
+    public void shouldFailWithoutFamilyName() throws Exception {
+            mockServer.perform(request(CREATE_USER_URL, userRequestPayload_noFamilyNameKey()))
                     .andDo(print())
                     .andExpect(status().is4xxClientError());
     }
@@ -74,6 +76,13 @@ public class UserControllerTest {
     @Test
     public void shouldFailWithoutEmail() throws Exception {
         mockServer.perform(request(CREATE_USER_URL, userRequestPayload_noEmail()))
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void shouldFailWithoutUserGroup() throws Exception {
+        mockServer.perform(request(CREATE_USER_URL, userRequestPayload_noUserGroup()))
                 .andDo(print())
                 .andExpect(status().is4xxClientError());
     }
@@ -87,29 +96,41 @@ public class UserControllerTest {
 
     private String userRequestPayload_success() {
         return templateRequest
-                .replace(FIRST_NAME_KEY, TEST_FIRST_NAME)
-                .replace(LAST_NAME_KEY, TEST_LAST_NAME)
-                .replace(EMAIL_KEY, TEST_EMAIL);
+                .replace(FAMILY_NAME_KEY, TEST_GIVEN_NAME)
+                .replace(GIVEN_NAME_KEY, TEST_FAMILY_NAME)
+                .replace(EMAIL_KEY, TEST_EMAIL)
+                .replace(USER_GROUP_KEY, TEST_USER_GROUP);
     }
 
-    private String userRequestPayload_noFirstName() {
+    private String userRequestPayload_noFamilyNameKey() {
         return templateRequest
-                .replace(FIRST_NAME_KEY, "")
-                .replace(LAST_NAME_KEY, TEST_LAST_NAME)
-                .replace(EMAIL_KEY, TEST_EMAIL);
+                .replace(FAMILY_NAME_KEY, "")
+                .replace(GIVEN_NAME_KEY, TEST_FAMILY_NAME)
+                .replace(EMAIL_KEY, TEST_EMAIL)
+                .replace(USER_GROUP_KEY, TEST_USER_GROUP);
     }
 
-    private String userRequestPayload_noLastName() {
+    private String userRequestPayload_noGivenName() {
         return templateRequest
-                .replace(FIRST_NAME_KEY, TEST_FIRST_NAME)
-                .replace(LAST_NAME_KEY, "")
-                .replace(EMAIL_KEY, TEST_EMAIL);
+                .replace(FAMILY_NAME_KEY, TEST_GIVEN_NAME)
+                .replace(GIVEN_NAME_KEY, "")
+                .replace(EMAIL_KEY, TEST_EMAIL)
+                .replace(USER_GROUP_KEY, TEST_USER_GROUP);
     }
 
     private String userRequestPayload_noEmail() {
         return templateRequest
-                .replace(FIRST_NAME_KEY, TEST_FIRST_NAME)
-                .replace(LAST_NAME_KEY, TEST_LAST_NAME)
-                .replace(EMAIL_KEY, "");
+                .replace(FAMILY_NAME_KEY, TEST_GIVEN_NAME)
+                .replace(GIVEN_NAME_KEY, TEST_FAMILY_NAME)
+                .replace(EMAIL_KEY, "")
+                .replace(USER_GROUP_KEY, TEST_USER_GROUP);
+    }
+
+    private String userRequestPayload_noUserGroup() {
+        return templateRequest
+                .replace(FAMILY_NAME_KEY, TEST_GIVEN_NAME)
+                .replace(GIVEN_NAME_KEY, TEST_FAMILY_NAME)
+                .replace(EMAIL_KEY, "")
+                .replace(USER_GROUP_KEY, TEST_USER_GROUP);
     }
 }

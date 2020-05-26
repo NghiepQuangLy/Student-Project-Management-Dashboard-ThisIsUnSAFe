@@ -6,22 +6,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import java.lang.reflect.Array;
+import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetUserResponse {
-
-    @NotBlank
     private String firstName;
-
-    @NotBlank
     private String lastName;
-
-    @NotBlank
     private String emailAddress;
-
-    @NotBlank
     private String userGroup;
+    private Array projects;
 }

@@ -14,10 +14,10 @@ import javax.validation.constraints.NotBlank;
 public class CreateUserRequest {
 
     @NotBlank
-    private String firstName;
+    private String givenName;
 
     @NotBlank
-    private String lastName;
+    private String familyName;
 
     @NotBlank
     private String emailAddress;

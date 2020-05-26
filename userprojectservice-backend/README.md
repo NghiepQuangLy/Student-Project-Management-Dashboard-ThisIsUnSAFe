@@ -2,7 +2,7 @@
 `./gradlew clean build`
 
 ## Run project
-`./gradlew bootrun`
+`./gradlew bootRun`
 
 
 
