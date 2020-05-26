@@ -12,10 +12,10 @@ public class ProjectRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public Optional<Project> findbyProject(int projectId){
+    public Optional<Project> findbyProject(int projectID){
         return jdbcTemplate.queryForObject(
-                "SELECT * FROM Projects WHERE project_id = ?",
-                new Object[]{projectId},
+                "select * from Projects where project_id = ?",
+                new Object[]{projectID},
                 (rs, rowNum) ->
                         Optional.of(new Project(
                                 rs.getInt("project_id"),
@@ -23,4 +23,6 @@ public class ProjectRepository {
                         ))
         );
     };
+
+    
 }

@@ -19,11 +19,11 @@ public class ProjectService {
     @Autowired
     private ProjectRepository projectRepository;
 
-    public void getProject(int projectId) {
-        log.info("{\"message\":\"Getting project\", \"project\":\"{}\"}", projectId);
+    public ResponseEntity<GetProjectResponse> getProject(int projectID) {
+        log.info("{\"message\":\"Getting project\", \"project\":\"{}\"}", projectID);
 
         // get from database
-        Optional<Project> projectDetail = projectRepository.findbyProject(projectId);
+        Optional<Project> projectDetail = projectRepository.findbyProject(projectID);
 
         Project projectResponse = projectDetail.orElse(null);
         if (projectResponse == null){

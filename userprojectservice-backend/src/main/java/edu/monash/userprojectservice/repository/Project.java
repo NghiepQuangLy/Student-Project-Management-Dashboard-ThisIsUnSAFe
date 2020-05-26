@@ -6,6 +6,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class Project {
-    private int projectId;
-    private String projectName;
+    private int project_id;
+    private String project_name;
 }
