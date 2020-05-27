@@ -25,7 +25,11 @@ public class ProjectController {
 
     @ResponseStatus(OK)
     @GetMapping("/get-project")
-    public ResponseEntity<GetProjectResponse> getProject(@RequestParam("projectId") int projectId) {
+    public ResponseEntity<GetProjectResponse> getProject(@RequestParam("email") String emailAddress, @RequestParam("projectId") int projectId) {
+
+        // checking
+
+
         return projectService.getProject(projectId);
     }
 }

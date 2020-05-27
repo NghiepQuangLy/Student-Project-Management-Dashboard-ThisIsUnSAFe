@@ -3,6 +3,9 @@ package edu.monash.userprojectservice.service;
 import edu.monash.userprojectservice.model.GetProjectResponse;
 import edu.monash.userprojectservice.repository.Project;
 import edu.monash.userprojectservice.repository.ProjectRepository;
+import edu.monash.userprojectservice.repository.GitRepository;
+import edu.monash.userprojectservice.repository.GoogleDocRepository;
+import edu.monash.userprojectservice.repository.TrelloRepository
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
