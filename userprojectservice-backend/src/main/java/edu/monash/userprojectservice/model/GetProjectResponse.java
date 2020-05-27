@@ -18,6 +18,6 @@ public class GetProjectResponse {
     private String projectId;
     private String projectName;
     private List<Git> projectGitIds;
-    private List<GoogleDoc> projectTrelloIds;
-    private List<Trello> projectGoogleDocIds;
+    private List<GoogleDoc> projectGoogleDocIds;
+    private List<Trello> projectTrelloIds;
 }
