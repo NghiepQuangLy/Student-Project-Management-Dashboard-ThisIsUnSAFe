@@ -1,0 +1,34 @@
+plugins {
+	id 'org.springframework.boot' version '2.3.0.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+
+}
+
+group = 'edu.monash'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compile group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+	compile 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// database
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	implementation 'mysql:mysql-connector-java:8.0.15'
+
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+}
+
+test {
+	useJUnitPlatform()
+}
