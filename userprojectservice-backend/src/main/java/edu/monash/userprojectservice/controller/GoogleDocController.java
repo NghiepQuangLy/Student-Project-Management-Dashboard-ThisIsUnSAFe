@@ -1,9 +1,12 @@
 package edu.monash.userprojectservice.controller;
 
+import edu.monash.userprojectservice.model.InsertGoogleDocRequest;
 import edu.monash.userprojectservice.service.GoogleDocService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
@@ -22,8 +25,8 @@ public class GoogleDocController {
     }
 
     @ResponseStatus(CREATED)
-    @GetMapping("/insert-googledoc")
-    public void insertGoogleDoc(@RequestParam("projectId") int projectId, @RequestParam("googleDocId") int googleDocId) {
-        googleDocService.insertGoogleDoc(projectId, googleDocId);
+    @PostMapping("/insert-googledoc")
+    public void insertGoogleDoc(@RequestBody @Valid InsertGoogleDocRequest insertGoogleDocRequest) {
+        googleDocService.insertGoogleDoc(insertGoogleDocRequest);
     }
 }

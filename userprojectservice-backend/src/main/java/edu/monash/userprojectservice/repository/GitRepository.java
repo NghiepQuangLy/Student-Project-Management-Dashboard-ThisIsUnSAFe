@@ -1,5 +1,6 @@
 package edu.monash.userprojectservice.repository;
 
+import edu.monash.userprojectservice.model.InsertGitRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -32,11 +33,12 @@ public class GitRepository {
     };
 
     // Insert data into Git table
-    public boolean storeProject(int projectId, int gitId) {
-        log.info("{\"message\":\"Storing into Git table\", \"project\":\"{}\"}", projectId);
+    public boolean storeProject(InsertGitRequest request) {
+        log.info("{\"message\":\"Storing into Git table\", \"project\":\"{}\"}", request.getProjectId());
 
         jdbcTemplate.update(
-                "INSERT INTO Git (project_id, git_id) VALUES (?,?)", projectId, gitId
+                "INSERT INTO Git (project_id, git_id) VALUES (?,?)",
+                request.getProjectId(), request.getGitId()
         );
         return true;
     }

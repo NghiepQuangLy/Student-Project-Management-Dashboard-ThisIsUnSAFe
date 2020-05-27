@@ -1,5 +1,6 @@
 package edu.monash.userprojectservice.service;
 
+import edu.monash.userprojectservice.model.InsertTrelloRequest;
 import edu.monash.userprojectservice.repository.Trello;
 import edu.monash.userprojectservice.repository.TrelloRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -33,16 +34,16 @@ public class TrelloService {
     }
     
     // Insert into Trello table
-    public void insertTrello(int projectId, int trelloId) {
-        log.info("{\"message\":\"Insert Trello data\", \"project\":\"{}\"}, \"trello\":\"{}\"}", projectId, trelloId);
+    public void insertTrello(InsertTrelloRequest insertTrelloRequest) {
+        log.info("{\"message\":\"Insert Trello data\", \"project\":\"{}\"}", insertTrelloRequest);
 
         // Store into database
-        Boolean trelloResponse = trelloRepository.storeProject(projectId, trelloId);
+        Boolean trelloResponse = trelloRepository.storeProject(insertTrelloRequest);
 
-        if (trelloResponse != null){
-            log.info("{\"message\":\"Failed to insert into Trello \", \"project\":\"{}\"}, \"trello\":\"{}\"}", projectId, trelloId);
+        if (trelloResponse == null){
+            log.info("{\"message\":\"Failed to insert into Trello\", \"project\":\"{}\"}", insertTrelloRequest);
         }
 
-        log.info("{\"message\":\"Inserted into Trello \", \"project\":\"{}\"}, \"trello\":\"{}\"}", projectId, trelloId);
+        log.info("{\"message\":\"Inserted into Trello\", \"project\":\"{}\"}", insertTrelloRequest);
     }
 }
