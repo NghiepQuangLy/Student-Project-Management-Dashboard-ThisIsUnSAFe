@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -35,7 +36,7 @@ public class UserService {
         }
         log.info("{\"message\":\"Getting user\", \"user\":\"{}\"}", emailAddress);
 
-        User user = userRepository.findUserByEmail(emailAddress).orElse(null);
+        User user = userRepository.findUserByEmail(emailAddress);
 
         if (user != null) {
             GetUserResponse getUserResponse = GetUserResponse.builder()
