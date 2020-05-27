@@ -1,5 +1,6 @@
 package edu.monash.userprojectservice.service;
 
+import edu.monash.userprojectservice.model.InsertGoogleDocRequest;
 import edu.monash.userprojectservice.repository.GoogleDoc;
 import edu.monash.userprojectservice.repository.GoogleDocRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -33,16 +34,16 @@ public class GoogleDocService {
     }
 
     // Insert into GoogleDoc table
-    public void insertGoogleDoc(int projectId, int googleDocId) {
-        log.info("{\"message\":\"Insert GoogleDoc data\", \"project\":\"{}\"}, \"googleDoc\":\"{}\"}", projectId, googleDocId);
+    public void insertGoogleDoc(InsertGoogleDocRequest insertGoogleDocRequest) {
+        log.info("{\"message\":\"Insert GoogleDoc data\", \"project\":\"{}\"}", insertGoogleDocRequest);
 
         // Store into database
-        Boolean googleDocResponse = googleDocRepository.storeProject(projectId, googleDocId);
+        Boolean googleDocResponse = googleDocRepository.storeProject(insertGoogleDocRequest);
 
-        if (googleDocResponse != null){
-            log.info("{\"message\":\"Failed to insert into GoogleDoc \", \"project\":\"{}\"}, \"googleDoc\":\"{}\"}", projectId, googleDocId);
+        if (googleDocResponse == null){
+            log.info("{\"message\":\"Failed to insert into GoogleDoc\", \"project\":\"{}\"}", insertGoogleDocRequest);
         }
 
-        log.info("{\"message\":\"Inserted into GoogleDoc \", \"project\":\"{}\"}, \"googleDoc\":\"{}\"}", projectId, googleDocId);
+        log.info("{\"message\":\"Inserted into GoogleDoc\", \"project\":\"{}\"}", insertGoogleDocRequest);
     }
 }

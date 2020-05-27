@@ -1,5 +1,6 @@
 package edu.monash.userprojectservice.repository;
 
+import edu.monash.userprojectservice.model.InsertGoogleDocRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -31,11 +32,12 @@ public class GoogleDocRepository {
     };
 
     // Insert data into GoogleDoc table
-    public boolean storeProject(int projectId, int googleDocId) {
-        log.info("{\"message\":\"Storing into GoogleDoc table\", \"project\":\"{}\"}", projectId);
+    public boolean storeProject(InsertGoogleDocRequest request) {
+        log.info("{\"message\":\"Storing into GoogleDoc table\", \"project\":\"{}\"}", request.getProjectId());
 
         jdbcTemplate.update(
-                "INSERT INTO GoogleDoc (project_id, document_id) VALUES (?,?)", projectId, googleDocId
+                "INSERT INTO GoogleDoc (project_id, document_id) VALUES (?,?)",
+                request.getProjectId(), request.getGoogleDocId()
         );
         return true;
     }
