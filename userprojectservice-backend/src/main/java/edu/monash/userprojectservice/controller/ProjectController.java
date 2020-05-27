@@ -2,6 +2,7 @@ package edu.monash.userprojectservice.controller;
 
 import edu.monash.userprojectservice.model.GetProjectResponse;
 import edu.monash.userprojectservice.service.ProjectService;
+import edu.monash.userprojectservice.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +28,6 @@ public class ProjectController {
     @GetMapping("/get-project")
     public ResponseEntity<GetProjectResponse> getProject(@RequestParam("email") String emailAddress, @RequestParam("projectId") int projectId) {
 
-        // checking
-
-
-        return projectService.getProject(projectId);
+        return projectService.getProject(emailAddress, projectId);
     }
 }

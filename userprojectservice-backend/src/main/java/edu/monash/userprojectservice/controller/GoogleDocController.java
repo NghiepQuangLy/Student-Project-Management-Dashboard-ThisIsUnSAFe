@@ -17,8 +17,8 @@ public class GoogleDocController {
 
     @ResponseStatus(OK)
         @GetMapping("/get-googledoc")
-        public void getGoogleDoc(@RequestParam("projectId") int projectId, @RequestParam("googleDocId") int googleDocId) {
-        googleDocService.getgoogleDoc(projectId, googleDocId);
+        public void getGoogleDoc(@RequestParam("projectId") int projectId) {
+        googleDocService.getgoogleDoc(projectId);
     }
 
     @ResponseStatus(CREATED)

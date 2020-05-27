@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -16,19 +17,19 @@ public class GoogleDocService {
     private GoogleDocRepository googleDocRepository;
 
     // Get from GoogleDoc table
-    public void getgoogleDoc(int projectId, int googleDocId) {
-        log.info("{\"message\":\"Getting GoogleDoc data\", \"project\":\"{}\"}, \"googleDoc\":\"{}\"}", projectId, googleDocId);
+    public void getgoogleDoc(int projectId) {
+        log.info("{\"message\":\"Getting GoogleDoc data\", \"project\":\"{}\"}, \"googleDoc\":\"{}\"}", projectId);
 
         // get from database
-        Optional<GoogleDoc> googleDocDetail = googleDocRepository.findbyProject(projectId, googleDocId);
+        List<GoogleDoc> googleDocDetail = googleDocRepository.findbyProject(projectId);
 
-        GoogleDoc googleDocResponse = googleDocDetail.orElse(null);
-        if (googleDocResponse != null){
-            System.out.println(googleDocResponse.getProjectId());
-            System.out.println(googleDocResponse.getGoogleDocId());
-        }
+//        GoogleDoc googleDocResponse = googleDocDetail.orElse(null);
+//        if (googleDocResponse != null){
+//            System.out.println(googleDocResponse.getProjectId());
+//            System.out.println(googleDocResponse.getGoogleDocId());
+//        }
 
-        log.info("{\"message\":\"Got GoogleDoc data\", \"project\":\"{}\"}, \"googleDoc\":\"{}\"}", projectId, googleDocId);
+        log.info("{\"message\":\"Got GoogleDoc data\", \"project\":\"{}\"}, \"googleDoc\":\"{}\"}", projectId);
     }
 
     // Insert into GoogleDoc table

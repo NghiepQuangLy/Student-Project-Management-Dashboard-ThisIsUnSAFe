@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -16,19 +17,19 @@ public class GitService {
     private GitRepository gitRepository;
 
     // Get from Git table
-    public void getGit(int projectId, int gitId) {
-        log.info("{\"message\":\"Getting git data\", \"project\":\"{}\"}, \"git\":\"{}\"}", projectId, gitId);
+    public void getGit(int projectId) {
+        log.info("{\"message\":\"Getting git data\", \"project\":\"{}\"}, \"git\":\"{}\"}", projectId);
 
         // get from database
-        Optional<Git> gitDetail = gitRepository.findbyProject(projectId, gitId);
+        List<Git> gitDetail = gitRepository.findbyProject(projectId);
 
-        Git gitResponse = gitDetail.orElse(null);
-        if (gitResponse != null){
-            System.out.println(gitResponse.getProjectId());
-            System.out.println(gitResponse.getGitId());
-        }
+//        Git gitResponse = gitDetail.orElse(null);
+//        if (gitResponse != null){
+//            System.out.println(gitResponse.getProjectId());
+//            System.out.println(gitResponse.getGitId());
+//        }
 
-        log.info("{\"message\":\"Got git data\", \"project\":\"{}\"}, \"git\":\"{}\"}", projectId, gitId);
+        log.info("{\"message\":\"Got git data\", \"project\":\"{}\"}, \"git\":\"{}\"}", projectId);
     }
 
     // Insert into Git table

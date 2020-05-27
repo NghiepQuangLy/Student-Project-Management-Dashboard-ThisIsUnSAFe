@@ -6,6 +6,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.sql.ResultSet;
+import java.util.List;
 
 @Slf4j
 @Repository
@@ -15,17 +17,16 @@ public class TrelloRepository {
     private JdbcTemplate jdbcTemplate;
 
     // Gets data from Trello table
-    public Optional<Trello> findbyProject(int projectId, int trelloId){
+    public List<Trello> findbyProject(int projectId){
         log.info("{\"message\":\"Querying Trello table\", \"project\":\"{}\"}", projectId);
 
-        return jdbcTemplate.queryForObject(
-                "SELECT * FROM Trello WHERE project_id = ? AND trello_id = ?",
-                new Object[]{projectId, trelloId},
-                (rs, rowNum) ->
-                        Optional.of(new Trello(
+        return jdbcTemplate.query(
+                "SELECT * FROM Trello WHERE project_id = ?",
+                new Object[]{projectId},
+                (ResultSet rs, int rowNum) -> new Trello(
                                 rs.getInt("trello_id"),
                                 rs.getInt("project_id")
-                        ))
+                        )
         );
     };
 

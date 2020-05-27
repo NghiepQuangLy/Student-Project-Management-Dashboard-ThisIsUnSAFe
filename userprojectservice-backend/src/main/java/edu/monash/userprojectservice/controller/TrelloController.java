@@ -17,8 +17,8 @@ public class TrelloController {
 
     @ResponseStatus(OK)
     @GetMapping("/get-trello")
-    public void getTrello(@RequestParam("projectId") int projectId, @RequestParam("trelloId") int trelloId) {
-        trelloService.getTrello(projectId, trelloId);
+    public void getTrello(@RequestParam("projectId") int projectId) {
+        trelloService.getTrello(projectId);
     }
 
     @ResponseStatus(CREATED)

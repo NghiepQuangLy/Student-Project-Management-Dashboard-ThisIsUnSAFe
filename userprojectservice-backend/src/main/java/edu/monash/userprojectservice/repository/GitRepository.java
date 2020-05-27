@@ -5,7 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
+
+import java.sql.ResultSet;
 
 @Slf4j
 @Repository
@@ -15,17 +18,16 @@ public class GitRepository {
     private JdbcTemplate jdbcTemplate;
 
     // Gets data from Git table
-    public Optional<Git> findbyProject(int projectId, int gitId){
+    public List<Git> findbyProject(int projectId){
         log.info("{\"message\":\"Querying Git table\", \"project\":\"{}\"}", projectId);
 
-        return jdbcTemplate.queryForObject(
-                "SELECT * FROM Git WHERE project_id = ? AND git_id = ?",
-                new Object[]{projectId, gitId},
-                (rs, rowNum) ->
-                        Optional.of(new Git(
+        return jdbcTemplate.query(
+                "SELECT * FROM Git WHERE project_id = ?",
+                new Object[]{projectId},
+                (ResultSet rs, int rowNum) -> new Git(
                                 rs.getInt("git_id"),
                                 rs.getInt("project_id")
-                        ))
+                        )
         );
     };
 

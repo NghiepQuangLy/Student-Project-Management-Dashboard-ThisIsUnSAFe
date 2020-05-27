@@ -17,8 +17,8 @@ public class GitController {
 
     @ResponseStatus(OK)
         @GetMapping("/get-git")
-    public void getGit(@RequestParam("projectId") int projectId, @RequestParam("gitId") int gitId) {
-        gitService.getGit(projectId, gitId);
+    public void getGit(@RequestParam("projectId") int projectId) {
+        gitService.getGit(projectId);
     }
 
     @ResponseStatus(CREATED)
