@@ -1,7 +1,7 @@
 package edu.monash.userprojectservice.controller;
 
 import edu.monash.userprojectservice.model.CreateUserRequest;
-import edu.monash.userprojectservice.service.ProjectService;
+import edu.monash.userprojectservice.model.GetUserResponse;
 import edu.monash.userprojectservice.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,6 @@ import static org.springframework.http.HttpStatus.OK;
 public class UserController {
 
     private UserService userService;
-    //private ProjectService projectService;
 
     @ResponseStatus(CREATED)
     @PostMapping("/create-user")
@@ -34,7 +33,7 @@ public class UserController {
 
     @ResponseStatus(OK)
     @GetMapping("/get-user")
-    public void getUser(@RequestParam("email") String emailAddress) {
-        userService.getUserByEmail(emailAddress);
+    public GetUserResponse getUser(@RequestParam("email") String emailAddress) {
+        return userService.getUserByEmail(emailAddress);
     }
 }

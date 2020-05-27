@@ -3,12 +3,16 @@ package edu.monash.userprojectservice.controller;
 import edu.monash.userprojectservice.service.UserService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -34,6 +38,7 @@ public class UserControllerTest {
     private static String TEST_USER_GROUP = "test user group";
 
     private static String CREATE_USER_URL = "/create-user";
+    private static String GET_USER_URL = "/get-user";
 
     private static String templateRequest;
 
@@ -52,6 +57,9 @@ public class UserControllerTest {
         mockServer = MockMvcBuilders.standaloneSetup(new UserController(userService)).build();
     }
 
+    @Nested
+    @DisplayName("POST /create-user")
+    public class CreateUserTest {
     @Test
     public void shouldSuccessfullyCreateUser() throws Exception {
         mockServer.perform(request(CREATE_USER_URL, userRequestPayload_success()))
@@ -68,9 +76,9 @@ public class UserControllerTest {
 
     @Test
     public void shouldFailWithoutFamilyName() throws Exception {
-            mockServer.perform(request(CREATE_USER_URL, userRequestPayload_noFamilyNameKey()))
-                    .andDo(print())
-                    .andExpect(status().is4xxClientError());
+        mockServer.perform(request(CREATE_USER_URL, userRequestPayload_noFamilyNameKey()))
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
     }
 
     @Test
@@ -132,5 +140,28 @@ public class UserControllerTest {
                 .replace(GIVEN_NAME_KEY, TEST_FAMILY_NAME)
                 .replace(EMAIL_KEY, "")
                 .replace(USER_GROUP_KEY, TEST_USER_GROUP);
+    }
+}
+
+    @Nested
+    @DisplayName("GET /get-user")
+    public class GetUserTest {
+        @Test
+        public void shouldSuccessfullyGetUser() throws Exception {
+            RequestBuilder requestBuilder = MockMvcRequestBuilders
+                    .get(GET_USER_URL+ "?email={email}", "email@test.com");
+            mockServer.perform(requestBuilder)
+                    .andDo(print())
+                    .andExpect(status().isOk());
+        }
+
+        @Test
+        public void shouldFailWithoutUserEmail() throws Exception {
+            RequestBuilder requestBuilder = MockMvcRequestBuilders.get(GET_USER_URL);
+
+            mockServer.perform(requestBuilder)
+                    .andDo(print())
+                    .andExpect(status().is4xxClientError());
+        }
     }
 }
