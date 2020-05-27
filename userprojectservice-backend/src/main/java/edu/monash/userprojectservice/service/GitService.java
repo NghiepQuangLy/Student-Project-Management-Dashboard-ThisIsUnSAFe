@@ -1,5 +1,6 @@
 package edu.monash.userprojectservice.service;
 
+import edu.monash.userprojectservice.model.InsertGitRequest;
 import edu.monash.userprojectservice.repository.Git;
 import edu.monash.userprojectservice.repository.GitRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -32,16 +33,16 @@ public class GitService {
     }
 
     // Insert into Git table
-    public void insertGit(int projectId, int gitId) {
-        log.info("{\"message\":\"Insert Git data\", \"project\":\"{}\"}, \"git\":\"{}\"}", projectId, gitId);
+    public void insertGit(InsertGitRequest insertGitRequest) {
+        log.info("{\"message\":\"Insert Git data\", \"project\":\"{}\"}", insertGitRequest);
 
         // Store into database
-        Boolean gitResponse = gitRepository.storeProject(projectId, gitId);
+        Boolean gitResponse = gitRepository.storeProject(insertGitRequest);
 
-        if (gitResponse != null){
-            log.info("{\"message\":\"Failed to insert into Git \", \"project\":\"{}\"}, \"git\":\"{}\"}", projectId, gitId);
+        if (gitResponse == null){
+            log.info("{\"message\":\"Failed to insert into Git\", \"project\":\"{}\"}", insertGitRequest);
         }
 
-        log.info("{\"message\":\"Inserted into Git \", \"project\":\"{}\"}, \"git\":\"{}\"}", projectId, gitId);
+        log.info("{\"message\":\"Inserted into Git\", \"project\":\"{}\"}", insertGitRequest);
     }
 }

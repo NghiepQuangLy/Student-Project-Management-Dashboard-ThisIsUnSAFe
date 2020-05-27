@@ -1,5 +1,6 @@
 package edu.monash.userprojectservice.repository;
 
+import edu.monash.userprojectservice.model.InsertTrelloRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -30,11 +31,12 @@ public class TrelloRepository {
     };
 
     // Insert data into Trello table
-    public boolean storeProject(int projectId, int trelloId) {
-        log.info("{\"message\":\"Storing into Trello table\", \"project\":\"{}\"}", projectId);
+    public boolean storeProject(InsertTrelloRequest request) {
+        log.info("{\"message\":\"Storing into Trello table\", \"project\":\"{}\"}", request.getProjectId());
 
         jdbcTemplate.update(
-                "INSERT INTO Trello (project_id, trello_id) VALUES (?,?)", projectId, trelloId
+                "INSERT INTO Trello (project_id, trello_id) VALUES (?,?)",
+                request.getProjectId(), request.getTrelloId()
         );
         return true;
     }
