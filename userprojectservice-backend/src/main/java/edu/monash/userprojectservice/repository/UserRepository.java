@@ -1,7 +1,9 @@
 package edu.monash.userprojectservice.repository;
 
 import edu.monash.userprojectservice.model.CreateUserRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -9,6 +11,7 @@ import java.sql.ResultSet;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Repository
 public class UserRepository {
 
@@ -22,18 +25,24 @@ public class UserRepository {
         );
     };
 
-    public Optional<User> findUserByEmail(String email_address) {
-        return jdbcTemplate.queryForObject(
-                "select * from Users where email_address = ?",
-                new Object[]{email_address},
-                (ResultSet rs, int rowNum) ->
-                        Optional.of(new User(
-                                rs.getString("family_name"),
-                                rs.getString("given_name"),
-                                rs.getString("email_address"),
-                                rs.getString("user_group")
-                        ))
-        );
+    public User findUserByEmail(String email_address) {
+        try {
+            return jdbcTemplate.queryForObject(
+                    "select * from Users where email_address = ?",
+                    new Object[]{email_address},
+                    (rs, rowNum) ->
+                            new User(
+                                    rs.getString("family_name"),
+                                    rs.getString("given_name"),
+                                    rs.getString("email_address"),
+                                    rs.getString("user_group")
+                            )
+            );
+        }
+        catch (EmptyResultDataAccessException e) {
+            log.warn(e.getLocalizedMessage());
+            return null;
+        }
     }
 
     public List<ProjectShortDetail> findProjectByEmail(String email_address) {
