@@ -9,5 +9,5 @@ import java.util.ArrayList;
 @AllArgsConstructor
 public class UserProjectDetail {
     private String emailAddress;
-    private Integer projectId;
+    private String projectId;
 }

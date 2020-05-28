@@ -18,15 +18,15 @@ public class TrelloRepository {
     private JdbcTemplate jdbcTemplate;
 
     // Gets data from Trello table
-    public List<Trello> findbyProject(int projectId){
+    public List<Trello> findbyProject(String projectId){
         log.info("{\"message\":\"Querying Trello table\", \"project\":\"{}\"}", projectId);
 
         return jdbcTemplate.query(
                 "SELECT * FROM Trello WHERE project_id = ?",
                 new Object[]{projectId},
                 (ResultSet rs, int rowNum) -> new Trello(
-                                rs.getInt("trello_id"),
-                                rs.getInt("project_id")
+                                rs.getString("trello_id"),
+                                rs.getString("project_id")
                         )
         );
     };

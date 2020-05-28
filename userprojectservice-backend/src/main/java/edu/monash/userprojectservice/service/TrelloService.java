@@ -18,7 +18,7 @@ public class TrelloService {
     private TrelloRepository trelloRepository;
 
     // Get from Trello table
-    public void getTrello(int projectId) {
+    public void getTrello(String projectId) {
         log.info("{\"message\":\"Getting Trello \", \"project\":\"{}\"}, \"trello\":\"{}\"}", projectId);
 
         // get from database

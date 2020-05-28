@@ -18,7 +18,7 @@ public class GitService {
     private GitRepository gitRepository;
 
     // Get from Git table
-    public void getGit(int projectId) {
+    public void getGit(String projectId) {
         log.info("{\"message\":\"Getting git data\", \"project\":\"{}\"}, \"git\":\"{}\"}", projectId);
 
         // get from database
