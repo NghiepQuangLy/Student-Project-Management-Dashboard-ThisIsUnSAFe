@@ -18,7 +18,7 @@ public class GoogleDocRepository {
     private JdbcTemplate jdbcTemplate;
 
     // Gets data from GoogleDoc table
-    public List<GoogleDoc> findbyProject(int projectId){
+    public List<GoogleDoc> findbyProject(String projectId){
         log.info("{\"message\":\"Querying GoogleDoc table\", \"project\":\"{}\"}", projectId);
 
         return jdbcTemplate.query(
@@ -26,7 +26,7 @@ public class GoogleDocRepository {
                 new Object[]{projectId},
                 (ResultSet rs, int rowNum) -> new GoogleDoc(
                                 rs.getInt("document_id"),
-                                rs.getInt("project_id")
+                                rs.getString("project_id")
                         )
         );
     };

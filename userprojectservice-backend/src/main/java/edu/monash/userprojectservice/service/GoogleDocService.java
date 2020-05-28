@@ -18,7 +18,7 @@ public class GoogleDocService {
     private GoogleDocRepository googleDocRepository;
 
     // Get from GoogleDoc table
-    public void getgoogleDoc(int projectId) {
+    public void getgoogleDoc(String projectId) {
         log.info("{\"message\":\"Getting GoogleDoc data\", \"project\":\"{}\"}, \"googleDoc\":\"{}\"}", projectId);
 
         // get from database

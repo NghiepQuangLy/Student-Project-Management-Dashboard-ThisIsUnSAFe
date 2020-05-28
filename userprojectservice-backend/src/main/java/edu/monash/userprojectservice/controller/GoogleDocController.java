@@ -20,7 +20,7 @@ public class GoogleDocController {
 
     @ResponseStatus(OK)
         @GetMapping("/get-googledoc")
-        public void getGoogleDoc(@RequestParam("projectId") int projectId) {
+        public void getGoogleDoc(@RequestParam("projectId") String projectId) {
         googleDocService.getgoogleDoc(projectId);
     }
 

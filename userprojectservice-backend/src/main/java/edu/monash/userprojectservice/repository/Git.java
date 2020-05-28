@@ -7,5 +7,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public class Git {
     private int gitId;
-    private int projectId;
+    private String projectId;
 }

@@ -19,7 +19,7 @@ public class GitRepository {
     private JdbcTemplate jdbcTemplate;
 
     // Gets data from Git table
-    public List<Git> findbyProject(int projectId){
+    public List<Git> findbyProject(String projectId){
         log.info("{\"message\":\"Querying Git table\", \"project\":\"{}\"}", projectId);
 
         return jdbcTemplate.query(
@@ -27,7 +27,7 @@ public class GitRepository {
                 new Object[]{projectId},
                 (ResultSet rs, int rowNum) -> new Git(
                                 rs.getInt("git_id"),
-                                rs.getInt("project_id")
+                                rs.getString("project_id")
                         )
         );
     };

@@ -20,7 +20,7 @@ public class GitController {
 
     @ResponseStatus(OK)
         @GetMapping("/get-git")
-    public void getGit(@RequestParam("projectId") int projectId) {
+    public void getGit(@RequestParam("projectId") String projectId) {
         gitService.getGit(projectId);
     }
 
