@@ -3,15 +3,15 @@ package edu.monash.userprojectservice.service;
 import edu.monash.userprojectservice.model.CreateUserRequest;
 import edu.monash.userprojectservice.model.GetUserResponse;
 import edu.monash.userprojectservice.model.ProjectListResponse;
-import edu.monash.userprojectservice.repository.ProjectShortDetail;
-import edu.monash.userprojectservice.repository.User;
-import edu.monash.userprojectservice.repository.UserRepository;
+import edu.monash.userprojectservice.repository.UserEntity;
+import edu.monash.userprojectservice.repository.UsersProjectsEntity;
+import edu.monash.userprojectservice.repository.UsersProjectsRepository;
+import edu.monash.userprojectservice.repository.UsersRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -19,15 +19,27 @@ import java.util.stream.Collectors;
 public class UserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UsersRepository usersRepository;
+
+    @Autowired
+    private UsersProjectsRepository usersProjectsRepository;
 
     public void createUser(CreateUserRequest createUserRequest) {
         log.info("{\"message\":\"Creating user\", \"user\":\"{}\"}", createUserRequest);
 
         // save to database
-        userRepository.create(createUserRequest);
-
-        log.info("{\"message\":\"Saved user\"}");
+        UserEntity userEntity = usersRepository.findUserEntityByEmailAddress(createUserRequest.getEmailAddress());
+        if (userEntity == null){
+            usersRepository.save(new UserEntity(
+                    createUserRequest.getEmailAddress(),
+                    createUserRequest.getFamilyName(),
+                    createUserRequest.getGivenName(),
+                    createUserRequest.getUserGroup()
+            ));
+            log.info("{\"message\":\"Saved user\"}");
+        } else {
+            log.warn("{\"message\":\"User already exist\"}");
+        }
     }
 
     public GetUserResponse getUserByEmail(String emailAddress) {
@@ -36,21 +48,22 @@ public class UserService {
         }
         log.info("{\"message\":\"Getting user\", \"user\":\"{}\"}", emailAddress);
 
-        User user = userRepository.findUserByEmail(emailAddress);
+        UserEntity userEntity = usersRepository.findUserEntityByEmailAddress(emailAddress);
 
-        if (user != null) {
+        if (userEntity != null) {
             GetUserResponse getUserResponse = GetUserResponse.builder()
-                    .emailAddress(user.getEmail_address())
-                    .firstName(user.getGiven_name())
-                    .lastName(user.getFamily_name())
-                    .userGroup(user.getUser_group())
+                    .emailAddress(userEntity.getEmailAddress())
+                    .firstName(userEntity.getGivenName())
+                    .lastName(userEntity.getFamilyName())
+                    .userGroup(userEntity.getUserGroup())
                     .build();
 
-            log.info("{\"message\":\"Got user\", \"user\":\"{}\"", user);
+            log.info("{\"message\":\"Got user\", \"user\":\"{}\"", userEntity);
             log.info("{\"message\":\"Getting projects list\", \"user\":\"{}\"}", emailAddress);
 
-            List<ProjectShortDetail> projectShortDetails = userRepository.findProjectByEmail(emailAddress);
-            List<ProjectListResponse> projectListResponses = projectShortDetails.stream()
+            List<UsersProjectsEntity> usersProjectsEntities = usersProjectsRepository.findUsersProjectsEntitiesByEmailAddress(emailAddress);
+
+            List<ProjectListResponse> projectListResponses = usersProjectsEntities.stream()
                     .map(this::convertToProjectListResponse)
                     .collect(Collectors.toList());
 
@@ -64,10 +77,10 @@ public class UserService {
         }
     }
 
-    private ProjectListResponse convertToProjectListResponse(ProjectShortDetail projectShortDetail) {
+    private ProjectListResponse convertToProjectListResponse(UsersProjectsEntity projectEntity) {
         return ProjectListResponse.builder()
-                .projectId(projectShortDetail.getProject_id())
-                .projectName(projectShortDetail.getProject_name())
+                .projectId(projectEntity.getProjectId())
+                .projectName(projectEntity.getEmailAddress())
                 .build();
     }
 }
