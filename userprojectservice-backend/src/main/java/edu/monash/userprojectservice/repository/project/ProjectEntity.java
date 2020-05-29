@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "Projects", schema = "SPMD")
+@Table(name = "PROJECTS", schema = "SPMD")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor

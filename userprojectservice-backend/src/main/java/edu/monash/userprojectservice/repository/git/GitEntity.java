@@ -16,7 +16,7 @@ import java.io.Serializable;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Git", schema = "SPMD")
+@Table(name = "GIT", schema = "SPMD")
 @IdClass(GitPrimaryKey.class)
 public class GitEntity implements Serializable {
 

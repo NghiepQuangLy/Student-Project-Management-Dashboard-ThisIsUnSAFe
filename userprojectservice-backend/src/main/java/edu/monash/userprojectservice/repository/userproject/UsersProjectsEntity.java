@@ -18,7 +18,7 @@ import java.io.Serializable;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Users_Projects", schema = "SPMD")
+@Table(name = "USERS_PROJECTS", schema = "SPMD")
 @IdClass(UsersProjectsPrimaryKey.class)
 public class UsersProjectsEntity implements Serializable {
 

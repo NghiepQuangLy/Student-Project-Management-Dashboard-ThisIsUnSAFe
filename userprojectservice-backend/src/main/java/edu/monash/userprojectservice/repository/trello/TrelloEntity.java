@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Trello", schema = "SPMD")
+@Table(name = "TRELLO", schema = "SPMD")
 @IdClass(TrelloPrimaryKey.class)
 public class TrelloEntity implements Serializable {
 

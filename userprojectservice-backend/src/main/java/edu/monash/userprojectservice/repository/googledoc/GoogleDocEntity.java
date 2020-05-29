@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "GoogleDoc", schema = "SPMD")
+@Table(name = "GOOGLEDOC", schema = "SPMD")
 @IdClass(GoogleDocEntity.class)
 public class GoogleDocEntity implements Serializable {
 

@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "Users", schema = "SPMD")
+@Table(name = "USERS", schema = "SPMD")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
