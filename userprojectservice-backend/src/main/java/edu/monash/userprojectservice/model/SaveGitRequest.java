@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class InsertGitRequest {
+public class SaveGitRequest {
 
     @NotNull
     private String gitId;

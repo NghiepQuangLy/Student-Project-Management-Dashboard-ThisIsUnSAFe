@@ -1,6 +1,6 @@
 package edu.monash.userprojectservice.service;
 
-import edu.monash.userprojectservice.model.InsertGitRequest;
+import edu.monash.userprojectservice.model.SaveGitRequest;
 import edu.monash.userprojectservice.repository.git.GitEntity;
 import edu.monash.userprojectservice.repository.git.GitRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -27,12 +27,12 @@ public class GitService {
     }
 
     // Insert into Git table
-    public void insertGit(InsertGitRequest insertGitRequest) {
-        log.info("{\"message\":\"Insert Git data\", \"project\":\"{}\"}", insertGitRequest);
+    public void insertGit(SaveGitRequest saveGitRequest) {
+        log.info("{\"message\":\"Insert Git data\", \"project\":\"{}\"}", saveGitRequest);
 
         // Store into database
-        gitRepository.save(new GitEntity(insertGitRequest.getGitId(), insertGitRequest.getProjectId()));
+        gitRepository.save(new GitEntity(saveGitRequest.getGitId(), saveGitRequest.getProjectId()));
 
-        log.info("{\"message\":\"Inserted into Git\", \"project\":\"{}\"}", insertGitRequest);
+        log.info("{\"message\":\"Inserted into Git\", \"project\":\"{}\"}", saveGitRequest);
     }
 }

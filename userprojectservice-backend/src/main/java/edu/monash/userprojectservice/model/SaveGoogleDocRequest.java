@@ -10,11 +10,11 @@ import javax.validation.constraints.NotNull;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class InsertGoogleDocRequest {
+public class SaveGoogleDocRequest {
 
     @NotNull
-    private int googleDocId;
+    private String googleDocId;
 
     @NotNull
-    private int projectId;
+    private String projectId;
 }

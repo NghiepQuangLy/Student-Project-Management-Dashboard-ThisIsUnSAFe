@@ -1,6 +1,5 @@
 package edu.monash.userprojectservice.model;
 
-import edu.monash.userprojectservice.repository.GoogleDoc;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +15,6 @@ public class GetProjectResponse {
     private String projectId;
     private String projectName;
     private List<String> projectGitIds;
-    private List<GoogleDoc> projectGoogleDocIds;
+    private List<String> projectGoogleDocIds;
     private List<String> projectTrelloIds;
 }

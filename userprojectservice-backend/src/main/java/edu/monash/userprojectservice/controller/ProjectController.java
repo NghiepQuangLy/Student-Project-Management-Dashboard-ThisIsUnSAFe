@@ -1,7 +1,7 @@
 package edu.monash.userprojectservice.controller;
 
+import edu.monash.userprojectservice.model.CreateProjectRequest;
 import edu.monash.userprojectservice.model.GetProjectResponse;
-import edu.monash.userprojectservice.model.SetUserProjectRequest;
 import edu.monash.userprojectservice.service.ProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +35,8 @@ public class ProjectController {
 
     @ResponseStatus(OK)
     @PostMapping("/create-project")
-    public ResponseEntity<GetProjectResponse> setProjectUser(@RequestBody @Valid SetUserProjectRequest param) throws SQLException {
-        return projectService.addUserProject(param.getEmailAddress(),param.getProjectName());
+    public ResponseEntity<GetProjectResponse> setProjectUser(@RequestBody @Valid CreateProjectRequest createProjectRequest) throws SQLException {
+        return projectService.addUserProject(createProjectRequest.getEmailAddress(), createProjectRequest.getProjectName());
     }
 
 

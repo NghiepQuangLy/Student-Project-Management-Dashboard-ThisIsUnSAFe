@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SetUserProjectRequest {
+public class CreateProjectRequest {
 
     @NotBlank
     private String emailAddress;
