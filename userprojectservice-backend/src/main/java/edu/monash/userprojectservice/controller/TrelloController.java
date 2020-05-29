@@ -1,6 +1,5 @@
 package edu.monash.userprojectservice.controller;
 
-import edu.monash.userprojectservice.model.CreateUserRequest;
 import edu.monash.userprojectservice.model.InsertTrelloRequest;
 import edu.monash.userprojectservice.service.TrelloService;
 import lombok.AllArgsConstructor;
@@ -26,8 +25,8 @@ public class TrelloController {
     }
 
     @ResponseStatus(CREATED)
-    @PostMapping("/insert-trello")
-    public void insertTrello(@RequestBody @Valid InsertTrelloRequest insertTrelloRequest) {
-        trelloService.insertTrello(insertTrelloRequest);
+    @PostMapping("/save-trello")
+    public void saveTrello(@RequestBody @Valid InsertTrelloRequest insertTrelloRequest) {
+        trelloService.saveTrello(insertTrelloRequest);
     }
 }

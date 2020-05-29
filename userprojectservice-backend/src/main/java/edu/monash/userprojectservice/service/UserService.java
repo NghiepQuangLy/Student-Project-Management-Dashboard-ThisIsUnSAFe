@@ -73,6 +73,7 @@ public class UserService {
 
             return getUserResponse;
         } else {
+            // show return 404 not found
             return null;
         }
     }

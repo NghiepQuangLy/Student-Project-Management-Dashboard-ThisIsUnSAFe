@@ -1,11 +1,14 @@
 package edu.monash.userprojectservice.repository;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Getter
+import java.io.Serializable;
+
 @AllArgsConstructor
-public class Trello {
+@NoArgsConstructor
+public class TrelloPrimaryKey implements Serializable {
     private String trelloId;
     private String projectId;
 }
+

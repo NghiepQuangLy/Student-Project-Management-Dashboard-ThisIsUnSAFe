@@ -23,24 +23,6 @@ public class ProjectRepository {
     @Value("${spring.datasource.password}") String password;
 
 
-    public Project findbyProject(String projectId){
-        try{
-            return jdbcTemplate.queryForObject(
-                    "SELECT * FROM Projects WHERE project_id = ?",
-                    new Object[]{projectId},
-                    (rs, rowNum) ->
-                            new Project(
-                                    rs.getString("project_id"),
-                                    rs.getString("project_name")
-                            )
-            );
-        }
-        catch (EmptyResultDataAccessException e) {
-            log.warn(e.getLocalizedMessage());
-            return null;
-        }
-    };
-
     // create new method for insert...
     public Boolean insertProject(String projectId,String userEmailAddress, String projectName) throws SQLException {
         Connection conn = DriverManager.getConnection(url,userName,password);
