@@ -1,4 +1,4 @@
-package edu.monash.userprojectservice.repository;
+package edu.monash.userprojectservice.repository.project;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

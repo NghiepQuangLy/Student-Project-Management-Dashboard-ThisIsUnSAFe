@@ -1,7 +1,6 @@
 package edu.monash.userprojectservice.repository.userproject;
 
-import edu.monash.userprojectservice.repository.ProjectEntity;
-import edu.monash.userprojectservice.repository.user.UserEntity;
+import edu.monash.userprojectservice.repository.project.ProjectEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,16 +31,8 @@ public class UsersProjectsEntity implements Serializable {
     private String projectId;
 
     @ManyToOne
-    @JoinColumn(name = "email_address", updatable = false, insertable = false)
-    private UserEntity userEntity;
-
-    @ManyToOne
     @JoinColumn(name = "project_id", updatable = false, insertable = false)
     private ProjectEntity projectEntity;
-
-    public String getEmailAddress() {
-        return userEntity.getEmailAddress();
-    }
 
     public String getProjectId() {
         return projectEntity.getProjectId();

@@ -1,7 +1,6 @@
 package edu.monash.userprojectservice.service;
 
 import edu.monash.userprojectservice.model.SaveGoogleDocRequest;
-import edu.monash.userprojectservice.repository.GoogleDocTemRepository;
 import edu.monash.userprojectservice.repository.googledoc.GoogleDocEntity;
 import edu.monash.userprojectservice.repository.googledoc.GoogleDocRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -13,9 +12,6 @@ import java.util.List;
 @Slf4j
 @Service
 public class GoogleDocService {
-
-    @Autowired
-    private GoogleDocTemRepository googleDocTemRepository;
 
     @Autowired
     private GoogleDocRepository googleDocRepository;

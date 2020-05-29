@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+
 import java.sql.SQLException;
 
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -33,10 +35,10 @@ public class ProjectController {
     }
 
 
-    @ResponseStatus(OK)
+    @ResponseStatus(CREATED)
     @PostMapping("/create-project")
-    public ResponseEntity<GetProjectResponse> setProjectUser(@RequestBody @Valid CreateProjectRequest createProjectRequest) throws SQLException {
-        return projectService.addUserProject(createProjectRequest.getEmailAddress(), createProjectRequest.getProjectName());
+    public ResponseEntity setProjectUser(@RequestBody @Valid CreateProjectRequest createProjectRequest) throws SQLException {
+        return projectService.createProject(createProjectRequest.getEmailAddress(), createProjectRequest.getProjectName());
     }
 
 

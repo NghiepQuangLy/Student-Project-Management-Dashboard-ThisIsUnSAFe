@@ -1,9 +1,9 @@
 package edu.monash.userprojectservice.service;
 
 import edu.monash.userprojectservice.model.GetProjectResponse;
-import edu.monash.userprojectservice.repository.ProjectEntity;
-import edu.monash.userprojectservice.repository.ProjectRepository;
-import edu.monash.userprojectservice.repository.ProjectsRepository;
+import edu.monash.userprojectservice.repository.project.ProjectEntity;
+import edu.monash.userprojectservice.repository.project.ProjectsRepository;
+import edu.monash.userprojectservice.repository.CreateProjectRepository;
 import edu.monash.userprojectservice.repository.git.GitEntity;
 import edu.monash.userprojectservice.repository.git.GitRepository;
 import edu.monash.userprojectservice.repository.googledoc.GoogleDocEntity;
@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
@@ -32,7 +33,7 @@ import static org.springframework.http.HttpStatus.OK;
 public class ProjectService {
 
     @Autowired
-    private ProjectRepository projectRepository;
+    private CreateProjectRepository createProjectRepository;
 
     @Autowired
     private ProjectsRepository projectsRepository;
@@ -110,7 +111,7 @@ public class ProjectService {
     // create a method
     // check for the user first, if it doesnt exist new responseEntity and return not found
     // if he exists then, return OK
-    public ResponseEntity<GetProjectResponse> addUserProject(String emailAddress, String projectName) throws SQLException {
+    public ResponseEntity<GetProjectResponse> createProject(String emailAddress, String projectName) throws SQLException {
         //check if the user is present in the system
         if (usersRepository.findUserEntityByEmailAddress(emailAddress) == null) {
             log.warn("User doesn't exist in the Database!");
@@ -124,11 +125,11 @@ public class ProjectService {
                 projectId = UUID.randomUUID().toString();
             }
             // insert into db when project doesnt exist in the db
-            Boolean isSuccessful = projectRepository.insertProject(projectId, emailAddress, projectName);
+            Boolean isSuccessful = createProjectRepository.save(projectId, emailAddress, projectName);
             if (isSuccessful) {
                 log.info("Project has been added!");
                 return new ResponseEntity<>(
-                        null, OK
+                        null, CREATED
                 );
             } else {
                 log.warn("Project could not be added!");

@@ -1,4 +1,4 @@
-package edu.monash.userprojectservice.repository;
+package edu.monash.userprojectservice.repository.project;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
