@@ -13,8 +13,8 @@ import javax.validation.constraints.NotNull;
 public class InsertGitRequest {
 
     @NotNull
-    private Integer gitId;
+    private String gitId;
 
     @NotNull
-    private Integer projectId;
+    private String projectId;
 }

@@ -1,8 +1,8 @@
 package edu.monash.userprojectservice.service;
 
 import edu.monash.userprojectservice.model.InsertTrelloRequest;
-import edu.monash.userprojectservice.repository.TrelloEntity;
-import edu.monash.userprojectservice.repository.TrelloRepository;
+import edu.monash.userprojectservice.repository.trello.TrelloEntity;
+import edu.monash.userprojectservice.repository.trello.TrelloRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

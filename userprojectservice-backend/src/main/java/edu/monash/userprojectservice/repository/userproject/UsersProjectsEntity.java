@@ -1,5 +1,7 @@
-package edu.monash.userprojectservice.repository;
+package edu.monash.userprojectservice.repository.userproject;
 
+import edu.monash.userprojectservice.repository.ProjectEntity;
+import edu.monash.userprojectservice.repository.user.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

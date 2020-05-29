@@ -1,4 +1,4 @@
-package edu.monash.userprojectservice.repository;
+package edu.monash.userprojectservice.repository.trello;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

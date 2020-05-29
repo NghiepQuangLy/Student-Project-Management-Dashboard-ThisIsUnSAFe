@@ -1,4 +1,4 @@
-package edu.monash.userprojectservice.repository;
+package edu.monash.userprojectservice.repository.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,11 +29,4 @@ public class UserEntity implements Serializable {
 
     @Column(name = "user_group")
     private String userGroup;
-
-    @Override
-    public String toString() {
-        return String.format(
-                "Users[email_address=%s, family_name='%s', given_name='%s', user_group='%s']",
-                emailAddress, familyName, givenName, userGroup);
-    }
 }

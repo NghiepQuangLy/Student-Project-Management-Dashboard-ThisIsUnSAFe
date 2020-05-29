@@ -1,18 +1,18 @@
 package edu.monash.userprojectservice.service;
 
 import edu.monash.userprojectservice.model.GetProjectResponse;
-import edu.monash.userprojectservice.repository.Git;
-import edu.monash.userprojectservice.repository.GitRepository;
 import edu.monash.userprojectservice.repository.GoogleDoc;
 import edu.monash.userprojectservice.repository.GoogleDocRepository;
 import edu.monash.userprojectservice.repository.ProjectEntity;
 import edu.monash.userprojectservice.repository.ProjectRepository;
 import edu.monash.userprojectservice.repository.ProjectsRepository;
-import edu.monash.userprojectservice.repository.TrelloEntity;
-import edu.monash.userprojectservice.repository.TrelloRepository;
-import edu.monash.userprojectservice.repository.UsersProjectsEntity;
-import edu.monash.userprojectservice.repository.UsersProjectsRepository;
-import edu.monash.userprojectservice.repository.UsersRepository;
+import edu.monash.userprojectservice.repository.git.GitEntity;
+import edu.monash.userprojectservice.repository.git.GitRepository;
+import edu.monash.userprojectservice.repository.trello.TrelloEntity;
+import edu.monash.userprojectservice.repository.trello.TrelloRepository;
+import edu.monash.userprojectservice.repository.userproject.UsersProjectsEntity;
+import edu.monash.userprojectservice.repository.userproject.UsersProjectsRepository;
+import edu.monash.userprojectservice.repository.user.UsersRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -75,7 +75,7 @@ public class ProjectService {
             );
         }
 
-        List<Git> gitDetail = gitRepository.findbyProject(projectId);
+        List<GitEntity> gitEntities = gitRepository.findGitEntitiesByProjectId(projectId);
         List<GoogleDoc> googleDocDetail = googleDocRepository.findbyProject(projectId);
         List<TrelloEntity> trelloDetail = trelloRepository.findTrelloEntitiesByProjectId(projectId);
 
@@ -88,7 +88,7 @@ public class ProjectService {
                 new GetProjectResponse(
                         String.valueOf(projectEntity.getProjectId()),
                         projectEntity.getProjectName(),
-                        gitDetail,
+                        gitEntities.stream().map(GitEntity::getGitId).collect(Collectors.toList()),
                         googleDocDetail,
                         trelloDetail.stream().map(TrelloEntity::getTrelloId).collect(Collectors.toList())
                 ), OK

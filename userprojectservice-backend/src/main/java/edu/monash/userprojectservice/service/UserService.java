@@ -3,10 +3,10 @@ package edu.monash.userprojectservice.service;
 import edu.monash.userprojectservice.model.CreateUserRequest;
 import edu.monash.userprojectservice.model.GetUserResponse;
 import edu.monash.userprojectservice.model.ProjectListResponse;
-import edu.monash.userprojectservice.repository.UserEntity;
-import edu.monash.userprojectservice.repository.UsersProjectsEntity;
-import edu.monash.userprojectservice.repository.UsersProjectsRepository;
-import edu.monash.userprojectservice.repository.UsersRepository;
+import edu.monash.userprojectservice.repository.user.UserEntity;
+import edu.monash.userprojectservice.repository.userproject.UsersProjectsEntity;
+import edu.monash.userprojectservice.repository.userproject.UsersProjectsRepository;
+import edu.monash.userprojectservice.repository.user.UsersRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,8 +36,10 @@ public class UserService {
                     createUserRequest.getGivenName(),
                     createUserRequest.getUserGroup()
             ));
+            // Created 201
             log.info("{\"message\":\"Saved user\"}");
         } else {
+            // Bad Request 400
             log.warn("{\"message\":\"User already exist\"}");
         }
     }
