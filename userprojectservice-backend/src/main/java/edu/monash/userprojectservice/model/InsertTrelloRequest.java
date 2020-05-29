@@ -13,8 +13,8 @@ import javax.validation.constraints.NotNull;
 public class InsertTrelloRequest {
 
     @NotNull
-    private int trelloId;
+    private String trelloId;
 
     @NotNull
-    private int projectId;
+    private String projectId;
 }

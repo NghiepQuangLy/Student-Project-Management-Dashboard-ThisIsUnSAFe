@@ -1,14 +1,13 @@
 package edu.monash.userprojectservice.service;
 
-import edu.monash.userprojectservice.model.InsertGoogleDocRequest;
-import edu.monash.userprojectservice.repository.GoogleDoc;
-import edu.monash.userprojectservice.repository.GoogleDocRepository;
+import edu.monash.userprojectservice.model.SaveGoogleDocRequest;
+import edu.monash.userprojectservice.repository.googledoc.GoogleDocEntity;
+import edu.monash.userprojectservice.repository.googledoc.GoogleDocRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -22,28 +21,18 @@ public class GoogleDocService {
         log.info("{\"message\":\"Getting GoogleDoc data\", \"project\":\"{}\"}, \"googleDoc\":\"{}\"}", projectId);
 
         // get from database
-        List<GoogleDoc> googleDocDetail = googleDocRepository.findbyProject(projectId);
-
-//        GoogleDoc googleDocResponse = googleDocDetail.orElse(null);
-//        if (googleDocResponse != null){
-//            System.out.println(googleDocResponse.getProjectId());
-//            System.out.println(googleDocResponse.getGoogleDocId());
-//        }
+        List<GoogleDocEntity> googleDocEntities = googleDocRepository.findGoogleDocEntitiesByProjectId(projectId);
 
         log.info("{\"message\":\"Got GoogleDoc data\", \"project\":\"{}\"}, \"googleDoc\":\"{}\"}", projectId);
     }
 
     // Insert into GoogleDoc table
-    public void insertGoogleDoc(InsertGoogleDocRequest insertGoogleDocRequest) {
-        log.info("{\"message\":\"Insert GoogleDoc data\", \"project\":\"{}\"}", insertGoogleDocRequest);
+    public void saveGoogleDoc(SaveGoogleDocRequest saveGoogleDocRequest) {
+        log.info("{\"message\":\"Insert GoogleDoc data\", \"project\":\"{}\"}", saveGoogleDocRequest);
 
         // Store into database
-        Boolean googleDocResponse = googleDocRepository.storeProject(insertGoogleDocRequest);
+        googleDocRepository.save(new GoogleDocEntity(saveGoogleDocRequest.getGoogleDocId(), saveGoogleDocRequest.getProjectId()));
 
-        if (googleDocResponse == null){
-            log.info("{\"message\":\"Failed to insert into GoogleDoc\", \"project\":\"{}\"}", insertGoogleDocRequest);
-        }
-
-        log.info("{\"message\":\"Inserted into GoogleDoc\", \"project\":\"{}\"}", insertGoogleDocRequest);
+        log.info("{\"message\":\"Inserted into GoogleDoc\", \"project\":\"{}\"}", saveGoogleDocRequest);
     }
 }
