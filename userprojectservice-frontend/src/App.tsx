@@ -3,7 +3,7 @@ import styles from "./App.module.css"
 import { Integration } from "./integrations/Integration"
 import routeConfig from "./routeConfig"
 import AppReducer from "./state/AppReducer"
-import AppInitialState from "./state/ProjectListState"
+import AppInitialState from "./state/AppState"
 import { navigate, setBasepath, useRoutes } from "hookrouter"
 
 setBasepath(process.env.REACT_APP_CONTEXT_PATH || "")

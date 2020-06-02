@@ -1,6 +1,6 @@
 import { Integration } from "../integrations/Integration"
 import { Dispatch, FunctionComponent } from "react"
-import { AppState } from "../state/ProjectListState"
+import { AppState } from "../state/AppState"
 import { AppAction, AppActionType } from "../state/AppAction"
 
 export interface PageProps<T> {

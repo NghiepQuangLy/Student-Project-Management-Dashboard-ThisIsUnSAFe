@@ -1,5 +1,5 @@
 import { AppAction, AppActionType, ProjectListSuccessAction } from "./AppAction"
-import { AppState } from "./ProjectListState"
+import { AppState } from "./AppState"
 import { Reducer } from "react"
 import { ProjectListStatus } from "../models/ProjectListStatus"
 

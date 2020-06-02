@@ -18,9 +18,9 @@ const errorHandler = (error: string) => {
 
 const responseGoogle = (googleUser: gapi.auth2.GoogleUser) => {
   const id_token = googleUser.getAuthResponse(true).id_token
-  const googleId = googleUser.getId()
+  //const googleId = googleUser.getId()
 
-  console.log({ googleId })
+  console.log( googleUser.getBasicProfile().getEmail())
   console.log({accessToken: id_token})
   // Make user login in your system
   // login success tracking...
