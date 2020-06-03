@@ -1,41 +1,32 @@
 import React from "react"
 import "./Login.css"
 import { Page } from "../Page"
-import { GoogleLoginButton } from "ts-react-google-login-component"
-
-const preLoginTracking = () => {
-  console.log("Attemp to login with google")
-}
-
-const errorHandler = (error: string) => {
-  console.error(error)
-}
-
-const responseGoogle = (googleUser: gapi.auth2.GoogleUser) => {
-  const id_token = googleUser.getAuthResponse(true).id_token
-  const googleId = googleUser.getId()
-
-  console.log({ googleId })
-  console.log(googleUser.getBasicProfile().getEmail())
-  console.log({ accessToken: id_token })
-}
-
-export type uxMode = "redirect" | "popup" | undefined
+import GoogleLogin, { GoogleLoginResponse, GoogleLoginResponseOffline } from "react-google-login"
+import * as AppAction from "../../state/AppAction"
 
 const Login: Page = ({ integration, state, dispatch }) => {
-  const clientConfig = {
-    client_id: "12178522373-cd2s7387k0kjtqf3tebfoahk82m6prt9.apps.googleusercontent.com",
-    ux_mode: "redirect" as uxMode,
-    redirect_uri: "http://localhost:3000/projects"
+  const responseGoogle = (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
+    console.log(response)
+    const test = response as GoogleLoginResponse
+    test && test.getBasicProfile()
+    console.log(test.getBasicProfile().getEmail())
+
+    // calling sth else when start working on this
+    dispatch(AppAction.projectListLoading())
   }
+
+  console.log(process.env.REACT_APP_GOOGLE_REDIRECT_URI)
 
   return (
     <div>
-      <GoogleLoginButton
-        responseHandler={responseGoogle}
-        clientConfig={clientConfig}
-        preLogin={preLoginTracking}
-        failureHandler={errorHandler}
+      <GoogleLogin
+        clientId="12178522373-e5nmdu6ogip7e70f2sn645j30n55fgke.apps.googleusercontent.com"
+        buttonText="Login"
+        onSuccess={responseGoogle}
+        onFailure={responseGoogle}
+        isSignedIn={true}
+        uxMode="redirect"
+        redirectUri={process.env.REACT_APP_GOOGLE_REDIRECT_URI}
       />
     </div>
   )
