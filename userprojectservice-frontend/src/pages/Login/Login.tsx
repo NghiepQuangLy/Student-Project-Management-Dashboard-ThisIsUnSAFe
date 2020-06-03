@@ -5,29 +5,28 @@ import GoogleLogin, { GoogleLoginResponse, GoogleLoginResponseOffline } from "re
 import * as AppAction from "../../state/AppAction"
 import { AppStatus } from "../../models/AppStatus"
 import * as UseCase from "../../usecase/UseCase"
+import { Redirect } from "react-router-dom"
 
 const Login: Page = ({ integration, state, dispatch }) => {
   const responseGoogle = (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
-    console.log(response)
     const googleLoginResponse = response as GoogleLoginResponse
     googleLoginResponse && googleLoginResponse.getBasicProfile()
     const emailAddress = googleLoginResponse.getBasicProfile().getEmail()
-    console.log(emailAddress)
 
     // calling sth else when start working on this
     if (state.userStatus === AppStatus.INITIAL) {
       dispatch(AppAction.userLoading())
-
+      if (emailAddress) {
+      }
       UseCase.loadInitialUser(integration, emailAddress).then((user) => {
         dispatch(AppAction.userSuccess(user))
       })
     }
   }
 
-  console.log(process.env.REACT_APP_GOOGLE_REDIRECT_URI)
-
   return (
     <div>
+      {state.user?.emailAddress && <Redirect to="/Projects" />}
       <GoogleLogin
         clientId="12178522373-e5nmdu6ogip7e70f2sn645j30n55fgke.apps.googleusercontent.com"
         buttonText="Login"
@@ -40,5 +39,4 @@ const Login: Page = ({ integration, state, dispatch }) => {
     </div>
   )
 }
-
 export default Login

@@ -4,8 +4,8 @@ export interface Project {
 }
 
 export interface UserResponse {
-  givenName: string | null
-  familyName: string | null
+  firstName: string | null
+  lastName: string | null
   emailAddress: string | null
   userGroup: string | null
   projects: Project[]

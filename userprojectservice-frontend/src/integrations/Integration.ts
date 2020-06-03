@@ -9,8 +9,7 @@ export interface Integration {
 const Integration: Integration = {
   async getProject(emailAddress: String, projectId: String) {
     return fetch(`${process.env.REACT_APP_HOST}/get-project?email=${emailAddress}&projectId=${projectId}`, {
-      method: "GET",
-      credentials: "include"
+      method: "GET"
     }).then(async (response) => {
       const responseBody = await response.text()
 
@@ -27,8 +26,7 @@ const Integration: Integration = {
 
   async getUser(emailAddress: String) {
     return fetch(`${process.env.REACT_APP_HOST}/get-user?email=${emailAddress}`, {
-      method: "GET",
-      credentials: "include"
+      method: "GET"
     }).then(async (response) => {
       const responseBody = await response.text()
 

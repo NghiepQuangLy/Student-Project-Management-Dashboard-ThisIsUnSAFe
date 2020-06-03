@@ -30,13 +30,13 @@ export interface InitialUser {
 }
 
 export const loadInitialUser = async (integration: Integration, emailAddress: String): Promise<InitialUser> => {
-  const UserResponse = await integration.getUser(emailAddress)
+  const userResponse = await integration.getUser(emailAddress)
 
   return {
-    givenName: UserResponse.givenName,
-    familyName: UserResponse.familyName,
-    emailAddress: UserResponse.emailAddress,
-    userGroup: UserResponse.userGroup,
-    projects: UserResponse.projects
+    givenName: userResponse.firstName,
+    familyName: userResponse.lastName,
+    emailAddress: userResponse.emailAddress,
+    userGroup: userResponse.userGroup,
+    projects: userResponse.projects
   }
 }

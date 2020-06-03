@@ -83,7 +83,7 @@ public class UserService {
     private ProjectListResponse convertToProjectListResponse(UsersProjectsEntity projectEntity) {
         return ProjectListResponse.builder()
                 .projectId(projectEntity.getProjectId())
-                .projectName(projectEntity.getEmailAddress())
+                .projectName(projectEntity.getProjectEntity().getProjectName())
                 .build();
     }
 }

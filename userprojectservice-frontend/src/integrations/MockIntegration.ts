@@ -18,8 +18,8 @@ const MockIntegration: Integration = {
     new Promise((resolve) => {
       setTimeout(() => {
         resolve({
-          givenName: "Mike",
-          familyName: "Ly",
+          firstName: "Mike",
+          lastName: "Ly",
           emailAddress: "mike@gmail.com",
           userGroup: "tstuserG",
           projects: [

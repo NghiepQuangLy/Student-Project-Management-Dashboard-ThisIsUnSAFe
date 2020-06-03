@@ -1,7 +1,7 @@
 import React, { useLayoutEffect } from "react"
 import "./ProjectList.module.css"
 import { Page } from "../Page"
-import { Link } from "react-router-dom"
+import { Link, Redirect } from "react-router-dom"
 import * as UseCase from "../../usecase/UseCase"
 import * as AppAction from "../../state/AppAction"
 import { AppStatus } from "../../models/AppStatus"
@@ -19,10 +19,11 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
           dispatch(AppAction.projectSuccess(project))
         })
     }
-  }, [dispatch, integration, state.projectListStatus, state.projectStatus])
+  }, [dispatch, integration, state.projectListStatus, state.projectStatus, state.user])
 
   return (
     <div>
+      {!state.user?.emailAddress && <Redirect to="/" />}
       <div>
         {state.userStatus === AppStatus.LOADING ? (
           <h1>Loading</h1>
