@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useReducer } from "react"
 import { Integration } from "./integrations/Integration"
-import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom"
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import Login from "./pages/Login/Login"
 import AppReducer from "./state/AppReducer"
 import AppInitialState from "./state/AppState"
@@ -19,16 +19,16 @@ const App: FunctionComponent<AppProps> = ({ integration }) => {
   return (
     <Router>
       <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Login</Link>
-            </li>
-            <li>
-              <Link to="/projects">projects</Link>
-            </li>
-          </ul>
-        </nav>
+        {/*<nav>*/}
+        {/*  <ul>*/}
+        {/*    <li>*/}
+        {/*      <Link to="/">Login</Link>*/}
+        {/*    </li>*/}
+        {/*    <li>*/}
+        {/*      <Link to="/projects">projects</Link>*/}
+        {/*    </li>*/}
+        {/*  </ul>*/}
+        {/*</nav>*/}
 
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL.
