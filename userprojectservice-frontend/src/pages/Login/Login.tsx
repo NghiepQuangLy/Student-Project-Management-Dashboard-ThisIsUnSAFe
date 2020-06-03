@@ -26,7 +26,7 @@ const Login: Page = ({ integration, state, dispatch }) => {
   const clientConfig = {
     client_id: "12178522373-cd2s7387k0kjtqf3tebfoahk82m6prt9.apps.googleusercontent.com",
     ux_mode: "redirect" as uxMode,
-    redirect_uri: process.env.GOOGLE_REDIRECT_URI || "http://localhost:3000/projects"
+    redirect_uri: process.env.REACT_APP_GOOGLE_REDIRECT_URI
   }
 
   return (

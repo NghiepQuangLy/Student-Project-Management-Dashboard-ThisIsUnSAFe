@@ -4,28 +4,10 @@ import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom"
 import Login from "./pages/Login/Login"
 import AppReducer from "./state/AppReducer"
 import AppInitialState from "./state/AppState"
-// import { setBasepath } from "hookrouter"
-// import { Route } from "react-router-dom"
+import { setBasepath } from "hookrouter"
 import ProjectList from "./pages/ProjectList/ProjectList"
-// import Login from "./pages/Login/Login"
-//
-// setBasepath(process.env.REACT_APP_CONTEXT_PATH || "")
-//
 
-// const App: FunctionComponent<AppProps> = ({ integration }) => {
-//   // const { page: CurrentRoute } = useRoutes(routeConfig)
-//   // const [state, dispatch] = useReducer(AppReducer, AppInitialState)
-//
-//   return (
-//     <div>
-//       <Route exact path="/" component={Login} />
-//       <Route exact path="/projects" component={ProjectList} />
-//     </div>
-//   )
-// }
-//
-// export default App
-//
+setBasepath(process.env.REACT_APP_CONTEXT_PATH || "")
 
 interface AppProps {
   integration: Integration
@@ -33,7 +15,6 @@ interface AppProps {
 }
 
 const App: FunctionComponent<AppProps> = ({ integration }) => {
-  // const { page: CurrentRoute } = useRoutes(routeConfig)
   const [state, dispatch] = useReducer(AppReducer, AppInitialState)
   return (
     <Router>
@@ -65,17 +46,5 @@ const App: FunctionComponent<AppProps> = ({ integration }) => {
     </Router>
   )
 }
-
-// function Home() {
-//   return <h2>Home</h2>
-// }
-//
-// function About() {
-//   return <h2>About</h2>
-// }
-//
-// function Users() {
-//   return <h2>Users</h2>
-// }
 
 export default App
