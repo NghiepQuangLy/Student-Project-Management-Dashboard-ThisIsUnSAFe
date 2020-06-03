@@ -13,18 +13,28 @@ export interface Project {
   projectId: string | null
 }
 
+export interface User {
+  givenName: string | null
+  familyName: string | null
+  emailAddress: string | null
+  userGroup: string | null
+  projects: Project[]
+}
+
 export interface AppState {
   projectListStatus: AppStatus
   projectStatus: AppStatus
-  projects: Project[]
+  userStatus: AppStatus
   currentProject: ProjectDetail | null
+  user: User | null
 }
 
 const AppInitialState: AppState = {
   projectListStatus: AppStatus.INITIAL,
   projectStatus: AppStatus.INITIAL,
-  projects: [],
-  currentProject: null
+  userStatus: AppStatus.INITIAL,
+  currentProject: null,
+  user: null
 }
 
 export default AppInitialState
