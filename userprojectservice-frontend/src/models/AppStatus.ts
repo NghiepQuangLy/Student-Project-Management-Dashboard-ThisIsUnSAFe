@@ -1,4 +1,4 @@
-export enum ProjectListStatus {
+export enum AppStatus {
   INITIAL,
   LOADING,
   SUCCESS

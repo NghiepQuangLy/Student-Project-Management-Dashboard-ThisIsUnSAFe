@@ -1,4 +1,12 @@
-import { ProjectListStatus } from "../models/ProjectListStatus"
+import { AppStatus } from "../models/AppStatus"
+
+export interface ProjectDetail {
+  projectName: string | null
+  projectId: string | null
+  projectGitIds: string[]
+  projectGoogleDocIds: string[]
+  projectTrelloIds: string[]
+}
 
 export interface Project {
   projectName: string | null
@@ -6,13 +14,17 @@ export interface Project {
 }
 
 export interface AppState {
-  projectListStatus: ProjectListStatus
+  projectListStatus: AppStatus
+  projectStatus: AppStatus
   projects: Project[]
+  currentProject: ProjectDetail | null
 }
 
 const AppInitialState: AppState = {
-  projectListStatus: ProjectListStatus.INITIAL,
-  projects: []
+  projectListStatus: AppStatus.INITIAL,
+  projectStatus: AppStatus.INITIAL,
+  projects: [],
+  currentProject: null
 }
 
 export default AppInitialState
