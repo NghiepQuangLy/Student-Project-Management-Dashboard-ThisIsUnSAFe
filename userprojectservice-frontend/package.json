@@ -1,0 +1,100 @@
+{
+  "name": "userprojectservice-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": ".",
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "@types/gapi.auth2": "0.0.52",
+    "@types/react-router-dom": "^5.1.5",
+    "hookrouter": "^1.2.3",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-google-login": "^5.1.20",
+    "react-router-dom": "^5.2.0",
+    "ts-react-google-login-component": "^1.1.8"
+  },
+  "devDependencies": {
+    "@types/hookrouter": "^2.2.1",
+    "@types/jest": "^25.2.1",
+    "@types/node": "^12.12.36",
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.6",
+    "@types/react-test-renderer": "^16.9.2",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-prettier": "^3.1.3",
+    "lint-staged": "^10.1.6",
+    "prettier": "^2.0.4",
+    "react-scripts": "3.4.1",
+    "react-test-renderer": "^16.13.0",
+    "typescript": "^3.9.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "coverage": "react-scripts test --coverage --watchAll=false",
+    "verify": "lint-staged && npm run coverage",
+    "format": "prettier --write \"src/**/*.{ts,tsx,json,css}\""
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "plugin:prettier/recommended"
+    ],
+    "plugins": [
+      "prettier"
+    ],
+    "rules": {
+      "default-case": "error",
+      "eol-last": "error",
+      "eqeqeq": "error",
+      "func-name-matching": "error",
+      "no-alert": "error",
+      "no-duplicate-imports": "error",
+      "no-eval": "error",
+      "no-param-reassign": "error",
+      "no-redeclare": "error",
+      "no-unused-vars": "error",
+      "no-unused-expressions": "error",
+      "no-unused-labels": "error",
+      "no-var": "error",
+      "no-empty": "warn",
+      "prettier/prettier": "warn",
+      "sort-imports": "off"
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx,json,css}": [
+      "prettier --write",
+      "git add"
+    ],
+    "src/**/*.{ts,tsx}": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "prettier": {
+    "printWidth": 140,
+    "singleQuote": false,
+    "semi": false,
+    "useTabs": false,
+    "tabWidth": 2,
+    "trailingComma": "none"
+  }
+}
