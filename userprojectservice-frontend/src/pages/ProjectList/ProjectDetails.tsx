@@ -1,13 +1,11 @@
 import React, { useLayoutEffect } from "react"
 import "./ProjectList.module.css"
 import { Page } from "../Page"
-import { Link } from "react-router-dom"
 import * as UseCase from "../../usecase/ProjectList"
 import * as AppAction from "../../state/AppAction"
 import { AppStatus } from "../../models/AppStatus"
 
-const ProjectList: Page = ({ integration, state, dispatch }) => {
-  const isEmpty = state.projectListStatus === AppStatus.SUCCESS && state.projects.length === 0
+const ProjectDetails: Page = ({ integration, state, dispatch }) => {
 
   useLayoutEffect(() => {
     if (state.projectListStatus === AppStatus.INITIAL) {
@@ -28,21 +26,21 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
   }, [dispatch, integration, state.projectListStatus, state.projectStatus])
 
   return (
-    <div>
       <div>
-        {state.projectListStatus === AppStatus.LOADING ? (
+        {state.projectStatus === AppStatus.LOADING ? (
           <h1>Loading</h1>
-        ) : isEmpty ? (
-          <h1>Empty History</h1>
         ) : (
-          state.projects.map((item) => <Link key="item.projectId" to={{ pathname: "/project", state: { from: "item.projectId" } }}>
-          {"projectId: " + item.projectId + "|projectName:" + item.projectName}
-          <br/></Link>
-          )
+          <div>
+            {console.log(state)}
+            <div>projectId: {state.currentProject?.projectId}</div>
+            <div>projectName: {state.currentProject?.projectName}</div>
+            <div>projectGitIds: {state.currentProject?.projectGitIds.map((item) => item + ", ")}</div>
+            <div>projectTrelloIds: {state.currentProject?.projectTrelloIds.map((item) => item + ", ")}</div>
+            <div>projectGoogleDocIds: {state.currentProject?.projectGoogleDocIds.map((item) => item + ", ")}</div>
+          </div>
         )}
       </div>
-    </div>
   )
 }
 
-export default ProjectList
+export default ProjectDetails
