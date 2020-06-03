@@ -1,27 +1,10 @@
-import { AppAction, AppActionType, ProjectListSuccessAction, ProjectSuccessAction } from "./AppAction"
+import { AppAction, AppActionType, ProjectSuccessAction, UserSuccessAction } from "./AppAction"
 import { AppState } from "./AppState"
 import { Reducer } from "react"
 import { AppStatus } from "../models/AppStatus"
 
 const AppReducer: Reducer<AppState, AppAction<AppActionType, any>> = (prevState, action): AppState => {
   switch (action.type) {
-    case "PROJECT_LIST_LOADING": {
-      return {
-        ...prevState,
-        projectListStatus: AppStatus.LOADING
-      }
-    }
-
-    case "PROJECT_LIST_SUCCESS": {
-      const projectListSuccessAction = action as ProjectListSuccessAction
-
-      return {
-        ...prevState,
-        projects: projectListSuccessAction.payload.projects,
-        projectListStatus: AppStatus.SUCCESS
-      }
-    }
-
     case "PROJECT_LOADING": {
       return {
         ...prevState,
@@ -42,6 +25,29 @@ const AppReducer: Reducer<AppState, AppAction<AppActionType, any>> = (prevState,
           projectTrelloIds: projectSuccessAction.payload.projectTrelloIds
         },
         projectStatus: AppStatus.SUCCESS
+      }
+    }
+
+    case "USER_LOADING": {
+      return {
+        ...prevState,
+        userStatus: AppStatus.LOADING
+      }
+    }
+
+    case "USER_SUCCESS": {
+      const userSuccessAction = action as UserSuccessAction
+
+      return {
+        ...prevState,
+        user: {
+          givenName: userSuccessAction.payload.givenName,
+          familyName: userSuccessAction.payload.familyName,
+          emailAddress: userSuccessAction.payload.emailAddress,
+          userGroup: userSuccessAction.payload.userGroup,
+          projects: userSuccessAction.payload.projects
+        },
+        userStatus: AppStatus.SUCCESS
       }
     }
 

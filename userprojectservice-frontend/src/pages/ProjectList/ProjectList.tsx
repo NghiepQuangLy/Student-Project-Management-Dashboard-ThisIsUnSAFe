@@ -2,43 +2,55 @@ import React, { useLayoutEffect } from "react"
 import "./ProjectList.module.css"
 import { Page } from "../Page"
 import { Link } from "react-router-dom"
-import * as UseCase from "../../usecase/ProjectList"
+import * as UseCase from "../../usecase/UseCase"
 import * as AppAction from "../../state/AppAction"
 import { AppStatus } from "../../models/AppStatus"
 
 const ProjectList: Page = ({ integration, state, dispatch }) => {
-  const isEmpty = state.projectListStatus === AppStatus.SUCCESS && state.projects.length === 0
+  const isEmpty = state.projectListStatus === AppStatus.SUCCESS && state.user?.projects.length === 0
 
   useLayoutEffect(() => {
-    if (state.projectListStatus === AppStatus.INITIAL) {
-      dispatch(AppAction.projectListLoading())
-
-      UseCase.loadInitialProjectList(integration).then((details) => {
-        dispatch(AppAction.projectListSuccess(details))
-      })
-    }
-
     if (state.projectStatus === AppStatus.INITIAL) {
       dispatch(AppAction.projectLoading())
 
-      UseCase.loadInitialProject(integration).then((project) => {
-        dispatch(AppAction.projectSuccess(project))
-      })
+      state.user?.emailAddress &&
+        state.user?.projects[0].projectId &&
+        UseCase.loadInitialProject(integration, state.user?.emailAddress, state.user?.projects[0].projectId).then((project) => {
+          dispatch(AppAction.projectSuccess(project))
+        })
     }
   }, [dispatch, integration, state.projectListStatus, state.projectStatus])
 
   return (
     <div>
       <div>
+        {state.userStatus === AppStatus.LOADING ? (
+          <h1>Loading</h1>
+        ) : isEmpty ? (
+          <h1>Empty History</h1>
+        ) : (
+          <div>
+            <strong>Given Name:</strong> {state.user?.givenName}
+            <strong>Family Name:</strong> {state.user?.familyName}
+            <strong>Email Address:</strong> {state.user?.emailAddress}
+            <strong>User Group:</strong> {state.user?.userGroup}
+            <strong>Projects: </strong>
+          </div>
+        )}
+      </div>
+      <div>
         {state.projectListStatus === AppStatus.LOADING ? (
           <h1>Loading</h1>
         ) : isEmpty ? (
           <h1>Empty History</h1>
         ) : (
-          state.projects.map((item) => <Link key="item.projectId" to={{ pathname: "/project", state: { from: "item.projectId" } }}>
-          {"projectId: " + item.projectId + "|projectName:" + item.projectName}
-          <br/></Link>
-          )
+          state.user &&
+          state.user.projects.map((item) => (
+            <Link key="item.projectId" to={{ pathname: "/project", state: { from: "item.projectId" } }}>
+              {"projectId: " + item.projectId + "|projectName:" + item.projectName}
+              <br />
+            </Link>
+          ))
         )}
       </div>
     </div>

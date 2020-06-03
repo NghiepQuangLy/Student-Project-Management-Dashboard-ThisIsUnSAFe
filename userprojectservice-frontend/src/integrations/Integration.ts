@@ -1,14 +1,14 @@
-import { ProjectListResponse } from "../models/ProjectListResponse"
 import { ProjectResponse } from "../models/ProjectResponse"
+import { UserResponse } from "../models/UserResponse"
 
 export interface Integration {
-  getProjectList(): Promise<ProjectListResponse>
-  getProject(): Promise<ProjectResponse>
+  getProject(emailAddress: String, projectId: String): Promise<ProjectResponse>
+  getUser(emailAddress: String): Promise<UserResponse>
 }
 
 const Integration: Integration = {
-  async getProjectList() {
-    return fetch(`${process.env.REACT_TEST_HOST}/getfake`, {
+  async getProject(emailAddress: String, projectId: String) {
+    return fetch(`${process.env.REACT_APP_HOST}/get-project?email=${emailAddress}&projectId=${projectId}`, {
       method: "GET",
       credentials: "include"
     }).then(async (response) => {
@@ -25,8 +25,8 @@ const Integration: Integration = {
     })
   },
 
-  async getProject() {
-    return fetch(`${process.env.REACT_APP_HOST}/get-project`, {
+  async getUser(emailAddress: String) {
+    return fetch(`${process.env.REACT_APP_HOST}/get-user?email=${emailAddress}`, {
       method: "GET",
       credentials: "include"
     }).then(async (response) => {
