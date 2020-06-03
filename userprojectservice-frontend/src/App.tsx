@@ -6,6 +6,7 @@ import AppReducer from "./state/AppReducer"
 import AppInitialState from "./state/AppState"
 import { setBasepath } from "hookrouter"
 import ProjectList from "./pages/ProjectList/ProjectList"
+import ProjectDetails from "./pages/ProjectList/ProjectDetails"
 
 setBasepath(process.env.REACT_APP_CONTEXT_PATH || "")
 
@@ -37,6 +38,9 @@ const App: FunctionComponent<AppProps> = ({ integration }) => {
         <Switch>
           <Route path="/projects">
             <ProjectList integration={integration} state={state} dispatch={dispatch} />
+          </Route>
+          <Route path="/project">
+            <ProjectDetails integration={integration} state={state} dispatch={dispatch} />
           </Route>
           <Route path="/">
             <Login integration={integration} state={state} dispatch={dispatch} />
