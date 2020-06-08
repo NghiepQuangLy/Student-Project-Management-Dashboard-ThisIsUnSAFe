@@ -7,6 +7,9 @@ import AppInitialState from "./state/AppState"
 import { setBasepath } from "hookrouter"
 import ProjectList from "./pages/ProjectList/ProjectList"
 import ProjectDetails from "./pages/ProjectList/ProjectDetails"
+import GitPage from "./pages/IntegrationPages/GitPage"
+import TrelloPage from "./pages/IntegrationPages/TrelloPage"
+import GoogleDocPage from "./pages/IntegrationPages/GoogleDocPage"
 
 setBasepath(process.env.REACT_APP_CONTEXT_PATH || "")
 
@@ -36,6 +39,15 @@ const App: FunctionComponent<AppProps> = ({ integration }) => {
             REMEMBER to have longer path at the top
         */}
         <Switch>
+          <Route path="/gitPage">
+            <GitPage />
+          </Route>
+          <Route path="/TrelloPage">
+            <TrelloPage />
+          </Route>
+          <Route path="/GoogleDocPage">
+            <GoogleDocPage />
+          </Route>
           <Route path="/projects">
             <ProjectList integration={integration} state={state} dispatch={dispatch} />
           </Route>
