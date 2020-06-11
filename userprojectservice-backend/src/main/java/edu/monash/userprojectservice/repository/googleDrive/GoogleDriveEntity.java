@@ -1,4 +1,4 @@
-package edu.monash.userprojectservice.repository.googledoc;
+package edu.monash.userprojectservice.repository.googleDrive;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,13 +15,13 @@ import java.io.Serializable;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "GOOGLEDOC", schema = "SPMD")
-@IdClass(GoogleDocEntity.class)
-public class GoogleDocEntity implements Serializable {
+@Table(name = "GOOGLEDRIVE", schema = "SPMD")
+@IdClass(GoogleDriveEntity.class)
+public class GoogleDriveEntity implements Serializable {
 
     @Id
-    @Column(name = "document_id")
-    private String googleDocId;
+    @Column(name = "drive_id")
+    private String googleDriveId;
 
     @Id
     @Column(name = "project_id")
