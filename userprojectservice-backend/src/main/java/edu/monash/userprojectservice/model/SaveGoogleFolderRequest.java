@@ -4,16 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.NotNull;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SaveGoogleDocRequest {
+public class SaveGoogleFolderRequest {
 
     @NotNull
-    private String googleDocId;
+    private String googleFolderId;
 
     @NotNull
     private String projectId;

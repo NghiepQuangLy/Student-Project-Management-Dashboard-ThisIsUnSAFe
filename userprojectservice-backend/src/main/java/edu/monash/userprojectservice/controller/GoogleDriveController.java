@@ -1,7 +1,7 @@
 package edu.monash.userprojectservice.controller;
 
-import edu.monash.userprojectservice.model.SaveGoogleDocRequest;
-import edu.monash.userprojectservice.service.GoogleDocService;
+import edu.monash.userprojectservice.model.SaveGoogleDriveRequest;
+import edu.monash.userprojectservice.service.GoogleDriveService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,19 +20,19 @@ import static org.springframework.http.HttpStatus.OK;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
 @RequestMapping("/")
-public class GoogleDocController {
+public class GoogleDriveController {
 
-    private GoogleDocService googleDocService;
+    private GoogleDriveService googleDriveService;
 
     @ResponseStatus(OK)
-    @GetMapping("/get-googledoc")
-    public void getGoogleDoc(@RequestParam("projectId") String projectId) {
-        googleDocService.getgoogleDoc(projectId);
+    @GetMapping("/get-googledrive")
+    public void getGoogleDrive(@RequestParam("projectId") String projectId) {
+        googleDriveService.getgoogleDrive(projectId);
     }
 
     @ResponseStatus(CREATED)
-    @PostMapping("/save-googledoc")
-    public void saveGoogleDoc(@RequestBody @Valid SaveGoogleDocRequest saveGoogleDocRequest) {
-        googleDocService.saveGoogleDoc(saveGoogleDocRequest);
+    @PostMapping("/save-googledrive")
+    public void saveGoogleDrive(@RequestBody @Valid SaveGoogleDriveRequest saveGoogleDriveRequest) {
+        googleDriveService.saveGoogleDrive(saveGoogleDriveRequest);
     }
 }

@@ -1,13 +1,15 @@
 package edu.monash.userprojectservice.service;
 
 import edu.monash.userprojectservice.model.GetProjectResponse;
+import edu.monash.userprojectservice.repository.googleFolder.GoogleFolderEntity;
+import edu.monash.userprojectservice.repository.googleFolder.GoogleFolderRepository;
 import edu.monash.userprojectservice.repository.project.ProjectEntity;
 import edu.monash.userprojectservice.repository.project.ProjectsRepository;
 import edu.monash.userprojectservice.repository.CreateProjectRepository;
 import edu.monash.userprojectservice.repository.git.GitEntity;
 import edu.monash.userprojectservice.repository.git.GitRepository;
-import edu.monash.userprojectservice.repository.googledoc.GoogleDocEntity;
-import edu.monash.userprojectservice.repository.googledoc.GoogleDocRepository;
+import edu.monash.userprojectservice.repository.googleDrive.GoogleDriveEntity;
+import edu.monash.userprojectservice.repository.googleDrive.GoogleDriveRepository;
 import edu.monash.userprojectservice.repository.trello.TrelloEntity;
 import edu.monash.userprojectservice.repository.trello.TrelloRepository;
 import edu.monash.userprojectservice.repository.user.UsersRepository;
@@ -42,7 +44,10 @@ public class ProjectService {
     private GitRepository gitRepository;
 
     @Autowired
-    private GoogleDocRepository googleDocRepository;
+    private GoogleDriveRepository googleDriveRepository;
+
+    @Autowired
+    private GoogleFolderRepository googleFolderRepository;
 
     @Autowired
     private TrelloRepository trelloRepository;
@@ -77,7 +82,8 @@ public class ProjectService {
         }
 
         List<GitEntity> gitEntities = gitRepository.findGitEntitiesByProjectId(projectId);
-        List<GoogleDocEntity> googleDocEntities = googleDocRepository.findGoogleDocEntitiesByProjectId(projectId);
+        List<GoogleDriveEntity> googleDriveEntities = googleDriveRepository.findGoogleDriveEntitiesByProjectId(projectId);
+        List<GoogleFolderEntity> googleFolderEntities = googleFolderRepository.findGoogleFolderEntitiesByProjectId(projectId);
         List<TrelloEntity> trelloDetail = trelloRepository.findTrelloEntitiesByProjectId(projectId);
 
         System.out.println(projectEntity.getProjectId());
@@ -90,7 +96,8 @@ public class ProjectService {
                         String.valueOf(projectEntity.getProjectId()),
                         projectEntity.getProjectName(),
                         gitEntities.stream().map(GitEntity::getGitId).collect(Collectors.toList()),
-                        googleDocEntities.stream().map(GoogleDocEntity::getGoogleDocId).collect(Collectors.toList()),
+                        googleDriveEntities.stream().map(GoogleDriveEntity::getGoogleDriveId).collect(Collectors.toList()),
+                        googleFolderEntities.stream().map(GoogleFolderEntity::getGoogleFolderId).collect(Collectors.toList()),
                         trelloDetail.stream().map(TrelloEntity::getTrelloId).collect(Collectors.toList())
                 ), OK
         );
