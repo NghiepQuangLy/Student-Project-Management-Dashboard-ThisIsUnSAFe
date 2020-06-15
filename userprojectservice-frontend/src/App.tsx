@@ -9,7 +9,8 @@ import ProjectList from "./pages/ProjectList/ProjectList"
 import ProjectDetails from "./pages/ProjectList/ProjectDetails"
 import GitPage from "./pages/IntegrationPages/GitPage"
 import TrelloPage from "./pages/IntegrationPages/TrelloPage"
-import GoogleDocPage from "./pages/IntegrationPages/GoogleDocPage"
+import GoogleDrivePage from "./pages/IntegrationPages/GoogleDrivePage"
+import GoogleFolderPage from "./pages/IntegrationPages/GoogleFolderPage"
 
 setBasepath(process.env.REACT_APP_CONTEXT_PATH || "")
 
@@ -45,8 +46,11 @@ const App: FunctionComponent<AppProps> = ({ integration }) => {
           <Route path="/TrelloPage">
             <TrelloPage />
           </Route>
-          <Route path="/GoogleDocPage">
-            <GoogleDocPage />
+          <Route path="/GoogleDrivePage">
+            <GoogleDrivePage />
+          </Route>
+          <Route path="/GoogleFolderPage">
+            <GoogleFolderPage />
           </Route>
           <Route path="/projects">
             <ProjectList integration={integration} state={state} dispatch={dispatch} />

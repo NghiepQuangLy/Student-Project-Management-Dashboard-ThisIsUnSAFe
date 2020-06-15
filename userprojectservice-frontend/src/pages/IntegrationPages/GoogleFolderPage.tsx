@@ -1,11 +1,11 @@
 import React from "react"
 import { Link } from "react-router-dom"
 
-function GoogleDocPage() {
+function GoogleFolderPage() {
   return (
     <div>
-      <h1>Google Doc Integration</h1>
-      <p>Google Doc ID: 00000</p>
+      <h1>Google Folder Integration</h1>
+      <p>Google Folder ID: 00000</p>
 
       <Link to="/">
         <p>
@@ -16,4 +16,4 @@ function GoogleDocPage() {
   )
 }
 
-export default GoogleDocPage
+export default GoogleFolderPage

@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001", "http://localhost:3002", "http://localhost:3003"}, maxAge = 0)
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
 @RequestMapping("/")

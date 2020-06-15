@@ -5,7 +5,8 @@ export interface InitialProject {
   projectId: string | null
   projectName: string | null
   projectGitIds: string[]
-  projectGoogleDocIds: string[]
+  projectGoogleDriveIds: string[]
+  projectGoogleFolderIds: string[]
   projectTrelloIds: string[]
 }
 
@@ -16,7 +17,8 @@ export const loadInitialProject = async (integration: Integration, emailAddress:
     projectId: projectResponse.projectId,
     projectName: projectResponse.projectName,
     projectGitIds: projectResponse.projectGitIds,
-    projectGoogleDocIds: projectResponse.projectGoogleDocIds,
+    projectGoogleDriveIds: projectResponse.projectGoogleDriveIds,
+    projectGoogleFolderIds: projectResponse.projectGoogleFolderIds,
     projectTrelloIds: projectResponse.projectTrelloIds
   }
 }
