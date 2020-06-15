@@ -26,7 +26,7 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
     } else if (integrate === "Trello") {
       window.location.href = "/trelloPage?project_id=" + projectid
     } else if (integrate === "Google Drives") {
-      window.location.href = "/googleDrivePage?project_id=" + projectid
+      window.location.href = "http://localhost:3003/update?project_id=" + projectid
     } else if (integrate === "Google Folders") {
       window.location.href = "/googleFolderPage?project_id=" + projectid
     }
@@ -40,7 +40,7 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
     } else if (integrate === "Trello") {
       window.location.href = "/trelloPage?project_id=" + projectid + "&intid=" + intid
     } else if (integrate === "Google Drives") {
-      window.location.href = "/googleDrivePage?iproject_id=" + projectid + "&intid=" + intid
+      window.location.href = "http://localhost:3003/drive?project_id=" + projectid + "&drive_id=" + intid
     } else if (integrate === "Google Folders") {
       window.location.href = "/googleFolderPage?iproject_id=" + projectid + "&intid=" + intid
     }
