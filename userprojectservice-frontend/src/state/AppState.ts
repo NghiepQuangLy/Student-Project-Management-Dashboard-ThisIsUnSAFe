@@ -4,7 +4,8 @@ export interface ProjectDetail {
   projectName: string | null
   projectId: string | null
   projectGitIds: string[]
-  projectGoogleDocIds: string[]
+  projectGoogleDriveIds: string[]
+  projectGoogleFolderIds: string[]
   projectTrelloIds: string[]
 }
 

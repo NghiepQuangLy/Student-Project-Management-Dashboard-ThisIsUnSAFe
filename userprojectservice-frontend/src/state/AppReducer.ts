@@ -21,7 +21,8 @@ const AppReducer: Reducer<AppState, AppAction<AppActionType, any>> = (prevState,
           projectId: projectSuccessAction.payload.projectId,
           projectName: projectSuccessAction.payload.projectName,
           projectGitIds: projectSuccessAction.payload.projectGitIds,
-          projectGoogleDocIds: projectSuccessAction.payload.projectGoogleDocIds,
+          projectGoogleDriveIds: projectSuccessAction.payload.projectGoogleDriveIds,
+          projectGoogleFolderIds: projectSuccessAction.payload.projectGoogleFolderIds,
           projectTrelloIds: projectSuccessAction.payload.projectTrelloIds
         },
         projectStatus: AppStatus.SUCCESS

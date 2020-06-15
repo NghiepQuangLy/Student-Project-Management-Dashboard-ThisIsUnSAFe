@@ -25,8 +25,10 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
       window.location.href = "/gitPage?project_id=" + projectid
     } else if (integrate === "Trello") {
       window.location.href = "/trelloPage?project_id=" + projectid
-    } else if (integrate === "Google Docs") {
-      window.location.href = "/googleDocPage?project_id=" + projectid
+    } else if (integrate === "Google Drives") {
+      window.location.href = "/googleDrivePage?project_id=" + projectid
+    } else if (integrate === "Google Folders") {
+      window.location.href = "/googleFolderPage?project_id=" + projectid
     }
   }
 
@@ -37,8 +39,10 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
       window.location.href = "/gitPage?project_id=" + projectid + "&intid=" + intid
     } else if (integrate === "Trello") {
       window.location.href = "/trelloPage?project_id=" + projectid + "&intid=" + intid
-    } else if (integrate === "Google Docs") {
-      window.location.href = "/googleDocPage?iproject_id=" + projectid + "&intid=" + intid
+    } else if (integrate === "Google Drives") {
+      window.location.href = "/googleDrivePage?iproject_id=" + projectid + "&intid=" + intid
+    } else if (integrate === "Google Folders") {
+      window.location.href = "/googleFolderPage?iproject_id=" + projectid + "&intid=" + intid
     }
   }
 
@@ -73,16 +77,31 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
           >
             Trello View
           </button>
-          <div>projectGoogleDocIds: {state.currentProject?.projectGoogleDocIds.map((item) => item + ", ")}</div>
-          <button type="button" onClick={() => linkIntegration("Google Docs", state.currentProject!.projectId!)}>
-            Google Docs Link
+          <div>projectGoogleDriveIds: {state.currentProject?.projectGoogleDriveIds.map((item) => item + ", ")}</div>
+          <button type="button" onClick={() => linkIntegration("Google Drives", state.currentProject!.projectId!)}>
+            Google Drives Link
           </button>
           <br></br>
           <button
             type="button"
-            onClick={() => viewIntegration("Google Docs", state.currentProject!.projectId!, state.currentProject!.projectGoogleDocIds![0])}
+            onClick={() =>
+              viewIntegration("Google Drives", state.currentProject!.projectId!, state.currentProject!.projectGoogleDriveIds![0])
+            }
           >
-            Google Docs View
+            Google Drives View
+          </button>
+          <div>projectGoogleFolderIds: {state.currentProject?.projectGoogleFolderIds.map((item) => item + ", ")}</div>
+          <button type="button" onClick={() => linkIntegration("Google Folders", state.currentProject!.projectId!)}>
+            Google Folders Link
+          </button>
+          <br></br>
+          <button
+            type="button"
+            onClick={() =>
+              viewIntegration("Google Folders", state.currentProject!.projectId!, state.currentProject!.projectGoogleFolderIds![0])
+            }
+          >
+            Google Folders View
           </button>
         </div>
       )}
