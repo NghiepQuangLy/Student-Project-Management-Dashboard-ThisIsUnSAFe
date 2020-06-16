@@ -36,9 +36,9 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
   function linkIntegration(integrate: string, param: string) {
     let projectid = param
     if (integrate === "Git") {
-      window.location.href = "/gitPage?project_id=" + projectid
+      window.location.href = "http://localhost:3001"
     } else if (integrate === "Trello") {
-      window.location.href = "/trelloPage?project_id=" + projectid
+      window.location.href = "http://localhost:3002/?projectId=" + projectid
     } else if (integrate === "Google Drives") {
       window.location.href = "http://localhost:3003/update?project_id=" + projectid
     } else if (integrate === "Google Folders") {
@@ -50,15 +50,16 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
     let projectid = param1
     let intid = param2
     if (integrate === "Git") {
-      window.location.href = "/gitPage?project_id=" + projectid + "&intid=" + intid
+      window.location.href = "http://localhost:3001"
     } else if (integrate === "Trello") {
-      window.location.href = "/trelloPage?project_id=" + projectid + "&intid=" + intid
+      window.location.href = "http://localhost:3002/?projectId=" + projectid + "&integrationId=" + intid
     } else if (integrate === "Google Drives") {
       window.location.href = "http://localhost:3003/drive?project_id=" + projectid + "&drive_id=" + intid
     } else if (integrate === "Google Folders") {
       window.location.href = "/googleFolderPage?iproject_id=" + projectid + "&intid=" + intid
     }
   }
+
   // Page Styling
   const classes = useStyles()
   const [open] = React.useState(true)
@@ -148,7 +149,7 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
                                     viewIntegration(
                                       "Google Drives",
                                       state.currentProject!.projectId!,
-                                      state.currentProject!.projectGoogleDriveIds![0]
+                                      item
                                     )
                                   }
                                 >
@@ -184,7 +185,7 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
                                 <ListItem
                                   button
                                   onClick={() =>
-                                    viewIntegration("Git", state.currentProject!.projectId!, state.currentProject!.projectGitIds![0])
+                                    viewIntegration("Git", state.currentProject!.projectId!, item)
                                   }
                                 >
                                   {item}
@@ -219,7 +220,7 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
                                 <ListItem
                                   button
                                   onClick={() =>
-                                    viewIntegration("Trello", state.currentProject!.projectId!, state.currentProject!.projectTrelloIds![0])
+                                    viewIntegration("Trello", state.currentProject!.projectId!, item)
                                   }
                                 >
                                   {item}
