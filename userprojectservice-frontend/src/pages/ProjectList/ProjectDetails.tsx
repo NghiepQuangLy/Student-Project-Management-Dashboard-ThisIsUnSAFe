@@ -5,7 +5,20 @@ import * as UseCase from "../../usecase/UseCase"
 import * as AppAction from "../../state/AppAction"
 import { AppStatus } from "../../models/AppStatus"
 //import { Redirect } from "react-router-dom"
-import { Navbar, Nav, Form, Button, Tabs, Tab, Jumbotron, Container, ListGroup } from "react-bootstrap"
+//import { Navbar, Nav, Form, Button, Tabs, Tab, Jumbotron, Container, ListGroup } from "react-bootstrap"
+import CssBaseline from "@material-ui/core/CssBaseline"
+import AppBar from "@material-ui/core/AppBar"
+import clsx from "clsx"
+import Toolbar from "@material-ui/core/Toolbar"
+import Typography from "@material-ui/core/Typography"
+import Container from "@material-ui/core/Container"
+import Paper from "@material-ui/core/Paper"
+import Box from "@material-ui/core/Box"
+import Copyright, { useStyles } from "../Resources/Styles"
+import Button from "@material-ui/core/Button"
+import { Divider, Grid, List, ListItem, Tab, Tabs } from "@material-ui/core"
+import TabPanel, { a11yProps } from "../Resources/Tabs"
+import { Redirect } from "react-router-dom"
 
 const ProjectDetails: Page = ({ integration, state, dispatch }) => {
   useLayoutEffect(() => {
@@ -46,115 +59,188 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
       window.location.href = "/googleFolderPage?iproject_id=" + projectid + "&intid=" + intid
     }
   }
+  // Page Styling
+  const classes = useStyles()
+  const [open] = React.useState(true)
+  const detailheight = clsx(classes.paper, classes.detailheight)
+  const integrationheight = clsx(classes.paper, classes.integrationheight)
+
+  // Tab click handling
+  const [value, setValue] = React.useState(0)
+  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+    setValue(newValue)
+  }
 
   return (
     <div>
-      <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="#home">Student Project Management Dashboard - Team Drive</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto"></Nav>
-          <Form inline>
-            <Button
-              variant="outline-success"
-              onClick={() => {
-                window.location.href = "http://localhost:3000"
-              }}
-            >
-              Back to Project Lists Page
-            </Button>
-          </Form>
-        </Navbar.Collapse>
-      </Navbar>
-      <Tabs defaultActiveKey="projectData" id="uncontrolled-tab-example">
-        <Tab eventKey="projectData" title="Project Information">
-          <Jumbotron fluid>
-            <Container>
-              <h3>Project ID</h3>
-              <p>{state.currentProject?.projectId}</p>
-              <h3>Project Name</h3>
-              <p>{state.currentProject?.projectName}</p>
+      {!state.user?.emailAddress && <Redirect to="/" />}
+      {state.projectStatus === AppStatus.LOADING ? (
+        <h1>Loading</h1>
+      ) : (
+        <div className={classes.root}>
+          <CssBaseline />
+          <AppBar position="absolute" color="primary" className={clsx(classes.appBar, !open && classes.appBarShift)}>
+            <Toolbar className={classes.toolbar}>
+              <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+                Project Details
+              </Typography>
+              <Button type="button" variant="contained" color="default" onClick={() => (window.location.href = "./")}>
+                Back to Project List
+              </Button>
+            </Toolbar>
+          </AppBar>
+          <main className={classes.content}>
+            <div className={classes.appBarSpacer} />
+            <Container maxWidth="lg" className={classes.container}>
+              <Grid container spacing={3}>
+                {/* Project Details */}
+                <Grid item xs={12} md={8} lg={7}>
+                  <Paper className={detailheight}>
+                    <Typography variant="h6" align={"center"} gutterBottom>
+                      Project Information
+                    </Typography>
+                    <Typography variant="body1" gutterBottom>
+                      <div>
+                        {" "}
+                        <strong>Project ID:</strong> {state.currentProject?.projectId}{" "}
+                      </div>
+                      <div>
+                        {" "}
+                        <strong>Project Name:</strong> {state.currentProject?.projectName}{" "}
+                      </div>
+                    </Typography>
+                  </Paper>
+                </Grid>
+                {/* Integration */}
+                <Grid item xs={12} md={4} lg={5}>
+                  <AppBar position="static">
+                    <Tabs value={value} onChange={handleChange} variant="fullWidth" aria-label="Integration Tabs">
+                      <Tab label="Google Drive" {...a11yProps(0)} />
+                      <Tab label="Git" {...a11yProps(1)} />
+                      <Tab label="Trello" {...a11yProps(2)} />
+                    </Tabs>
+                  </AppBar>
+                  <Paper className={integrationheight}>
+                    <TabPanel value={value} index={0}>
+                      {/* Google */}
+                      <Button
+                        type="button"
+                        variant="contained"
+                        color="primary"
+                        fullWidth
+                        onClick={() => linkIntegration("Google Folders", state.currentProject!.projectId!)}
+                      >
+                        New Google Drive Integration
+                      </Button>
+                      <Box p={2} bgcolor="background.paper"></Box>
+                      <Typography variant="h6" align={"center"} gutterBottom>
+                        Integrated Google Drives
+                      </Typography>
+                      <Container style={{ maxHeight: 200, padding: 0, overflow: "auto" }}>
+                        <List component="nav" aria-label="Google Tab">
+                          {state.currentProject?.projectGoogleDriveIds.map((item) => {
+                            return (
+                              <div>
+                                <ListItem
+                                  button
+                                  onClick={() =>
+                                    viewIntegration(
+                                      "Git",
+                                      state.currentProject!.projectId!,
+                                      state.currentProject!.projectGoogleDriveIds![0]
+                                    )
+                                  }
+                                >
+                                  {item}
+                                </ListItem>
+                                <Divider />
+                              </div>
+                            )
+                          })}
+                        </List>
+                      </Container>
+                    </TabPanel>
+                    <TabPanel value={value} index={1}>
+                      {/* Git */}
+                      <Button
+                        type="button"
+                        variant="contained"
+                        color="primary"
+                        fullWidth
+                        onClick={() => linkIntegration("Git", state.currentProject!.projectId!)}
+                      >
+                        New Git Integration
+                      </Button>
+                      <Box p={2} bgcolor="background.paper"></Box>
+                      <Typography variant="h6" align={"center"} gutterBottom>
+                        Integrated Git
+                      </Typography>
+                      <Container style={{ maxHeight: 200, padding: 0, overflow: "auto" }}>
+                        <List component="nav" aria-label="Git Tab">
+                          {state.currentProject?.projectGitIds.map((item) => {
+                            return (
+                              <div>
+                                <ListItem
+                                  button
+                                  onClick={() =>
+                                    viewIntegration("Git", state.currentProject!.projectId!, state.currentProject!.projectGitIds![0])
+                                  }
+                                >
+                                  {item}
+                                </ListItem>
+                                <Divider />
+                              </div>
+                            )
+                          })}
+                        </List>
+                      </Container>
+                    </TabPanel>
+                    <TabPanel value={value} index={2}>
+                      {/* Trello */}
+                      <Button
+                        type="button"
+                        variant="contained"
+                        color="primary"
+                        fullWidth
+                        onClick={() => linkIntegration("Trello", state.currentProject!.projectId!)}
+                      >
+                        New Trello Integration
+                      </Button>
+                      <Box p={2} bgcolor="background.paper"></Box>
+                      <Typography variant="h6" align={"center"} gutterBottom>
+                        Integrated Trello
+                      </Typography>
+                      <Container style={{ maxHeight: 200, padding: 0, overflow: "auto" }}>
+                        <List component="nav" aria-label="Trello Tab">
+                          {state.currentProject?.projectTrelloIds.map((item) => {
+                            return (
+                              <div>
+                                <ListItem
+                                  button
+                                  onClick={() =>
+                                    viewIntegration("Git", state.currentProject!.projectId!, state.currentProject!.projectTrelloIds![0])
+                                  }
+                                >
+                                  {item}
+                                </ListItem>
+                                <Divider />
+                              </div>
+                            )
+                          })}
+                        </List>
+                      </Container>
+                    </TabPanel>
+                  </Paper>
+                </Grid>
+              </Grid>
+              <Box pt={4}>
+                <Copyright />
+              </Box>
             </Container>
-          </Jumbotron>
-        </Tab>
-        <Tab eventKey="git" title="Git">
-          <ListGroup>
-            <ListGroup.Item onClick={() => linkIntegration("Git", state.currentProject!.projectId!)}>Add Git Integration</ListGroup.Item>
-          </ListGroup>
-          <ListGroup>
-            {state.currentProject?.projectGitIds.map((item) => {
-              return (
-                <ListGroup.Item
-                  action
-                  onClick={() => viewIntegration("Git", state.currentProject!.projectId!, state.currentProject!.projectGitIds![0])}
-                >
-                  {item}
-                </ListGroup.Item>
-              )
-            })}
-          </ListGroup>
-        </Tab>
-      </Tabs>
+          </main>
+        </div>
+      )}
     </div>
-    // <div>
-    //   {!state.user?.emailAddress && <Redirect to="/" />}
-    //   {state.projectStatus === AppStatus.LOADING ? (
-    //     <h1>Loading</h1>
-    //   ) : (
-    //     <div>
-    //       <div>projectId: {state.currentProject?.projectId}</div>
-    //       <div>projectName: {state.currentProject?.projectName}</div>
-    //       <div>projectGitIds: {state.currentProject?.projectGitIds.map((item) => item + ", ")}</div>
-    //       <button type="button" onClick={() => linkIntegration("Git", state.currentProject!.projectId!)}>
-    //         Git Link
-    //       </button>
-    //       <br></br>
-    //       <button
-    //         type="button"
-    //         onClick={() => viewIntegration("Git", state.currentProject!.projectId!, state.currentProject!.projectGitIds![0])}
-    //       >
-    //         Git View
-    //       </button>
-    //       <div>projectTrelloIds: {state.currentProject?.projectTrelloIds.map((item) => item + ", ")}</div>
-    //       <button type="button" onClick={() => linkIntegration("Trello", state.currentProject!.projectId!)}>
-    //         Trello Link
-    //       </button>
-    //       <br></br>
-    //       <button
-    //         type="button"
-    //         onClick={() => viewIntegration("Trello", state.currentProject!.projectId!, state.currentProject!.projectTrelloIds![0])}
-    //       >
-    //         Trello View
-    //       </button>
-    //       <div>projectGoogleDriveIds: {state.currentProject?.projectGoogleDriveIds.map((item) => item + ", ")}</div>
-    //       <button type="button" onClick={() => linkIntegration("Google Drives", state.currentProject!.projectId!)}>
-    //         Google Drives Link
-    //       </button>
-    //       <br></br>
-    //       <button
-    //         type="button"
-    //         onClick={() =>
-    //           viewIntegration("Google Drives", state.currentProject!.projectId!, state.currentProject!.projectGoogleDriveIds![0])
-    //         }
-    //       >
-    //         Google Drives View
-    //       </button>
-    //       <div>projectGoogleFolderIds: {state.currentProject?.projectGoogleFolderIds.map((item) => item + ", ")}</div>
-    //       <button type="button" onClick={() => linkIntegration("Google Folders", state.currentProject!.projectId!)}>
-    //         Google Folders Link
-    //       </button>
-    //       <br></br>
-    //       <button
-    //         type="button"
-    //         onClick={() =>
-    //           viewIntegration("Google Folders", state.currentProject!.projectId!, state.currentProject!.projectGoogleFolderIds![0])
-    //         }
-    //       >
-    //         Google Folders View
-    //       </button>
-    //     </div>
-    //   )}
-    // </div>
   )
 }
 
