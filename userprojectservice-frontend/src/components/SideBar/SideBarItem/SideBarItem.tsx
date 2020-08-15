@@ -13,10 +13,12 @@ const Level = {
 }
 
 const SideBarItem: FunctionComponent<SideBarItemProps> = ({ itemName, itemLink, sideBarItemStyleLevel }) => {
+  const sideBarItemLink = [styles.SideBarItemLink, Level[sideBarItemStyleLevel]].join(" ")
+
   return (
     <div className={styles.SideBarItem}>
       <li>
-        <a className={Level[sideBarItemStyleLevel]} href={itemLink}>
+        <a className={sideBarItemLink} href={itemLink}>
           {itemName}
         </a>
       </li>

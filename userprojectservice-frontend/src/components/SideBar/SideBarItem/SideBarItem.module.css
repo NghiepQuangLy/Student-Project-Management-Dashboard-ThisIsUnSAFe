@@ -2,19 +2,20 @@
   margin-bottom: 1em;
 }
 
-.FirstLevel {
-  font-size: 11pt;
+.SideBarItemLink {
   font-weight: bold;
   text-transform: uppercase;
-  color: white;
+  cursor: pointer;
   text-decoration: none;
+}
+
+.FirstLevel {
+  font-size: 11pt;
+  color: white;
 }
 
 .SecondLevel {
   font-size: 9pt;
-  font-weight: bold;
-  text-transform: uppercase;
   color: lightgray;
-  text-decoration: none;
   margin-left: 10px;
 }

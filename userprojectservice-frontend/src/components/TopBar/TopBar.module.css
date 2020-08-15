@@ -10,32 +10,32 @@
   align-items: center;
 }
 
-.logout{
+.logout {
   position: absolute;
   right: 0;
-  padding-right:5em; 
+  padding-right: 5em;
   font-size: 11pt;
   font-weight: bold;
   color: white;
   text-decoration: none;
 }
 
-.pageTitle{
-  padding-left:2em; 
-  font-family: 'RobotoCondensed';
+.pageTitle {
+  padding-left: 2em;
+  font-family: "RobotoCondensed";
   font-size: 18pt;
   font-weight: bold;
   color: white;
   text-decoration: none;
 }
 
-@font-face{
-  font-family:  RobotoCondensed;
+@font-face {
+  font-family: RobotoCondensed;
   src: url(../../fonts/Roboto-Bold.ttf);
   font-weight: 800;
 }
 
-@font-face{
-  font-family:  SquadaOne;
+@font-face {
+  font-family: SquadaOne;
   src: url(../../fonts/SquadaOne-Regular.ttf);
 }
