@@ -1,5 +1,6 @@
 :root{
   --left-sidebar-width: 15em;
+  --left-sidebar-width--hide: -15em;
 }
 
 
@@ -17,31 +18,32 @@
   z-index: 3;
 }
 
-.LeftSideBar__LeftSection__topWrapper {
+
+.LeftSideBar__LeftSection .LeftSideBar__LeftSection__topWrapper {
   width: 100%;
   height: 4em;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: center;    
   border-bottom: 1px solid #0004;
 }
 
-.LeftSideBar__LeftSection__menuWrapper {
+.LeftSideBar__LeftSection .LeftSideBar__LeftSection__menuWrapper {
   list-style-type: none;
   margin: 1em;
   padding: 0;
 }
 
-.LeftSideBar__LeftSection__menuWrapper__li {
-      margin-bottom: 1em;
+.LeftSideBar__LeftSection .LeftSideBar__LeftSection__menuWrapper li {
+  margin-bottom: 1em;
 }
-
-.LeftSideBar__LeftSection__menuWrapper__li__a {
-  font-size: 11pt;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: white;
-  text-decoration: none;
+      
+.LeftSideBar__LeftSection .LeftSideBar__LeftSection__menuWrapper li a {
+    font-size: 11pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: white;
+    text-decoration: none;
 }
 
 
@@ -50,5 +52,5 @@
 }
 
 .LeftSideBar__LeftSection__hide {
-  transform: translateX(var(--left-sidebar-width));
+  transform: translateX(var(--left-sidebar-width--hide));
 }

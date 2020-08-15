@@ -1,13 +1,17 @@
-import React, { useContext } from "react"
+import React, { FunctionComponent, useContext } from "react"
 import { MenuBarContext } from "../MenuBar/MenuBar"
 import BurgerButton from "../BurgerButton/BurgerButton"
 import styles from "./TopBar.module.css"
 
-const TopBar = () => {
+interface TopBarProps {
+  shouldContainSideBar: Boolean
+}
+
+const TopBar: FunctionComponent<TopBarProps> = ({ shouldContainSideBar }) => {
   const { setIsShowSidebar } = useContext(MenuBarContext)
   return (
     <div className={styles.LeftSideBar__TopSection}>
-      <BurgerButton onClick={() => setIsShowSidebar(true)} />
+      {shouldContainSideBar && <BurgerButton onClick={() => setIsShowSidebar(true)} />}
     </div>
   )
 }
