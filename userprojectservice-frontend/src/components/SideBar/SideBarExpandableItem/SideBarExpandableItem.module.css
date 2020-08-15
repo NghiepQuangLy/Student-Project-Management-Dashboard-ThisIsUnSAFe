@@ -1,0 +1,8 @@
+.SideBarExpandableItem .ExpandableButton {
+  font-size: 11pt;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: white;
+  text-decoration: none;
+  margin-bottom: 1em;
+}
