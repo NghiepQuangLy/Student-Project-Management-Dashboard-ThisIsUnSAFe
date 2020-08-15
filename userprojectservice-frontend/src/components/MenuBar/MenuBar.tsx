@@ -1,10 +1,16 @@
-import React, { FunctionComponent, useState } from "react"
+import React, { Dispatch, FunctionComponent, SetStateAction, useState } from "react"
+import TopBar from '../TopBar/TopBar'
 
 interface MenuBarProps {
   title?: string
 }
 
-export const MenuBarContext = React.createContext({})
+interface ContextInterface {
+  isShowSidebar: Boolean
+  setIsShowSidebar: Dispatch<SetStateAction<boolean>>
+};
+
+export const MenuBarContext = React.createContext({} as ContextInterface);
 
 const MenuBar: FunctionComponent<MenuBarProps> = ({ title, children }) => {
   const [isShowSidebar, setIsShowSidebar] = useState(false)
@@ -17,8 +23,8 @@ const MenuBar: FunctionComponent<MenuBarProps> = ({ title, children }) => {
           role="button"
           onClick={() => setIsShowSidebar(false)}
         ></div>
-        {/*<TopSection />*/}
-        {/*<LeftSection />*/}
+        {<TopBar />}
+        {/* {<LeftSection />} */}
       </div>
       <div>{title || "testTitle"}</div>
       {children}
