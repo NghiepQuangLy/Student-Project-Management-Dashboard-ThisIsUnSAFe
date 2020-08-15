@@ -32,18 +32,6 @@
   padding: 0;
 }
 
-.MenuWrapper li {
-  margin-bottom: 1em;
-}
-
-.MenuWrapper li a {
-  font-size: 11pt;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: white;
-  text-decoration: none;
-}
-
 .SideBarShow {
   transform: translateX(0);
 }
