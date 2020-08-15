@@ -32,7 +32,6 @@ const SideBar = () => {
                 <SideBarItem itemLink={"#"} itemName={"Export Data"} />
                 <SideBarItem itemLink={"#"} itemName={"Time Tracking"} />
                 <SideBarItem itemLink={"#"} itemName={"Contacts"} />
-                <SideBarItem itemLink={"#"} itemName={"Sign out"} />
             </ul>
         </div>
     )
