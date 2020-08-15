@@ -4,8 +4,6 @@ import { Page } from "../Page"
 import * as UseCase from "../../usecase/UseCase"
 import * as AppAction from "../../state/AppAction"
 import { AppStatus } from "../../models/AppStatus"
-//import { Redirect } from "react-router-dom"
-//import { Navbar, Nav, Form, Button, Tabs, Tab, Jumbotron, Container, ListGroup } from "react-bootstrap"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import AppBar from "@material-ui/core/AppBar"
 import clsx from "clsx"
@@ -143,16 +141,7 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
                           {state.currentProject?.projectGoogleDriveIds.map((item) => {
                             return (
                               <div>
-                                <ListItem
-                                  button
-                                  onClick={() =>
-                                    viewIntegration(
-                                      "Google Drives",
-                                      state.currentProject!.projectId!,
-                                      item
-                                    )
-                                  }
-                                >
+                                <ListItem button onClick={() => viewIntegration("Google Drives", state.currentProject!.projectId!, item)}>
                                   {item}
                                 </ListItem>
                                 <Divider />
@@ -182,12 +171,7 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
                           {state.currentProject?.projectGitIds.map((item) => {
                             return (
                               <div>
-                                <ListItem
-                                  button
-                                  onClick={() =>
-                                    viewIntegration("Git", state.currentProject!.projectId!, item)
-                                  }
-                                >
+                                <ListItem button onClick={() => viewIntegration("Git", state.currentProject!.projectId!, item)}>
                                   {item}
                                 </ListItem>
                                 <Divider />
@@ -217,12 +201,7 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
                           {state.currentProject?.projectTrelloIds.map((item) => {
                             return (
                               <div>
-                                <ListItem
-                                  button
-                                  onClick={() =>
-                                    viewIntegration("Trello", state.currentProject!.projectId!, item)
-                                  }
-                                >
+                                <ListItem button onClick={() => viewIntegration("Trello", state.currentProject!.projectId!, item)}>
                                   {item}
                                 </ListItem>
                                 <Divider />

@@ -5,16 +5,17 @@ import { Link, Redirect } from "react-router-dom"
 import * as UseCase from "../../usecase/UseCase"
 import * as AppAction from "../../state/AppAction"
 import { AppStatus } from "../../models/AppStatus"
-import CssBaseline from "@material-ui/core/CssBaseline"
-import AppBar from "@material-ui/core/AppBar"
+// import CssBaseline from "@material-ui/core/CssBaseline"
+// import AppBar from "@material-ui/core/AppBar"
 import clsx from "clsx"
-import Toolbar from "@material-ui/core/Toolbar"
+// import Toolbar from "@material-ui/core/Toolbar"
 import Typography from "@material-ui/core/Typography"
 import Container from "@material-ui/core/Container"
 import { Grid, List } from "@material-ui/core"
 import Paper from "@material-ui/core/Paper"
 import Box from "@material-ui/core/Box"
 import Copyright, { useStyles } from "../Resources/Styles"
+import MenuBar from "../../components/MenuBar/MenuBar"
 
 const ProjectList: Page = ({ integration, state, dispatch }) => {
   const isEmpty = state.projectListStatus === AppStatus.SUCCESS && state.user?.projects.length === 0
@@ -33,11 +34,15 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
 
   // Page Styling
   const classes = useStyles()
-  const [open] = React.useState(true)
+  // const [open] = React.useState(true)
   const userdetailheight = clsx(classes.paper, classes.userdetailheight)
 
   return (
     <div>
+      <MenuBar>
+          <div>testComponent</div>
+      </MenuBar>
+
       {!state.user?.emailAddress && <Redirect to="/" />}
       <div>
         {state.userStatus === AppStatus.LOADING ? (
@@ -46,14 +51,14 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
           <h1>Empty History</h1>
         ) : (
           <div className={classes.root}>
-            <CssBaseline />
-            <AppBar position="absolute" color="primary" className={clsx(classes.appBar, !open && classes.appBarShift)}>
-              <Toolbar className={classes.toolbar}>
-                <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                  Project List
-                </Typography>
-              </Toolbar>
-            </AppBar>
+            {/*<CssBaseline />*/}
+            {/*<AppBar position="absolute" color="primary" className={clsx(classes.appBar, !open && classes.appBarShift)}>*/}
+            {/*  <Toolbar className={classes.toolbar}>*/}
+            {/*    <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>*/}
+            {/*      Project List*/}
+            {/*    </Typography>*/}
+            {/*  </Toolbar>*/}
+            {/*</AppBar>*/}
             <main className={classes.content}>
               <div className={classes.appBarSpacer} />
               <Container maxWidth="lg" className={classes.container}>
@@ -116,7 +121,6 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
           </div>
         )}
       </div>
-      <div></div>
     </div>
   )
 }
