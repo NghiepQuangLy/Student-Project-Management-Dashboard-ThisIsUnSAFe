@@ -1,6 +1,6 @@
 export interface Project {
   projectName: string | null
-  projectId: string | null
+  projectId: string
 }
 
 export interface UserResponse {

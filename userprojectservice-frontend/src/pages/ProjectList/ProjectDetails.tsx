@@ -21,7 +21,7 @@ import { Redirect } from "react-router-dom"
 const ProjectDetails: Page = ({ integration, state, dispatch }) => {
   useLayoutEffect(() => {
     if (state.projectStatus === AppStatus.INITIAL) {
-      dispatch(AppAction.projectLoading())
+      state.user?.emailAddress && state.user?.projects[0].projectId && dispatch(AppAction.projectLoading())
 
       state.user?.emailAddress &&
         state.user?.projects[0].projectId &&
