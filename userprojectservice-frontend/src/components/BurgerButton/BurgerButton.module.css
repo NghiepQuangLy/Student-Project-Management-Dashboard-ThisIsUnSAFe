@@ -1,4 +1,4 @@
-.LeftSideBar__BurgerButton {
+.BurgerButton {
   display: flex;
   flex-direction: column;
   cursor: pointer;
@@ -6,7 +6,7 @@
   z-index: 2;
 }
 
-.LeftSideBar__BurgerButton i {
+.BurgerButton i {
   background-color: white;
   width: 2em;
   height: 0.25em;

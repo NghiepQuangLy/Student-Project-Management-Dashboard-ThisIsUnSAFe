@@ -1,71 +1,40 @@
-import React, { useContext } from 'react';
-import BurgerButton from '../BurgerButton/BurgerButton';
-import { MenuBarContext } from '../MenuBar/MenuBar';
+import React, { FunctionComponent, useContext } from "react"
+import BurgerButton from "../BurgerButton/BurgerButton"
+import { BarContainerContext } from "../BarContainer/BarContainer"
 import styles from "./SideBar.module.css"
 
+interface SideBarItemProps {
+  itemName: string
+  itemLink: string
+}
+
+const SideBarItem: FunctionComponent<SideBarItemProps> = ({ itemName, itemLink }) => {
+  return (
+    <li>
+      <a href={itemLink}>{itemName}</a>
+    </li>
+  )
+}
 
 const SideBar = () => {
-    const { isShowSidebar, setIsShowSidebar } = useContext(MenuBarContext);
-    const sidebarStyle = isShowSidebar ? styles.LeftSideBar__LeftSection__show : styles.LeftSideBar__LeftSection__hide
-    return (
-        <div className={[styles.LeftSideBar__LeftSection, sidebarStyle].join(" ")}>
-            <div className={styles.LeftSideBar__LeftSection__topWrapper}>
-                <BurgerButton
-                    onClick={() => setIsShowSidebar(false)}
-                />
-            </div>
-            <ul className={styles.LeftSideBar__LeftSection__menuWrapper}>
-                <li>
-                    <a href="#">
-                        Project Name
-                    </a>
-                </li>
-                <li>
-                    <a
-                        href="#"
-                    >
-                        Reminders
-            </a>
-                </li>
-                <li>
-                    <a
-                        href="#"
-                    >
-                        Project Problems
-            </a>
-                </li>
-                <li>
-                    <a
-                        href="#"
-                    >
-                        Export Data
-            </a>
-                </li>
-                <li>
-                    <a
-                        href="#"
-                    >
-                        Time Tracking
-            </a>
-                </li>
-                <li>
-                    <a
-                        href="#"
-                    >
-                        Contacts
-            </a>
-                </li>
-                <li>
-                    <a
-                        href="#"
-                    >
-                        Sign out
-            </a>
-                </li>
+  const { isShowSidebar, setIsShowSidebar } = useContext(BarContainerContext)
+  const sidebarStyle = isShowSidebar ? styles.SideBarShow : styles.SideBarHide
+  return (
+    <div className={[styles.SideBar, sidebarStyle].join(" ")}>
+      <div className={styles.TopWrapper}>
+        <BurgerButton onClick={() => setIsShowSidebar(false)} />
+      </div>
+      <ul className={styles.MenuWrapper}>
+        <SideBarItem itemLink={"#"} itemName={"Project Name"} />
+        <SideBarItem itemLink={"#"} itemName={"Reminders"} />
+        <SideBarItem itemLink={"#"} itemName={"Project Problems"} />
+        <SideBarItem itemLink={"#"} itemName={"Export Data"} />
+        <SideBarItem itemLink={"#"} itemName={"Time Tracking"} />
+        <SideBarItem itemLink={"#"} itemName={"Contacts"} />
+        <SideBarItem itemLink={"#"} itemName={"Sign out"} />
+      </ul>
+    </div>
+  )
+}
 
-            </ul>
-        </div>
-    );
-};
-
-export default SideBar;
+export default SideBar

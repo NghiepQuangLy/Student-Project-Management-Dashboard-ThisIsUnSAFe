@@ -1,0 +1,8 @@
+.BarContainer overlay {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  transition: all ease 0.5s;
+  z-index: 1;
+}

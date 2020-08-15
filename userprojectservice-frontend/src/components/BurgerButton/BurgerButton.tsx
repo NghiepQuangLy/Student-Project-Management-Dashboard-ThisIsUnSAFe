@@ -7,7 +7,7 @@ interface BurgerButtonProps {
 
 const BurgerButton: FunctionComponent<BurgerButtonProps> = ({ onClick }) => {
   return (
-    <div className={styles.LeftSideBar__BurgerButton} role="button" onClick={onClick}>
+    <div className={styles.BurgerButton} role="button" onClick={onClick}>
       <i></i>
       <i></i>
       <i></i>

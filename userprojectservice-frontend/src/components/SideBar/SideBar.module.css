@@ -1,12 +1,11 @@
-:root{
-  --left-sidebar-width: 15em;
-  --left-sidebar-width--hide: -15em;
+:root {
+  --sidebar-width-show: 15em;
+  --sidebar-width-hide: -15em;
 }
 
-
-.LeftSideBar__LeftSection {
+.SideBar {
   position: fixed;
-  width: var(--left-sidebar-width);
+  width: var(--sidebar-width-show);
   top: 0;
   bottom: 0;
   left: 0;
@@ -18,39 +17,37 @@
   z-index: 3;
 }
 
-
-.LeftSideBar__LeftSection .LeftSideBar__LeftSection__topWrapper {
+.TopWrapper {
   width: 100%;
   height: 4em;
   display: flex;
   flex-direction: row;
-  align-items: center;    
+  align-items: center;
   border-bottom: 1px solid #0004;
 }
 
-.LeftSideBar__LeftSection .LeftSideBar__LeftSection__menuWrapper {
+.MenuWrapper {
   list-style-type: none;
   margin: 1em;
   padding: 0;
 }
 
-.LeftSideBar__LeftSection .LeftSideBar__LeftSection__menuWrapper li {
+.MenuWrapper li {
   margin-bottom: 1em;
 }
-      
-.LeftSideBar__LeftSection .LeftSideBar__LeftSection__menuWrapper li a {
-    font-size: 11pt;
-    font-weight: bold;
-    text-transform: uppercase;
-    color: white;
-    text-decoration: none;
+
+.MenuWrapper li a {
+  font-size: 11pt;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: white;
+  text-decoration: none;
 }
 
-
-.LeftSideBar__LeftSection__show {
+.SideBarShow {
   transform: translateX(0);
 }
 
-.LeftSideBar__LeftSection__hide {
-  transform: translateX(var(--left-sidebar-width--hide));
+.SideBarHide {
+  transform: translateX(var(--sidebar-width-hide));
 }
