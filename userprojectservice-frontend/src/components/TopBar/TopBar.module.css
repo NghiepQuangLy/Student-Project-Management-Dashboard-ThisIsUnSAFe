@@ -31,11 +31,11 @@
 
 @font-face {
   font-family: RobotoCondensed;
-  src: url(../../fonts/Roboto-Bold.ttf);
+  src: url(../../resources/fonts/Roboto-Bold.ttf);
   font-weight: 800;
 }
 
 @font-face {
   font-family: SquadaOne;
-  src: url(../../fonts/SquadaOne-Regular.ttf);
+  src: url(../../resources/fonts/SquadaOne-Regular.ttf);
 }

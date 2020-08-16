@@ -1,11 +1,13 @@
 import React from "react"
-import "./Login.css"
 import { Page } from "../Page"
 import GoogleLogin, { GoogleLoginResponse, GoogleLoginResponseOffline } from "react-google-login"
 import * as AppAction from "../../state/AppAction"
 import { AppStatus } from "../../models/AppStatus"
 import * as UseCase from "../../usecase/UseCase"
 import { Redirect } from "react-router-dom"
+import monash from '../../resources/images/M.png'
+import GoogleButton from "react-google-button"
+import styles from "./Login.module.css"
 
 const Login: Page = ({ integration, state, dispatch }) => {
   const responseGoogle = (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
@@ -25,18 +27,35 @@ const Login: Page = ({ integration, state, dispatch }) => {
   }
 
   return (
-    <div>
+    <div className={styles.Login}>
       {state.user?.emailAddress && <Redirect to="/Projects" />}
-      <GoogleLogin
-        clientId="12178522373-e5nmdu6ogip7e70f2sn645j30n55fgke.apps.googleusercontent.com"
-        buttonText="Login"
-        onSuccess={responseGoogle}
-        onFailure={responseGoogle}
-        isSignedIn={true}
-        uxMode="redirect"
-        redirectUri={process.env.REACT_APP_GOOGLE_REDIRECT_URI}
-      />
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <div className={styles.rectangle}>
+          <div className={styles.rectangleComponents}>
+            <h1 className={styles.welcome} >Welcome to SPMD</h1>
+            <br />
+            <img src={monash} alt='profile' className={styles.monashLogo} />
+            <br />
+            <br />
+            <br />
+            <br />
+            <div className={styles.googleButton}>
+              <GoogleLogin
+                clientId="12178522373-e5nmdu6ogip7e70f2sn645j30n55fgke.apps.googleusercontent.com"
+                render={renderProps => (
+                  <GoogleButton onClick={renderProps.onClick}
+                  />
+                )}
+                buttonText="Login"
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
+              />
+            </div>
+          </div>
+        </div>
+      </div >
     </div>
   )
 }
 export default Login
+
