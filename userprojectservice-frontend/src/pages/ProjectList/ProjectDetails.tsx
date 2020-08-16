@@ -4,12 +4,10 @@ import { Page } from "../Page"
 import * as UseCase from "../../usecase/UseCase"
 import * as AppAction from "../../state/AppAction"
 import { AppStatus } from "../../models/AppStatus"
-//import { Redirect } from "react-router-dom"
-//import { Navbar, Nav, Form, Button, Tabs, Tab, Jumbotron, Container, ListGroup } from "react-bootstrap"
-import CssBaseline from "@material-ui/core/CssBaseline"
+
 import AppBar from "@material-ui/core/AppBar"
 import clsx from "clsx"
-import Toolbar from "@material-ui/core/Toolbar"
+
 import Typography from "@material-ui/core/Typography"
 import Container from "@material-ui/core/Container"
 import Paper from "@material-ui/core/Paper"
@@ -19,11 +17,12 @@ import Button from "@material-ui/core/Button"
 import { Divider, Grid, List, ListItem, Tab, Tabs } from "@material-ui/core"
 import TabPanel, { a11yProps } from "../Resources/Tabs"
 import { Redirect } from "react-router-dom"
+import BarContainer from "../../components/BarContainer/BarContainer"
 
 const ProjectDetails: Page = ({ integration, state, dispatch }) => {
   useLayoutEffect(() => {
     if (state.projectStatus === AppStatus.INITIAL) {
-      dispatch(AppAction.projectLoading())
+      state.user?.emailAddress && state.user?.projects[0].projectId && dispatch(AppAction.projectLoading())
 
       state.user?.emailAddress &&
         state.user?.projects[0].projectId &&
@@ -62,7 +61,7 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
 
   // Page Styling
   const classes = useStyles()
-  const [open] = React.useState(true)
+  // const [open] = React.useState(true)
   const detailheight = clsx(classes.paper, classes.detailheight)
   const integrationheight = clsx(classes.paper, classes.integrationheight)
 
@@ -74,22 +73,25 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
 
   return (
     <div>
+      <BarContainer shouldContainSideBar={true} pageTitle="Dashboard">
+        <div>testComponent</div>
+      </BarContainer>
+
       {!state.user?.emailAddress && <Redirect to="/" />}
       {state.projectStatus === AppStatus.LOADING ? (
         <h1>Loading</h1>
       ) : (
         <div className={classes.root}>
-          <CssBaseline />
-          <AppBar position="absolute" color="primary" className={clsx(classes.appBar, !open && classes.appBarShift)}>
-            <Toolbar className={classes.toolbar}>
-              <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-                Project Details
+          {/* <AppBar position="absolute" color="primary" className={clsx(classes.appBar, !open && classes.appBarShift)}>
+              <Toolbar className={classes.toolbar}>
+                <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+                  Project Details
               </Typography>
-              <Button type="button" variant="contained" color="default" onClick={() => (window.location.href = "./")}>
-                Back to Project List
+                <Button type="button" variant="contained" color="default" onClick={() => (window.location.href = "./")}>
+                  Back to Project List
               </Button>
-            </Toolbar>
-          </AppBar>
+              </Toolbar>
+            </AppBar> */}
           <main className={classes.content}>
             <div className={classes.appBarSpacer} />
             <Container maxWidth="lg" className={classes.container}>
@@ -143,16 +145,7 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
                           {state.currentProject?.projectGoogleDriveIds.map((item) => {
                             return (
                               <div>
-                                <ListItem
-                                  button
-                                  onClick={() =>
-                                    viewIntegration(
-                                      "Google Drives",
-                                      state.currentProject!.projectId!,
-                                      item
-                                    )
-                                  }
-                                >
+                                <ListItem button onClick={() => viewIntegration("Google Drives", state.currentProject!.projectId!, item)}>
                                   {item}
                                 </ListItem>
                                 <Divider />
@@ -182,12 +175,7 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
                           {state.currentProject?.projectGitIds.map((item) => {
                             return (
                               <div>
-                                <ListItem
-                                  button
-                                  onClick={() =>
-                                    viewIntegration("Git", state.currentProject!.projectId!, item)
-                                  }
-                                >
+                                <ListItem button onClick={() => viewIntegration("Git", state.currentProject!.projectId!, item)}>
                                   {item}
                                 </ListItem>
                                 <Divider />
@@ -217,12 +205,7 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
                           {state.currentProject?.projectTrelloIds.map((item) => {
                             return (
                               <div>
-                                <ListItem
-                                  button
-                                  onClick={() =>
-                                    viewIntegration("Trello", state.currentProject!.projectId!, item)
-                                  }
-                                >
+                                <ListItem button onClick={() => viewIntegration("Trello", state.currentProject!.projectId!, item)}>
                                   {item}
                                 </ListItem>
                                 <Divider />

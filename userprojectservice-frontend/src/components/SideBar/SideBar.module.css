@@ -1,0 +1,41 @@
+:root {
+  --sidebar-width-show: 15em;
+  --sidebar-width-hide: -15em;
+}
+
+.SideBar {
+  position: fixed;
+  width: var(--sidebar-width-show);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #101f27;
+  -webkit-box-shadow: 0 0 11px -2px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0 0 11px -2px rgba(0, 0, 0, 0.75);
+  box-shadow: 0 0 11px -2px rgba(0, 0, 0, 0.75);
+  transition: all ease 0.5s;
+  z-index: 3;
+}
+
+.TopWrapper {
+  width: 100%;
+  height: 65px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid #0004;
+}
+
+.MenuWrapper {
+  list-style-type: none;
+  margin: 1em;
+  padding: 0;
+}
+
+.SideBarShow {
+  transform: translateX(0);
+}
+
+.SideBarHide {
+  transform: translateX(var(--sidebar-width-hide));
+}
