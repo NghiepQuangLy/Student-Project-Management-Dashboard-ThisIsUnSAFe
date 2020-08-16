@@ -1,6 +1,6 @@
 package edu.monash.userprojectservice.service;
 
-import edu.monash.userprojectservice.model.InsertTrelloRequest;
+import edu.monash.userprojectservice.model.SaveTrelloRequest;
 import edu.monash.userprojectservice.repository.trello.TrelloEntity;
 import edu.monash.userprojectservice.repository.trello.TrelloRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -27,12 +27,12 @@ public class TrelloService {
     }
 
     // Insert into Trello table
-    public void saveTrello(InsertTrelloRequest insertTrelloRequest) {
-        log.info("{\"message\":\"Inserting Trello data\", \"project\":\"{}\"}", insertTrelloRequest);
+    public void saveTrello(SaveTrelloRequest saveTrelloRequest) {
+        log.info("{\"message\":\"Inserting Trello data\", \"project\":\"{}\"}", saveTrelloRequest);
 
         // Store into database
-        trelloRepository.save(new TrelloEntity(insertTrelloRequest.getTrelloId(), insertTrelloRequest.getProjectId()));
+        trelloRepository.save(new TrelloEntity(saveTrelloRequest.getTrelloId(), saveTrelloRequest.getProjectId()));
 
-        log.info("{\"message\":\"Inserted into Trello\", \"project\":\"{}\"}", insertTrelloRequest);
+        log.info("{\"message\":\"Inserted into Trello\", \"project\":\"{}\"}", saveTrelloRequest);
     }
 }

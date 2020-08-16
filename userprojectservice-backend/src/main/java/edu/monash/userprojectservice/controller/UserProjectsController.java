@@ -1,7 +1,7 @@
 package edu.monash.userprojectservice.controller;
 
-import edu.monash.userprojectservice.model.SaveTrelloRequest;
-import edu.monash.userprojectservice.service.TrelloService;
+import edu.monash.userprojectservice.model.GetUserProjectsResponse;
+import edu.monash.userprojectservice.service.UserProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,19 +15,13 @@ import static org.springframework.http.HttpStatus.OK;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
 @RequestMapping("/")
-public class TrelloController {
+public class UserProjectsController {
 
-    private TrelloService trelloService;
+    private UserProjectService userProjectService;
 
     @ResponseStatus(OK)
-    @GetMapping("/get-trello")
-    public void getTrello(@RequestParam("projectId") String projectId) {
-        trelloService.getTrello(projectId);
-    }
-
-    @ResponseStatus(CREATED)
-    @PostMapping("/save-trello")
-    public void saveTrello(@RequestBody @Valid SaveTrelloRequest saveTrelloRequest) {
-        trelloService.saveTrello(saveTrelloRequest);
+    @GetMapping("/get-projectusers")
+    public GetUserProjectsResponse getUserProjects(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
+        return userProjectService.getUsersByProject(emailAddress, projectId);
     }
 }

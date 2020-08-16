@@ -24,4 +24,11 @@ public class ProjectEntity implements Serializable {
 
     @Column(name = "project_name")
     private String projectName;
+
+    @Column(name = "timesheet")
+    private String timesheet;
+
+    public void setTimesheet(String timesheet) {
+        this.timesheet = timesheet;
+    }
 }

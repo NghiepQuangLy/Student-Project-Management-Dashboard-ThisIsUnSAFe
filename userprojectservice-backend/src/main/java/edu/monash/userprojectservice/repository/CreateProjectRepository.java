@@ -37,8 +37,8 @@ public class CreateProjectRepository {
         try {
             conn.setAutoCommit(false);
 
-            projectsRepository.save(new ProjectEntity(projectId, projectName));
-            usersProjectsRepository.save(new UsersProjectsEntity(emailAddress, projectId, new ProjectEntity(projectId, projectName)));
+            projectsRepository.save(new ProjectEntity(projectId, projectName, null));
+            usersProjectsRepository.save(new UsersProjectsEntity(emailAddress, projectId, new ProjectEntity(projectId, projectName, null), null));
 
             conn.commit();
             return true;

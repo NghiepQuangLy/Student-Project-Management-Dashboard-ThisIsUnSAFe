@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class InsertTrelloRequest {
+public class SaveTrelloRequest {
 
     @NotNull
     private String trelloId;
