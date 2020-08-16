@@ -1,6 +1,8 @@
 package edu.monash.userprojectservice.service;
 
 import edu.monash.userprojectservice.model.GetProjectResponse;
+import edu.monash.userprojectservice.model.GetTimesheet;
+import edu.monash.userprojectservice.model.SaveTimesheetRequest;
 import edu.monash.userprojectservice.repository.googleFolder.GoogleFolderEntity;
 import edu.monash.userprojectservice.repository.googleFolder.GoogleFolderRepository;
 import edu.monash.userprojectservice.repository.project.ProjectEntity;
@@ -145,6 +147,40 @@ public class ProjectService {
                 );
             }
         }
+    }
+
+    public GetTimesheet getTimesheet(String emailAddress, String projectId) {
+        log.info("{\"message\":\"Getting project\", \"project\":\"{}\"}", projectId);
+
+        if (!isUserProject(emailAddress, projectId)) {
+            System.out.println("Project does not belong to the user.");
+            // Unauthorised error
+            return null;
+            // if project is null, 404 not found
+        }
+
+        // get from database
+        ProjectEntity projectEntity = projectsRepository.findProjectEntityByProjectId(projectId);
+
+        if (projectEntity == null) {
+
+            System.out.println("Project does not exist.");
+            return null;
+        }
+
+        return new GetTimesheet(projectEntity.getTimesheet());
+    }
+
+    public void saveTimesheet(SaveTimesheetRequest saveTimesheetRequest) {
+        log.info("{\"message\":\"Inserting timesheet\", \"project\":\"{}\"}", saveTimesheetRequest);
+
+        ProjectEntity projectEntity = projectsRepository.findProjectEntityByProjectId(saveTimesheetRequest.getProjectId());
+        projectEntity.setTimesheet(saveTimesheetRequest.getTimesheet());
+
+        // Store into database
+        projectsRepository.save(projectEntity);
+
+        log.info("{\"message\":\"Inserted timesheet\", \"project\":\"{}\"}", saveTimesheetRequest);
     }
 }
 

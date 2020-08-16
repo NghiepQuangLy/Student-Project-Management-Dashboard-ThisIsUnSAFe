@@ -1,7 +1,6 @@
 package edu.monash.userprojectservice.controller;
 
-import edu.monash.userprojectservice.model.CreateProjectRequest;
-import edu.monash.userprojectservice.model.GetProjectResponse;
+import edu.monash.userprojectservice.model.*;
 import edu.monash.userprojectservice.service.ProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +28,21 @@ public class ProjectController {
         return projectService.getProject(emailAddress, projectId);
     }
 
+    @ResponseStatus(OK)
+    @GetMapping("/get-timesheet")
+    public GetTimesheet getTimesheet(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
+        return projectService.getTimesheet(emailAddress, projectId);
+    }
+
     @ResponseStatus(CREATED)
     @PostMapping("/create-project")
     public ResponseEntity setProjectUser(@RequestBody @Valid CreateProjectRequest createProjectRequest) throws SQLException {
         return projectService.createProject(createProjectRequest.getEmailAddress(), createProjectRequest.getProjectName());
+    }
+
+    @ResponseStatus(CREATED)
+    @PostMapping("/save-timesheet")
+    public void saveTimesheet(@RequestBody @Valid SaveTimesheetRequest saveTimesheetRequest) {
+        projectService.saveTimesheet(saveTimesheetRequest);
     }
 }

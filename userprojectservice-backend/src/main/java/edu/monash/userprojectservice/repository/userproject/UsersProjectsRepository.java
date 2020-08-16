@@ -9,4 +9,5 @@ import java.util.List;
 public interface UsersProjectsRepository extends CrudRepository<UsersProjectsEntity, String> {
 
     List<UsersProjectsEntity> findUsersProjectsEntitiesByEmailAddress(String emailAddress);
+    List<UsersProjectsEntity> findUsersProjectsEntitiesByProjectId(String projectId);
 }
