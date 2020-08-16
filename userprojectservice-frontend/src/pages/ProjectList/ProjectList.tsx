@@ -18,14 +18,12 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
   const isEmpty = state.projectListStatus === AppStatus.SUCCESS && state.user?.projects.length === 0
 
   useLayoutEffect(() => {
-    if (state.projectStatus === AppStatus.INITIAL) {
+    if (state.projectStatus === AppStatus.INITIAL && state.user?.emailAddress && state.user?.projects[0].projectId) {
       dispatch(AppAction.projectLoading())
 
-      state.user?.emailAddress &&
-        state.user?.projects[0].projectId &&
-        UseCase.loadInitialProject(integration, state.user?.emailAddress, state.user?.projects[0].projectId).then((project) => {
-          dispatch(AppAction.projectSuccess(project))
-        })
+      UseCase.loadInitialProject(integration, state.user?.emailAddress, state.user?.projects[0].projectId).then((project) => {
+        dispatch(AppAction.projectSuccess(project))
+      })
     }
   }, [dispatch, integration, state.projectListStatus, state.projectStatus, state.user])
 

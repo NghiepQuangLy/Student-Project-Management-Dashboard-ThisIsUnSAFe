@@ -12,7 +12,7 @@ const MockIntegration: Integration = {
           projectGoogleFolderIds: ["1", "tesre22"],
           projectTrelloIds: ["1", "2", "50", "501", "tesre22"]
         })
-      }, 2000)
+      }, 3000)
     }),
 
   getUser: async () =>
@@ -38,7 +38,7 @@ const MockIntegration: Integration = {
             }
           ]
         })
-      }, 2000)
+      }, 3000)
     })
 }
 

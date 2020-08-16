@@ -21,14 +21,12 @@ import BarContainer from "../../components/BarContainer/BarContainer"
 
 const ProjectDetails: Page = ({ integration, state, dispatch }) => {
   useLayoutEffect(() => {
-    if (state.projectStatus === AppStatus.INITIAL) {
-      state.user?.emailAddress && state.user?.projects[0].projectId && dispatch(AppAction.projectLoading())
+    if (state.projectStatus === AppStatus.INITIAL && state.user?.emailAddress && state.user?.projects[0].projectId) {
+      dispatch(AppAction.projectLoading())
 
-      state.user?.emailAddress &&
-        state.user?.projects[0].projectId &&
-        UseCase.loadInitialProject(integration, state.user?.emailAddress, state.user?.projects[0].projectId).then((project) => {
-          dispatch(AppAction.projectSuccess(project))
-        })
+      UseCase.loadInitialProject(integration, state.user?.emailAddress, state.user?.projects[0].projectId).then((project) => {
+        dispatch(AppAction.projectSuccess(project))
+      })
     }
   }, [dispatch, integration, state.projectListStatus, state.projectStatus, state.user])
 
