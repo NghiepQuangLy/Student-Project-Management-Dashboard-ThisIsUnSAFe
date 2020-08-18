@@ -120,9 +120,9 @@ public class ProjectService {
     // create a method
     // check for the user first, if it doesnt exist new responseEntity and return not found
     // if he exists then, return OK
-    public ResponseEntity<GetProjectResponse> createProject(String emailAddress, String projectName) throws SQLException {
+    public ResponseEntity<GetProjectResponse> createProject(List<String> emailAddress, String projectName) throws SQLException {
         //check if the user is present in the system
-        if (usersRepository.findUserEntityByEmailAddress(emailAddress) == null) {
+        if (usersRepository.findUserEntityByEmailAddress(emailAddress.get(0)) == null) {
             log.warn("User doesn't exist in the Database!");
             return new ResponseEntity<>(
                     null, NOT_FOUND

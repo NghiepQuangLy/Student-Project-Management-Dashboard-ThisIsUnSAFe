@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 
 @Slf4j
 @Repository
@@ -30,15 +31,14 @@ public class CreateProjectRepository {
     @Value("${spring.datasource.password}")
     String password;
 
-
     // create new method for insert...
-    public Boolean save(String projectId, String emailAddress, String projectName) throws SQLException {
+    public Boolean save(String projectId, List<String> emailAddress, String projectName) throws SQLException {
         Connection conn = DriverManager.getConnection(url, userName, password);
         try {
             conn.setAutoCommit(false);
 
             projectsRepository.save(new ProjectEntity(projectId, projectName, null));
-            usersProjectsRepository.save(new UsersProjectsEntity(emailAddress, projectId, new ProjectEntity(projectId, projectName, null), null));
+            usersProjectsRepository.save(new UsersProjectsEntity(emailAddress.get(0), projectId, new ProjectEntity(projectId, projectName, null), null));
 
             conn.commit();
             return true;
