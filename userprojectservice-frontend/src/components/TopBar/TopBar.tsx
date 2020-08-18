@@ -6,6 +6,7 @@ import {
     MenuUnfoldOutlined,
     MenuFoldOutlined,
 } from '@ant-design/icons';
+import styles from "./TopBar.module.css";
 
 interface TopBarProps {
   shouldContainSideBar: Boolean
@@ -21,7 +22,7 @@ const TopBar: FunctionComponent<TopBarProps> = ({ shouldContainSideBar, pageTitl
             <Button type="primary" onClick={() => { if (!isShowSidebar) {setIsShowSidebar(true)} else {setIsShowSidebar(false)}}} style={{ marginBottom: 16 }}>
                 {React.createElement(isShowSidebar ? MenuUnfoldOutlined : MenuFoldOutlined)}
             </Button>
-            <div className="logo" />
+            <div className={styles.logo} />
             <div >
                 {shouldContainSideBar}
             {/*<div className={styles.PageTitle}>{pageTitle}</div>*/}

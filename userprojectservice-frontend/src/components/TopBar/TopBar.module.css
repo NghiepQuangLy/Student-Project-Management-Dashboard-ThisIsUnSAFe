@@ -10,16 +10,16 @@
   align-items: center;
 }
 
-.Logout {
-  position: absolute;
-  right: 0;
-  padding-right: 5em;
-  font-size: 11pt;
-  font-weight: bold;
-  color: white;
-  text-decoration: none;
-  cursor: pointer;
-  background-color: #37464f;
+.logo {
+  width: 120px;
+  height: 31px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px 28px 16px 0;
+  float: right;
+  background-image: url("../../resources/images/Monash_logo-2.jpg");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
 }
 
 .PageTitle {
