@@ -1,6 +1,7 @@
 package edu.monash.userprojectservice.service;
 
 import edu.monash.userprojectservice.ValidationHandler;
+import edu.monash.userprojectservice.model.GetGitResponse;
 import edu.monash.userprojectservice.model.SaveGitRequest;
 import edu.monash.userprojectservice.repository.git.GitEntity;
 import edu.monash.userprojectservice.repository.git.GitRepository;
@@ -21,7 +22,7 @@ public class GitService {
     private ValidationHandler validationHandler;
 
     // Get from Git table
-    public void getGit(String emailAddress, String projectId) {
+    public GetGitResponse getGit(String emailAddress, String projectId) {
         log.info("{\"message\":\"Getting git data\", \"project\":\"{}\"}, \"git\":\"{}\"}", projectId);
 
         // Validation Check
@@ -31,6 +32,7 @@ public class GitService {
         List<GitEntity> gitEntities = gitRepository.findGitEntitiesByProjectId(projectId);
 
         log.info("{\"message\":\"Got git data\", \"project\":\"{}\"}, \"git\":\"{}\"}", projectId);
+        return new GetGitResponse(gitEntities);
     }
 
     // Insert into Git table

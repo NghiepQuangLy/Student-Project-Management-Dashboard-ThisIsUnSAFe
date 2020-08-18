@@ -1,6 +1,7 @@
 package edu.monash.userprojectservice.service;
 
 import edu.monash.userprojectservice.ValidationHandler;
+import edu.monash.userprojectservice.model.GetTrelloResponse;
 import edu.monash.userprojectservice.model.SaveTrelloRequest;
 import edu.monash.userprojectservice.repository.trello.TrelloEntity;
 import edu.monash.userprojectservice.repository.trello.TrelloRepository;
@@ -21,7 +22,7 @@ public class TrelloService {
     private ValidationHandler validationHandler;
 
     // Get from Trello table
-    public void getTrello(String emailAddress, String projectId) {
+    public GetTrelloResponse getTrello(String emailAddress, String projectId) {
         log.info("{\"message\":\"Getting Trello \", \"project\":\"{}\"}, \"trello\":\"{}\"}", projectId);
 
         // Validation Check
@@ -31,6 +32,7 @@ public class TrelloService {
         List<TrelloEntity> trelloEntities = trelloRepository.findTrelloEntitiesByProjectId(projectId);
 
         log.info("{\"message\":\"Got Trello data\", \"project\":\"{}\"}, \"trello\":\"{}\"}", projectId);
+        return new GetTrelloResponse(trelloEntities);
     }
 
     // Insert into Trello table

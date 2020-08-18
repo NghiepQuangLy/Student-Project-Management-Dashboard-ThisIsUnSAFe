@@ -2,7 +2,7 @@ package edu.monash.userprojectservice.service;
 
 import edu.monash.userprojectservice.ValidationHandler;
 import edu.monash.userprojectservice.model.GetProjectResponse;
-import edu.monash.userprojectservice.model.GetTimesheet;
+import edu.monash.userprojectservice.model.GetTimesheetResponse;
 import edu.monash.userprojectservice.model.SaveTimesheetRequest;
 import edu.monash.userprojectservice.repository.googleFolder.GoogleFolderEntity;
 import edu.monash.userprojectservice.repository.googleFolder.GoogleFolderRepository;
@@ -16,7 +16,6 @@ import edu.monash.userprojectservice.repository.googleDrive.GoogleDriveRepositor
 import edu.monash.userprojectservice.repository.trello.TrelloEntity;
 import edu.monash.userprojectservice.repository.trello.TrelloRepository;
 import edu.monash.userprojectservice.repository.user.UsersRepository;
-import edu.monash.userprojectservice.repository.userproject.UsersProjectsEntity;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,7 +134,7 @@ public class ProjectService {
         }
     }
 
-    public GetTimesheet getTimesheet(String emailAddress, String projectId) {
+    public GetTimesheetResponse getTimesheet(String emailAddress, String projectId) {
         log.info("{\"message\":\"Getting project\", \"project\":\"{}\"}", projectId);
 
         // Validation Check
@@ -150,7 +149,7 @@ public class ProjectService {
             return null;
         }
 
-        return new GetTimesheet(projectEntity.getTimesheet());
+        return new GetTimesheetResponse(projectEntity.getTimesheet());
     }
 
     public void saveTimesheet(SaveTimesheetRequest saveTimesheetRequest) {

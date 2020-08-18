@@ -1,6 +1,8 @@
 package edu.monash.userprojectservice.service;
 
 import edu.monash.userprojectservice.ValidationHandler;
+import edu.monash.userprojectservice.model.GetGitResponse;
+import edu.monash.userprojectservice.model.GetGoogleDriveResponse;
 import edu.monash.userprojectservice.model.SaveGoogleDriveRequest;
 import edu.monash.userprojectservice.repository.googleDrive.GoogleDriveEntity;
 import edu.monash.userprojectservice.repository.googleDrive.GoogleDriveRepository;
@@ -22,7 +24,7 @@ public class GoogleDriveService {
     private ValidationHandler validationHandler;
 
     // Get from GoogleDrive table
-    public void getgoogleDrive(String emailAddress, String projectId) {
+    public GetGoogleDriveResponse getgoogleDrive(String emailAddress, String projectId) {
         log.info("{\"message\":\"Getting GoogleDrive data\", \"project\":\"{}\"}, \"googleDrive\":\"{}\"}", projectId);
 
         // Validation Check
@@ -32,6 +34,7 @@ public class GoogleDriveService {
         List<GoogleDriveEntity> googleDriveEntities = googleDriveRepository.findGoogleDriveEntitiesByProjectId(projectId);
 
         log.info("{\"message\":\"Got GoogleDrive data\", \"project\":\"{}\"}, \"googleDrive\":\"{}\"}", projectId);
+        return new GetGoogleDriveResponse(googleDriveEntities);
     }
 
     // Insert into GoogleDrive table

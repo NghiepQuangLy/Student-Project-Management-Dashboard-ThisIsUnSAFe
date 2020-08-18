@@ -1,5 +1,6 @@
 package edu.monash.userprojectservice.controller;
 
+import edu.monash.userprojectservice.model.GetTrelloResponse;
 import edu.monash.userprojectservice.model.SaveTrelloRequest;
 import edu.monash.userprojectservice.service.TrelloService;
 import lombok.AllArgsConstructor;
@@ -21,8 +22,8 @@ public class TrelloController {
 
     @ResponseStatus(OK)
     @GetMapping("/get-trello")
-    public void getTrello(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
-        trelloService.getTrello(emailAddress, projectId);
+    public GetTrelloResponse getTrello(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
+        return trelloService.getTrello(emailAddress, projectId);
     }
 
     @ResponseStatus(CREATED)

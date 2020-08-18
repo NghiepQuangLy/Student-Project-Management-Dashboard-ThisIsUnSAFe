@@ -1,5 +1,6 @@
 package edu.monash.userprojectservice.controller;
 
+import edu.monash.userprojectservice.model.GetGoogleDriveResponse;
 import edu.monash.userprojectservice.model.SaveGoogleDriveRequest;
 import edu.monash.userprojectservice.service.GoogleDriveService;
 import lombok.AllArgsConstructor;
@@ -21,8 +22,8 @@ public class GoogleDriveController {
 
     @ResponseStatus(OK)
     @GetMapping("/get-googledrive")
-    public void getGoogleDrive(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
-        googleDriveService.getgoogleDrive(emailAddress, projectId);
+    public GetGoogleDriveResponse getGoogleDrive(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
+        return googleDriveService.getgoogleDrive(emailAddress, projectId);
     }
 
     @ResponseStatus(CREATED)
