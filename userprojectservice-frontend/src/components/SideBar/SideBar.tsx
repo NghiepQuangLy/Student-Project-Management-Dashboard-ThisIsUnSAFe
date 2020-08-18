@@ -1,6 +1,6 @@
-import React from "react"
+import React, {useContext} from "react"
 //import BurgerButton from "../BurgerButton/BurgerButton"
-//import { BarContainerContext } from "../BarContainer/BarContainer"
+import { BarContainerContext } from "../BarContainer/BarContainer"
 // import SideBarItem from "./SideBarItem/SideBarItem"
 // import SideBarExpandableItem from "./SideBarExpandableItem/SideBarExpandableItem"
 // import styles from "./SideBar.module.css"
@@ -26,7 +26,7 @@ const clientId = "12178522373-e5nmdu6ogip7e70f2sn645j30n55fgke.apps.googleuserco
 
 const SideBar = () => {
     const onLogoutSuccess = () => {
-        window.location.href = "www.google.com"
+        window.location.href = "/"
     }
     const onFailure = () => {
         console.log("Logout failed")
@@ -38,18 +38,17 @@ const SideBar = () => {
         onFailure,
     })
 
-  //const { isShowSidebar, setIsShowSidebar } = useContext(BarContainerContext)
+  const { isShowSidebar } = useContext(BarContainerContext)
   //const [isIntegrationExpand, setIsIntegrationExpand] = useState(false)
   //const sidebarStyle = isShowSidebar ? styles.SideBarShow : styles.SideBarHide
   return (
         <Layout>
-          <Sider>
+          <Sider collapsible collapsed={!!isShowSidebar} className="site-layout-background">
             <Menu
                 defaultSelectedKeys={['1']}
                 defaultOpenKeys={['sub1']}
                 mode="inline"
                 theme="dark"
-
             >
               <Menu.Item key="1" icon={<DashboardOutlined />}>
                 Dashboard
