@@ -2,6 +2,7 @@ package edu.monash.userprojectservice.repository;
 
 import edu.monash.userprojectservice.repository.project.ProjectEntity;
 import edu.monash.userprojectservice.repository.project.ProjectsRepository;
+import edu.monash.userprojectservice.repository.user.UsersRepository;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsEntity;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 
 @Slf4j
 @Repository
@@ -19,6 +21,9 @@ public class CreateProjectRepository {
 
     @Autowired
     private UsersProjectsRepository usersProjectsRepository;
+
+    @Autowired
+    private UsersRepository usersRepository;
 
     @Autowired
     private ProjectsRepository projectsRepository;
@@ -30,15 +35,17 @@ public class CreateProjectRepository {
     @Value("${spring.datasource.password}")
     String password;
 
-
     // create new method for insert...
-    public Boolean save(String projectId, String emailAddress, String projectName) throws SQLException {
+    public Boolean save(String projectId, List<String> emailAddress, String projectName) throws SQLException {
         Connection conn = DriverManager.getConnection(url, userName, password);
         try {
             conn.setAutoCommit(false);
-
             projectsRepository.save(new ProjectEntity(projectId, projectName, null));
-            usersProjectsRepository.save(new UsersProjectsEntity(emailAddress, projectId, new ProjectEntity(projectId, projectName, null), null));
+            for(int i = 0; i < emailAddress.size(); i++) {
+                if (usersRepository.findUserEntityByEmailAddress(emailAddress.get(i)) != null) {
+                    usersProjectsRepository.save(new UsersProjectsEntity(emailAddress.get(i), projectId, new ProjectEntity(projectId, projectName, null), null));
+                }
+            }
 
             conn.commit();
             return true;

@@ -5,7 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Data
 @Builder
@@ -13,8 +15,8 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class CreateProjectRequest {
 
-    @NotBlank
-    private String emailAddress;
+    @NotNull
+    private List<String> emailAddress;
 
     @NotBlank
     private String projectName;
