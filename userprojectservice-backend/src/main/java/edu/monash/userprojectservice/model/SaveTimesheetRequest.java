@@ -14,6 +14,9 @@ import javax.validation.constraints.NotNull;
 public class SaveTimesheetRequest {
 
     @NotNull
+    private String emailAddress;
+
+    @NotNull
     private String timesheet;
 
     @NotNull

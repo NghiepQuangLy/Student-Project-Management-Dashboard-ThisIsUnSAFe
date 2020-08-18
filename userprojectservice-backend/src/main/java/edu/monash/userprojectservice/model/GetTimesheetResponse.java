@@ -4,20 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.validation.constraints.NotNull;
+
+import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SaveGitRequest {
-
-    @NotNull
-    private String emailAddress;
-
-    @NotNull
-    private String gitId;
-
-    @NotNull
-    private String projectId;
+public class GetTimesheetResponse {
+    private String timesheet;
 }

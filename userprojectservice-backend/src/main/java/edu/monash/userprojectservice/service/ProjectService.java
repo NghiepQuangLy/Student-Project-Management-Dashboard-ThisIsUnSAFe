@@ -1,7 +1,8 @@
 package edu.monash.userprojectservice.service;
 
+import edu.monash.userprojectservice.ValidationHandler;
 import edu.monash.userprojectservice.model.GetProjectResponse;
-import edu.monash.userprojectservice.model.GetTimesheet;
+import edu.monash.userprojectservice.model.GetTimesheetResponse;
 import edu.monash.userprojectservice.model.SaveTimesheetRequest;
 import edu.monash.userprojectservice.repository.googleFolder.GoogleFolderEntity;
 import edu.monash.userprojectservice.repository.googleFolder.GoogleFolderRepository;
@@ -56,17 +57,14 @@ public class ProjectService {
     @Autowired
     private UsersProjectsRepository usersProjectsRepository;
 
+    @Autowired
+    private ValidationHandler validationHandler;
+
     public ResponseEntity<GetProjectResponse> getProject(String emailAddress, String projectId) {
         log.info("{\"message\":\"Getting project\", \"project\":\"{}\"}", projectId);
 
-        if (!isUserProject(emailAddress, projectId)) {
-            System.out.println("Project does not belong to the user.");
-            // Unauthorised error
-            return new ResponseEntity<>(
-                    null, OK
-            );
-            // if project is null, 404 not found
-        }
+        // Validation Check
+        validationHandler.isValid(emailAddress, projectId);
 
         // get from database
         ProjectEntity projectEntity = projectsRepository.findProjectEntityByProjectId(projectId);
@@ -101,18 +99,6 @@ public class ProjectService {
         );
     }
 
-    private Boolean isUserProject(String emailAddress, String projectId) {
-        List<UsersProjectsEntity> userProjects = usersProjectsRepository.findUsersProjectsEntitiesByEmailAddress(emailAddress);
-        System.out.println(userProjects);
-        for (UsersProjectsEntity userProject : userProjects) {
-            if (projectId.equals(userProject.getProjectId())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
     // create a method
     // check for the user first, if it doesnt exist new responseEntity and return not found
     // if he exists then, return OK
@@ -139,15 +125,11 @@ public class ProjectService {
         }
     }
 
-    public GetTimesheet getTimesheet(String emailAddress, String projectId) {
+    public GetTimesheetResponse getTimesheet(String emailAddress, String projectId) {
         log.info("{\"message\":\"Getting project\", \"project\":\"{}\"}", projectId);
 
-        if (!isUserProject(emailAddress, projectId)) {
-            System.out.println("Project does not belong to the user.");
-            // Unauthorised error
-            return null;
-            // if project is null, 404 not found
-        }
+        // Validation Check
+        validationHandler.isValid(emailAddress, projectId);
 
         // get from database
         ProjectEntity projectEntity = projectsRepository.findProjectEntityByProjectId(projectId);
@@ -158,11 +140,14 @@ public class ProjectService {
             return null;
         }
 
-        return new GetTimesheet(projectEntity.getTimesheet());
+        return new GetTimesheetResponse(projectEntity.getTimesheet());
     }
 
     public void saveTimesheet(SaveTimesheetRequest saveTimesheetRequest) {
         log.info("{\"message\":\"Inserting timesheet\", \"project\":\"{}\"}", saveTimesheetRequest);
+
+        // Validation Check
+        validationHandler.isValid(saveTimesheetRequest.getEmailAddress(), saveTimesheetRequest.getProjectId());
 
         ProjectEntity projectEntity = projectsRepository.findProjectEntityByProjectId(saveTimesheetRequest.getProjectId());
         projectEntity.setTimesheet(saveTimesheetRequest.getTimesheet());

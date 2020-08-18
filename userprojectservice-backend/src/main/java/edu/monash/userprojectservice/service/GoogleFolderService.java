@@ -1,5 +1,6 @@
 package edu.monash.userprojectservice.service;
 
+import edu.monash.userprojectservice.ValidationHandler;
 import edu.monash.userprojectservice.model.SaveGoogleFolderRequest;
 import edu.monash.userprojectservice.repository.googleFolder.GoogleFolderEntity;
 import edu.monash.userprojectservice.repository.googleFolder.GoogleFolderRepository;
@@ -16,9 +17,15 @@ public class GoogleFolderService {
     @Autowired
     private GoogleFolderRepository googleFolderRepository;
 
+    @Autowired
+    private ValidationHandler validationHandler;
+
     // Get from GoogleFolder table
-    public void getgoogleFolder(String projectId) {
+    public void getgoogleFolder(String emailAddress, String projectId) {
         log.info("{\"message\":\"Getting GoogleFolder data\", \"project\":\"{}\"}, \"googleFolder\":\"{}\"}", projectId);
+
+        // Validation Check
+        validationHandler.isValid(emailAddress, projectId);
 
         // get from database
         List<GoogleFolderEntity> googleFolderEntities = googleFolderRepository.findGoogleFolderEntitiesByProjectId(projectId);
@@ -29,6 +36,9 @@ public class GoogleFolderService {
     // Insert into GoogleFolder table
     public void saveGoogleFolder(SaveGoogleFolderRequest saveGoogleFolderRequest) {
         log.info("{\"message\":\"Insert GoogleFolder data\", \"project\":\"{}\"}", saveGoogleFolderRequest);
+
+        // Validation Check
+        validationHandler.isValid(saveGoogleFolderRequest.getEmailAddress(), saveGoogleFolderRequest.getProjectId());
 
         // Store into database
         googleFolderRepository.save(new GoogleFolderEntity(saveGoogleFolderRequest.getGoogleFolderId(), saveGoogleFolderRequest.getProjectId()));

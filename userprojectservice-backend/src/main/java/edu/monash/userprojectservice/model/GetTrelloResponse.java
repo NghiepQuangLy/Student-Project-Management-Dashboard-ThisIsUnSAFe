@@ -1,5 +1,6 @@
 package edu.monash.userprojectservice.model;
 
+import edu.monash.userprojectservice.repository.trello.TrelloEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,6 +12,6 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetTimesheet {
-    private String timesheet;
+public class GetTrelloResponse {
+    private List<TrelloEntity> trelloId;
 }

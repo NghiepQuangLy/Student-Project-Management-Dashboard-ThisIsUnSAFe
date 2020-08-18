@@ -14,6 +14,9 @@ import javax.validation.constraints.NotNull;
 public class SaveGoogleFolderRequest {
 
     @NotNull
+    private String emailAddress;
+
+    @NotNull
     private String googleFolderId;
 
     @NotNull
