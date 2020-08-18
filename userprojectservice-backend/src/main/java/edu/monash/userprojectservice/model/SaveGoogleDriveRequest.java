@@ -13,6 +13,9 @@ import javax.validation.constraints.NotNull;
 public class SaveGoogleDriveRequest {
 
     @NotNull
+    private String emailAddress;
+
+    @NotNull
     private String googleDriveId;
 
     @NotNull

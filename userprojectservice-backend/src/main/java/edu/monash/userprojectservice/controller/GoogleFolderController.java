@@ -21,8 +21,8 @@ public class GoogleFolderController {
 
     @ResponseStatus(OK)
     @GetMapping("/get-googlefolder")
-    public void getGoogleFolder(@RequestParam("projectId") String projectId) {
-        googleFolderService.getgoogleFolder(projectId);
+    public void getGoogleFolder(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
+        googleFolderService.getgoogleFolder(emailAddress, projectId);
     }
 
     @ResponseStatus(CREATED)

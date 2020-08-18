@@ -13,6 +13,9 @@ import javax.validation.constraints.NotNull;
 public class SaveTrelloRequest {
 
     @NotNull
+    private String emailAddress;
+
+    @NotNull
     private String trelloId;
 
     @NotNull

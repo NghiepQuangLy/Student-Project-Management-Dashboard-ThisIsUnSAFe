@@ -13,6 +13,9 @@ import javax.validation.constraints.NotNull;
 public class SaveGitRequest {
 
     @NotNull
+    private String emailAddress;
+
+    @NotNull
     private String gitId;
 
     @NotNull

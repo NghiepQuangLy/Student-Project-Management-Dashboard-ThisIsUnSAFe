@@ -1,21 +1,19 @@
 package edu.monash.userprojectservice.service;
 
+import edu.monash.userprojectservice.ValidationHandler;
+import edu.monash.userprojectservice.HTTPResponseHandler;
 import edu.monash.userprojectservice.model.*;
 import edu.monash.userprojectservice.repository.project.ProjectEntity;
 import edu.monash.userprojectservice.repository.project.ProjectsRepository;
-import edu.monash.userprojectservice.repository.user.UserEntity;
 import edu.monash.userprojectservice.repository.user.UsersRepository;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsEntity;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static org.springframework.http.HttpStatus.OK;
 
 @Slf4j
 @Service
@@ -32,19 +30,12 @@ public class UserProjectService {
 
 
     public GetUserProjectsResponse getUsersByProject(String emailAddress, String projectId) {
-        if (projectId.equals("")) {
-            return null;
-        }
         log.info("{\"message\":\"Getting projects\", \"user\":\"{}\"}", projectId);
 
-        if (!isUserProject(emailAddress, projectId)) {
-            System.out.println("Project does not belong to the user.");
-            // Unauthorised error
-            return new GetUserProjectsResponse (
-                    null, null
-            );
-            // if project is null, 404 not found
-        }
+        // Validation Check
+        ValidationHandler validationHandler = new ValidationHandler();
+        validationHandler.isValid(emailAddress, projectId);
+
 
         ProjectEntity projectEntity = projectsRepository.findProjectEntityByProjectId(projectId);
 
@@ -74,7 +65,7 @@ public class UserProjectService {
             return getUserProjectsResponse;
         } else {
             // show return 404 not found
-            return null;
+            throw new HTTPResponseHandler.NotFoundException();
         }
     }
 
@@ -86,16 +77,5 @@ public class UserProjectService {
                 .userGroup(projectEntity.getUserEntity().getUserGroup())
                 .projects(null)
                 .build();
-    }
-
-    private Boolean isUserProject(String emailAddress, String projectId) {
-        List<UsersProjectsEntity> userProjects = usersProjectsRepository.findUsersProjectsEntitiesByEmailAddress(emailAddress);
-        System.out.println(userProjects);
-        for (UsersProjectsEntity userProject : userProjects) {
-            if (projectId.equals(userProject.getProjectId())) {
-                return true;
-            }
-        }
-        return false;
     }
 }

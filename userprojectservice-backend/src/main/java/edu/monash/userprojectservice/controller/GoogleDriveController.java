@@ -21,8 +21,8 @@ public class GoogleDriveController {
 
     @ResponseStatus(OK)
     @GetMapping("/get-googledrive")
-    public void getGoogleDrive(@RequestParam("projectId") String projectId) {
-        googleDriveService.getgoogleDrive(projectId);
+    public void getGoogleDrive(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
+        googleDriveService.getgoogleDrive(emailAddress, projectId);
     }
 
     @ResponseStatus(CREATED)

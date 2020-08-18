@@ -1,5 +1,6 @@
 package edu.monash.userprojectservice.service;
 
+import edu.monash.userprojectservice.HTTPResponseHandler;
 import edu.monash.userprojectservice.model.CreateUserRequest;
 import edu.monash.userprojectservice.model.GetUserResponse;
 import edu.monash.userprojectservice.model.ProjectListResponse;
@@ -41,6 +42,7 @@ public class UserService {
         } else {
             // Bad Request 400
             log.warn("{\"message\":\"User already exist\"}");
+            throw new HTTPResponseHandler.BadRequestException();
         }
     }
 
@@ -76,7 +78,7 @@ public class UserService {
             return getUserResponse;
         } else {
             // show return 404 not found
-            return null;
+            throw new HTTPResponseHandler.NotFoundException();
         }
     }
 
