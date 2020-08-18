@@ -17,12 +17,14 @@ public class GoogleFolderService {
     @Autowired
     private GoogleFolderRepository googleFolderRepository;
 
+    @Autowired
+    private ValidationHandler validationHandler;
+
     // Get from GoogleFolder table
     public void getgoogleFolder(String emailAddress, String projectId) {
         log.info("{\"message\":\"Getting GoogleFolder data\", \"project\":\"{}\"}, \"googleFolder\":\"{}\"}", projectId);
 
         // Validation Check
-        ValidationHandler validationHandler = new ValidationHandler();
         validationHandler.isValid(emailAddress, projectId);
 
         // get from database
@@ -36,7 +38,6 @@ public class GoogleFolderService {
         log.info("{\"message\":\"Insert GoogleFolder data\", \"project\":\"{}\"}", saveGoogleFolderRequest);
 
         // Validation Check
-        ValidationHandler validationHandler = new ValidationHandler();
         validationHandler.isValid(saveGoogleFolderRequest.getEmailAddress(), saveGoogleFolderRequest.getProjectId());
 
         // Store into database

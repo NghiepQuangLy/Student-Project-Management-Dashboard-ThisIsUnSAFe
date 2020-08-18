@@ -1,6 +1,7 @@
 package edu.monash.userprojectservice.service;
 
 import edu.monash.userprojectservice.HTTPResponseHandler;
+import edu.monash.userprojectservice.ValidationHandler;
 import edu.monash.userprojectservice.model.CreateUserRequest;
 import edu.monash.userprojectservice.model.GetUserResponse;
 import edu.monash.userprojectservice.model.ProjectListResponse;
@@ -24,6 +25,9 @@ public class UserService {
 
     @Autowired
     private UsersProjectsRepository usersProjectsRepository;
+
+    @Autowired
+    private ValidationHandler validationHandler;
 
     public void createUser(CreateUserRequest createUserRequest) {
         log.info("{\"message\":\"Creating user\", \"user\":\"{}\"}", createUserRequest);

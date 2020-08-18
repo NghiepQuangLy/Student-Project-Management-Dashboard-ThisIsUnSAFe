@@ -18,12 +18,14 @@ public class GoogleDriveService {
     @Autowired
     private GoogleDriveRepository googleDriveRepository;
 
+    @Autowired
+    private ValidationHandler validationHandler;
+
     // Get from GoogleDrive table
     public void getgoogleDrive(String emailAddress, String projectId) {
         log.info("{\"message\":\"Getting GoogleDrive data\", \"project\":\"{}\"}, \"googleDrive\":\"{}\"}", projectId);
 
         // Validation Check
-        ValidationHandler validationHandler = new ValidationHandler();
         validationHandler.isValid(emailAddress, projectId);
 
         // get from database
@@ -37,7 +39,6 @@ public class GoogleDriveService {
         log.info("{\"message\":\"Insert GoogleDrive data\", \"project\":\"{}\"}", saveGoogleDriveRequest);
 
         // Validation Check
-        ValidationHandler validationHandler = new ValidationHandler();
         validationHandler.isValid(saveGoogleDriveRequest.getEmailAddress(), saveGoogleDriveRequest.getProjectId());
 
         // Store into database

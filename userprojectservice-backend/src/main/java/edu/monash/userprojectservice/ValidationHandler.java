@@ -4,18 +4,18 @@ import edu.monash.userprojectservice.repository.userproject.UsersProjectsEntity;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Slf4j
+@Service
 public class ValidationHandler {
 
     @Autowired
     private UsersProjectsRepository usersProjectsRepository;
 
     public Boolean isValid(String emailAddress, String projectId) {
-        log.info(emailAddress);
-        log.info(projectId);
 
         // Blank Check
         isNotBlank(emailAddress, projectId);

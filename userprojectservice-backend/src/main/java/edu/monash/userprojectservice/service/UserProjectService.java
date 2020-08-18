@@ -20,20 +20,19 @@ import java.util.stream.Collectors;
 public class UserProjectService {
 
     @Autowired
-    private UsersRepository usersRepository;
-
-    @Autowired
     private ProjectsRepository projectsRepository;
 
     @Autowired
     private UsersProjectsRepository usersProjectsRepository;
+
+    @Autowired
+    private ValidationHandler validationHandler;
 
 
     public GetUserProjectsResponse getUsersByProject(String emailAddress, String projectId) {
         log.info("{\"message\":\"Getting projects\", \"user\":\"{}\"}", projectId);
 
         // Validation Check
-        ValidationHandler validationHandler = new ValidationHandler();
         validationHandler.isValid(emailAddress, projectId);
 
 

@@ -17,12 +17,14 @@ public class TrelloService {
     @Autowired
     private TrelloRepository trelloRepository;
 
+    @Autowired
+    private ValidationHandler validationHandler;
+
     // Get from Trello table
     public void getTrello(String emailAddress, String projectId) {
         log.info("{\"message\":\"Getting Trello \", \"project\":\"{}\"}, \"trello\":\"{}\"}", projectId);
 
         // Validation Check
-        ValidationHandler validationHandler = new ValidationHandler();
         validationHandler.isValid(emailAddress, projectId);
 
         // get from database
@@ -36,7 +38,6 @@ public class TrelloService {
         log.info("{\"message\":\"Inserting Trello data\", \"project\":\"{}\"}", saveTrelloRequest);
 
         // Validation Check
-        ValidationHandler validationHandler = new ValidationHandler();
         validationHandler.isValid(saveTrelloRequest.getEmailAddress(), saveTrelloRequest.getProjectId());
 
         // Store into database

@@ -61,11 +61,13 @@ public class ProjectService {
     @Autowired
     private UsersProjectsRepository usersProjectsRepository;
 
+    @Autowired
+    private ValidationHandler validationHandler;
+
     public ResponseEntity<GetProjectResponse> getProject(String emailAddress, String projectId) {
         log.info("{\"message\":\"Getting project\", \"project\":\"{}\"}", projectId);
 
         // Validation Check
-        ValidationHandler validationHandler = new ValidationHandler();
         validationHandler.isValid(emailAddress, projectId);
 
         // get from database
@@ -137,7 +139,6 @@ public class ProjectService {
         log.info("{\"message\":\"Getting project\", \"project\":\"{}\"}", projectId);
 
         // Validation Check
-        ValidationHandler validationHandler = new ValidationHandler();
         validationHandler.isValid(emailAddress, projectId);
 
         // get from database
@@ -156,7 +157,6 @@ public class ProjectService {
         log.info("{\"message\":\"Inserting timesheet\", \"project\":\"{}\"}", saveTimesheetRequest);
 
         // Validation Check
-        ValidationHandler validationHandler = new ValidationHandler();
         validationHandler.isValid(saveTimesheetRequest.getEmailAddress(), saveTimesheetRequest.getProjectId());
 
         ProjectEntity projectEntity = projectsRepository.findProjectEntityByProjectId(saveTimesheetRequest.getProjectId());

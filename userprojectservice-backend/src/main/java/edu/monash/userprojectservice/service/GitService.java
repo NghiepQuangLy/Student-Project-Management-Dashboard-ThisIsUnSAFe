@@ -17,12 +17,14 @@ public class GitService {
     @Autowired
     private GitRepository gitRepository;
 
+    @Autowired
+    private ValidationHandler validationHandler;
+
     // Get from Git table
     public void getGit(String emailAddress, String projectId) {
         log.info("{\"message\":\"Getting git data\", \"project\":\"{}\"}, \"git\":\"{}\"}", projectId);
 
         // Validation Check
-        ValidationHandler validationHandler = new ValidationHandler();
         validationHandler.isValid(emailAddress, projectId);
 
         // get from database
@@ -36,7 +38,6 @@ public class GitService {
         log.info("{\"message\":\"Insert Git data\", \"project\":\"{}\"}", saveGitRequest);
 
         // Validation Check
-        ValidationHandler validationHandler = new ValidationHandler();
         validationHandler.isValid(saveGitRequest.getEmailAddress(), saveGitRequest.getProjectId());
 
         // Store into database
