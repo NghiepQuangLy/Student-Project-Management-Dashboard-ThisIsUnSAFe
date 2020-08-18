@@ -2,6 +2,7 @@ package edu.monash.userprojectservice.repository;
 
 import edu.monash.userprojectservice.repository.project.ProjectEntity;
 import edu.monash.userprojectservice.repository.project.ProjectsRepository;
+import edu.monash.userprojectservice.repository.user.UsersRepository;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsEntity;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,9 @@ public class CreateProjectRepository {
     private UsersProjectsRepository usersProjectsRepository;
 
     @Autowired
+    private UsersRepository usersRepository;
+
+    @Autowired
     private ProjectsRepository projectsRepository;
 
     @Value("${spring.datasource.url}")
@@ -36,9 +40,12 @@ public class CreateProjectRepository {
         Connection conn = DriverManager.getConnection(url, userName, password);
         try {
             conn.setAutoCommit(false);
-
             projectsRepository.save(new ProjectEntity(projectId, projectName, null));
-            usersProjectsRepository.save(new UsersProjectsEntity(emailAddress.get(0), projectId, new ProjectEntity(projectId, projectName, null), null));
+            for(int i = 0; i < emailAddress.size(); i++) {
+                if (usersRepository.findUserEntityByEmailAddress(emailAddress.get(i)) != null) {
+                    usersProjectsRepository.save(new UsersProjectsEntity(emailAddress.get(i), projectId, new ProjectEntity(projectId, projectName, null), null));
+                }
+            }
 
             conn.commit();
             return true;

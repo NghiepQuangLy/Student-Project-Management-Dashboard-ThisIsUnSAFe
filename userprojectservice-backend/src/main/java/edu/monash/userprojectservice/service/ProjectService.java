@@ -14,7 +14,6 @@ import edu.monash.userprojectservice.repository.googleDrive.GoogleDriveEntity;
 import edu.monash.userprojectservice.repository.googleDrive.GoogleDriveRepository;
 import edu.monash.userprojectservice.repository.trello.TrelloEntity;
 import edu.monash.userprojectservice.repository.trello.TrelloRepository;
-import edu.monash.userprojectservice.repository.user.UsersRepository;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsEntity;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -53,9 +52,6 @@ public class ProjectService {
 
     @Autowired
     private TrelloRepository trelloRepository;
-
-    @Autowired
-    private UsersRepository usersRepository;
 
     @Autowired
     private UsersProjectsRepository usersProjectsRepository;
@@ -122,30 +118,24 @@ public class ProjectService {
     // if he exists then, return OK
     public ResponseEntity<GetProjectResponse> createProject(List<String> emailAddress, String projectName) throws SQLException {
         //check if the user is present in the system
-        if (usersRepository.findUserEntityByEmailAddress(emailAddress.get(0)) == null) {
-            log.warn("User doesn't exist in the Database!");
+
+        String projectId = UUID.randomUUID().toString();
+        // check if the project is already present in the database
+        while (projectsRepository.findProjectEntityByProjectId(projectId) != null) {
+            projectId = UUID.randomUUID().toString();
+        }
+        // insert into db when project doesnt exist in the db
+        Boolean isSuccessful = createProjectRepository.save(projectId, emailAddress, projectName);
+        if (isSuccessful) {
+            log.info("Project has been added!");
             return new ResponseEntity<>(
-                    null, NOT_FOUND
+                    null, CREATED
             );
         } else {
-            String projectId = UUID.randomUUID().toString();
-            // check if the project is already present in the database
-            while (projectsRepository.findProjectEntityByProjectId(projectId) != null) {
-                projectId = UUID.randomUUID().toString();
-            }
-            // insert into db when project doesnt exist in the db
-            Boolean isSuccessful = createProjectRepository.save(projectId, emailAddress, projectName);
-            if (isSuccessful) {
-                log.info("Project has been added!");
-                return new ResponseEntity<>(
-                        null, CREATED
-                );
-            } else {
-                log.warn("Project could not be added!");
-                return new ResponseEntity<>(
-                        null, INTERNAL_SERVER_ERROR
-                );
-            }
+            log.warn("Project could not be added!");
+            return new ResponseEntity<>(
+                    null, INTERNAL_SERVER_ERROR
+            );
         }
     }
 
