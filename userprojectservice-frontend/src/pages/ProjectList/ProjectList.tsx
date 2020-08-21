@@ -95,7 +95,10 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
                             {state.user &&
                               state.user.projects.map((item) => {
                                 return (
-                                  <Link key={item.projectId} to={{ pathname: "/project", state: { from: "item.projectId" } }}>
+                                  <Link
+                                    key={item.projectId}
+                                    to={{ pathname: `/project/${item.projectId}`, state: { from: "item.projectId" } }}
+                                  >
                                     {"projectId: " + item.projectId + "|projectName:" + item.projectName}
                                     <br />
                                   </Link>

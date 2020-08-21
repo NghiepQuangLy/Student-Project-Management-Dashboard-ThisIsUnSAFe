@@ -6,22 +6,26 @@ import { AppStatus } from "../../models/AppStatus"
 import BarContainer from "../../components/BarContainer/BarContainer"
 
 const IntegrationPage: Page = ({ integration, state, dispatch }) => {
-    useLayoutEffect(() => {
-        if (state.projectStatus === AppStatus.INITIAL && state.user?.emailAddress && state.user?.projects[0].projectId) {
-            dispatch(AppAction.projectLoading())
+  useLayoutEffect(() => {
+    if (state.projectStatus === AppStatus.INITIAL && state.user?.emailAddress && state.user?.projects[0].projectId) {
+      dispatch(AppAction.projectLoading())
 
-            UseCase.loadInitialProject(integration, state.user?.emailAddress, state.user?.projects[0].projectId).then((project) => {
-                dispatch(AppAction.projectSuccess(project))
-            })
-        }
-    }, [dispatch, integration, state.projectListStatus, state.projectStatus, state.user])
+      UseCase.loadInitialProject(integration, state.user?.emailAddress, state.user?.projects[0].projectId).then((project) => {
+        dispatch(AppAction.projectSuccess(project))
+      })
+    }
+  }, [dispatch, integration, state.projectListStatus, state.projectStatus, state.user])
 
-    return (
-        <div>
-            <BarContainer shouldContainSideBar={true} pageTitle="Integrations Page" />
-            <div>testComponent</div>
+  return (
+    <div>
+      <BarContainer shouldContainSideBar={true} pageTitle="Integrations Page">
+        <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
+          Bill is a cat.
         </div>
-    )
+        <iframe src="http://localhost:3000" />
+      </BarContainer>
+    </div>
+  )
 }
 
 export default IntegrationPage

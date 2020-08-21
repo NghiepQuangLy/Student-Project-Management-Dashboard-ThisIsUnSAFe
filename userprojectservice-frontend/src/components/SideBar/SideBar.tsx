@@ -1,9 +1,5 @@
 import React, { FunctionComponent, useContext } from "react"
-//import BurgerButton from "../BurgerButton/BurgerButton"
 import { BarContainerContext } from "../BarContainer/BarContainer"
-// import SideBarItem from "./SideBarItem/SideBarItem"
-// import SideBarExpandableItem from "./SideBarExpandableItem/SideBarExpandableItem"
-// import styles from "./SideBar.module.css"
 import { Breadcrumb, Layout, Menu } from "antd"
 import "antd/dist/antd.css"
 import {
@@ -15,16 +11,17 @@ import {
   ScheduleOutlined,
   ContactsOutlined,
   LogoutOutlined,
-  // PushpinOutlined
   StarOutlined
 } from "@ant-design/icons"
 import { useGoogleLogout } from "react-google-login"
+import Copyright from "../../pages/Resources/Styles"
+import { Link } from "react-router-dom"
 
 const { SubMenu } = Menu
 const { Sider, Content, Footer } = Layout
 const clientId = "12178522373-e5nmdu6ogip7e70f2sn645j30n55fgke.apps.googleusercontent.com"
 
-interface SideBarProps { }
+interface SideBarProps {}
 
 const SideBar: FunctionComponent<SideBarProps> = ({ children }) => {
   const onLogoutSuccess = () => {
@@ -45,17 +42,21 @@ const SideBar: FunctionComponent<SideBarProps> = ({ children }) => {
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider collapsible collapsed={isShowSidebar} onCollapse={setIsShowSidebar}>
-        <Menu defaultSelectedKeys={["1"]} defaultOpenKeys={["sub1"]} mode="inline" theme="dark" >
+        <Menu defaultSelectedKeys={["1"]} defaultOpenKeys={["sub1"]} mode="inline" theme="dark">
           <Menu.Item key="1" icon={<DashboardOutlined />}>
-            Dashboard
+            <a href={"/project"}>Dashboard</a>
           </Menu.Item>
           <SubMenu key="sub1" icon={<DesktopOutlined />} title="Integrations">
-            <Menu.Item key="sub1-1"><a href={"/integration"}>Git</a></Menu.Item>
+            <Menu.Item key="sub1-1">
+              <a href={"/integration"}>Git</a>
+            </Menu.Item>
             <SubMenu key="sub2" title="Trello">
               <Menu.Item key="sub2-1">Trello Link 1</Menu.Item>
               <Menu.Item key="sub2-2">Trello Link 2</Menu.Item>
             </SubMenu>
-            <Menu.Item key="7"><a href={"/integration"}>Google Drive</a></Menu.Item>
+            <Menu.Item key="7">
+              <a href={"/integration"}>Google Drive</a>
+            </Menu.Item>
           </SubMenu>
           <Menu.Item key="14" icon={<StarOutlined />}>
             All Events
@@ -84,16 +85,15 @@ const SideBar: FunctionComponent<SideBarProps> = ({ children }) => {
         <Content style={{ margin: "0 16px" }}>
           <Breadcrumb style={{ margin: "16px 0" }}>
             <Breadcrumb.Item>
-              <a href="/projects">Project list</a>
+              <Link to={{ pathname: "/projects" }}>Project list</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>Bill</Breadcrumb.Item>
           </Breadcrumb>
-          <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
-            Bill is a cat.
-          </div>
-          <iframe src="http://localhost:3000" />
+          {children}
         </Content>
-        <Footer style={{ textAlign: "center" }}>Ant Design ©2018 Created by Ant UED</Footer>
+        <Footer style={{ textAlign: "center" }}>
+          <Copyright />
+        </Footer>
       </Layout>
     </Layout>
   )
