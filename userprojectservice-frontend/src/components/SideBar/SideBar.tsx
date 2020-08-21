@@ -14,7 +14,9 @@ import {
   ExportOutlined,
   ScheduleOutlined,
   ContactsOutlined,
-  LogoutOutlined
+  LogoutOutlined,
+  // PushpinOutlined
+  StarOutlined
 } from "@ant-design/icons"
 import { useGoogleLogout } from "react-google-login"
 
@@ -22,7 +24,7 @@ const { SubMenu } = Menu
 const { Sider, Content, Footer } = Layout
 const clientId = "12178522373-e5nmdu6ogip7e70f2sn645j30n55fgke.apps.googleusercontent.com"
 
-interface SideBarProps {}
+interface SideBarProps { }
 
 const SideBar: FunctionComponent<SideBarProps> = ({ children }) => {
   const onLogoutSuccess = () => {
@@ -43,18 +45,21 @@ const SideBar: FunctionComponent<SideBarProps> = ({ children }) => {
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider collapsible collapsed={isShowSidebar} onCollapse={setIsShowSidebar}>
-        <Menu defaultSelectedKeys={["1"]} defaultOpenKeys={["sub1"]} mode="inline" theme="dark">
+        <Menu defaultSelectedKeys={["1"]} defaultOpenKeys={["sub1"]} mode="inline" theme="dark" >
           <Menu.Item key="1" icon={<DashboardOutlined />}>
             Dashboard
           </Menu.Item>
           <SubMenu key="sub1" icon={<DesktopOutlined />} title="Integrations">
-            <Menu.Item key="sub1-1">Git</Menu.Item>
+            <Menu.Item key="sub1-1"><a href={"/integration"}>Git</a></Menu.Item>
             <SubMenu key="sub2" title="Trello">
               <Menu.Item key="sub2-1">Trello Link 1</Menu.Item>
               <Menu.Item key="sub2-2">Trello Link 2</Menu.Item>
             </SubMenu>
-            <Menu.Item key="7">Google Drive</Menu.Item>
+            <Menu.Item key="7"><a href={"/integration"}>Google Drive</a></Menu.Item>
           </SubMenu>
+          <Menu.Item key="14" icon={<StarOutlined />}>
+            All Events
+          </Menu.Item>
           <Menu.Item key="8" icon={<ClockCircleOutlined />}>
             Reminders
           </Menu.Item>

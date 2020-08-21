@@ -11,6 +11,7 @@ import GitPage from "./pages/IntegrationPages/GitPage"
 import TrelloPage from "./pages/IntegrationPages/TrelloPage"
 import GoogleDrivePage from "./pages/IntegrationPages/GoogleDrivePage"
 import GoogleFolderPage from "./pages/IntegrationPages/GoogleFolderPage"
+import IntegrationPage from "./pages/IntegrationPages/IntegrationPage"
 
 setBasepath(process.env.REACT_APP_CONTEXT_PATH || "")
 
@@ -57,6 +58,9 @@ const App: FunctionComponent<AppProps> = ({ integration }) => {
           </Route>
           <Route path="/project">
             <ProjectDetails integration={integration} state={state} dispatch={dispatch} />
+          </Route>
+          <Route path="/integration">
+            <IntegrationPage integration={integration} state={state} dispatch={dispatch} />
           </Route>
           <Route path="/">
             <Login integration={integration} state={state} dispatch={dispatch} />
