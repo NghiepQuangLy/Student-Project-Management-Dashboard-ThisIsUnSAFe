@@ -43,7 +43,7 @@ const SideBar = () => {
   //const sidebarStyle = isShowSidebar ? styles.SideBarShow : styles.SideBarHide
   return (
         <Layout>
-          <Sider collapsible collapsed={!!isShowSidebar}>
+          <Sider trigger={null} collapsible collapsed={!!isShowSidebar}>
             <Menu
                 defaultSelectedKeys={['1']}
                 defaultOpenKeys={['sub1']}
