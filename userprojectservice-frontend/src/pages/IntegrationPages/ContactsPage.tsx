@@ -4,28 +4,30 @@ import * as UseCase from "../../usecase/UseCase"
 import * as AppAction from "../../state/AppAction"
 import { AppStatus } from "../../models/AppStatus"
 import BarContainer from "../../components/BarContainer/BarContainer"
+import { useGoogleAuth } from "../../components/GoogleAuthProvider/GoogleAuthProvider"
 
 const ContactsPage: Page = ({ integration, state, dispatch }) => {
-    useLayoutEffect(() => {
-        if (state.projectStatus === AppStatus.INITIAL && state.user?.emailAddress && state.user?.projects[0].projectId) {
-            dispatch(AppAction.projectLoading())
+  const { googleUser } = useGoogleAuth()
+  const emailAddress = googleUser?.getBasicProfile()?.getEmail()
 
-            UseCase.loadInitialProject(integration, state.user?.emailAddress, state.user?.projects[0].projectId).then((project) => {
-                dispatch(AppAction.projectSuccess(project))
-            })
-        }
-    }, [dispatch, integration, state.projectListStatus, state.projectStatus, state.user])
+  useLayoutEffect(() => {
+    if (state.projectDetailStatus === AppStatus.INITIAL && emailAddress && state.user?.projects[0].projectId) {
+      dispatch(AppAction.projectDetailLoading())
 
-    return (
-        <div>
-            <BarContainer shouldContainSideBar={true} pageTitle="Integrations Page">
-                <div className="site-layout-background">
-                    Contacts Page.
-                </div>
-                <iframe src="http://localhost:3000" width="1450" height="800" />
-            </BarContainer>
-        </div>
-    )
+      UseCase.loadInitialProject(integration, emailAddress, state.user?.projects[0].projectId).then((project) => {
+        dispatch(AppAction.projectDetailSuccess(project))
+      })
+    }
+  }, [dispatch, integration, state.projectDetailStatus, state.user])
+
+  return (
+    <div>
+      <BarContainer shouldContainSideBar={true} pageTitle="Integrations Page">
+        <div className="site-layout-background">Contacts Page.</div>
+        <iframe src="http://localhost:3000" width="1450" height="800" />
+      </BarContainer>
+    </div>
+  )
 }
 
 export default ContactsPage

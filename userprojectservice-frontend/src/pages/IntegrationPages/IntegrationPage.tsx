@@ -4,17 +4,21 @@ import * as UseCase from "../../usecase/UseCase"
 import * as AppAction from "../../state/AppAction"
 import { AppStatus } from "../../models/AppStatus"
 import BarContainer from "../../components/BarContainer/BarContainer"
+import { useGoogleAuth } from "../../components/GoogleAuthProvider/GoogleAuthProvider"
 
 const IntegrationPage: Page = ({ integration, state, dispatch }) => {
-  useLayoutEffect(() => {
-    if (state.projectStatus === AppStatus.INITIAL && state.user?.emailAddress && state.user?.projects[0].projectId) {
-      dispatch(AppAction.projectLoading())
+  const { googleUser } = useGoogleAuth()
+  const emailAddress = googleUser?.getBasicProfile()?.getEmail()
 
-      UseCase.loadInitialProject(integration, state.user?.emailAddress, state.user?.projects[0].projectId).then((project) => {
-        dispatch(AppAction.projectSuccess(project))
+  useLayoutEffect(() => {
+    if (state.projectDetailStatus === AppStatus.INITIAL && emailAddress && state.user?.projects[0].projectId) {
+      dispatch(AppAction.projectDetailLoading())
+
+      UseCase.loadInitialProject(integration, emailAddress, state.user?.projects[0].projectId).then((project) => {
+        dispatch(AppAction.projectDetailSuccess(project))
       })
     }
-  }, [dispatch, integration, state.projectListStatus, state.projectStatus, state.user])
+  }, [dispatch, integration, state.projectDetailStatus, state.user])
 
   return (
     <div>
