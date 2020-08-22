@@ -6,6 +6,7 @@ import SideBar from "../SideBar/SideBar"
 interface BarContainerProps {
   shouldContainSideBar: Boolean
   pageTitle: string
+  project?: string
 }
 
 interface ContextInterface {
@@ -15,14 +16,14 @@ interface ContextInterface {
 
 export const BarContainerContext = React.createContext({} as ContextInterface)
 
-const BarContainer: FunctionComponent<BarContainerProps> = ({ shouldContainSideBar, pageTitle, children }) => {
+const BarContainer: FunctionComponent<BarContainerProps> = ({ shouldContainSideBar, pageTitle, project, children }) => {
   const [isShowSidebar, setIsShowSidebar] = useState(false)
 
   return (
     <BarContainerContext.Provider value={{ isShowSidebar, setIsShowSidebar }}>
       <div className={styles.BarContainer}>
         <TopBar />
-        {shouldContainSideBar && <SideBar>{children}</SideBar>}
+        {shouldContainSideBar && <SideBar project={project}>{children}</SideBar>}
       </div>
     </BarContainerContext.Provider>
   )

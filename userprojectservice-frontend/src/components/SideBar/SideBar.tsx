@@ -21,9 +21,11 @@ const { SubMenu } = Menu
 const { Sider, Content, Footer } = Layout
 const clientId = "12178522373-e5nmdu6ogip7e70f2sn645j30n55fgke.apps.googleusercontent.com"
 
-interface SideBarProps {}
+interface SideBarProps {
+  project?: string
+}
 
-const SideBar: FunctionComponent<SideBarProps> = ({ children }) => {
+const SideBar: FunctionComponent<SideBarProps> = ({ project, children }) => {
   const onLogoutSuccess = () => {
     window.location.href = "/"
   }
@@ -44,22 +46,22 @@ const SideBar: FunctionComponent<SideBarProps> = ({ children }) => {
       <Sider collapsible collapsed={isShowSidebar} onCollapse={setIsShowSidebar}>
         <Menu defaultSelectedKeys={["1"]} defaultOpenKeys={["sub1"]} mode="inline" theme="dark">
           <Menu.Item key="1" icon={<DashboardOutlined />}>
-            <a href={"/project"}>Dashboard</a>
+            <Link to={{ pathname: "/project/" + project }}>Dashboard</Link>
           </Menu.Item>
           <SubMenu key="sub1" icon={<DesktopOutlined />} title="Integrations">
             <Menu.Item key="sub1-1">
-              <a href={"/integration"}>Git</a>
+              <Link to={{ pathname: "/integration" }}>Git</Link>
             </Menu.Item>
             <SubMenu key="sub2" title="Trello">
               <Menu.Item key="sub2-1">Trello Link 1</Menu.Item>
               <Menu.Item key="sub2-2">Trello Link 2</Menu.Item>
             </SubMenu>
             <Menu.Item key="7">
-              <a href={"/integration"}>Google Drive</a>
+              <Link to={{ pathname: "/integration" }}>Google Drive</Link>
             </Menu.Item>
           </SubMenu>
           <Menu.Item key="14" icon={<StarOutlined />}>
-            All Events
+            <Link to={{ pathname: "/all-events" }}>All Events</Link>
           </Menu.Item>
           <Menu.Item key="8" icon={<ClockCircleOutlined />}>
             Reminders
@@ -68,13 +70,13 @@ const SideBar: FunctionComponent<SideBarProps> = ({ children }) => {
             Project Problems
           </Menu.Item>
           <Menu.Item key="10" icon={<ExportOutlined />}>
-            Export Data
+            <Link to={{ pathname: "/export-data" }}>Export Data</Link>
           </Menu.Item>
           <Menu.Item key="11" icon={<ScheduleOutlined />}>
-            Time Tracking
+            <Link to={{ pathname: "/time-tracking" }}>Time Tracking</Link>
           </Menu.Item>
           <Menu.Item key="12" icon={<ContactsOutlined />}>
-            Contacts
+            <Link to={{ pathname: "/contacts" }}>Contacts</Link>
           </Menu.Item>
           <Menu.Item key="13" icon={<LogoutOutlined />} onClick={signOut}>
             Logout
