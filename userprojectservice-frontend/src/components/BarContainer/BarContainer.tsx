@@ -1,7 +1,8 @@
 import React, { Dispatch, FunctionComponent, SetStateAction, useState } from "react"
 import TopBar from "../TopBar/TopBar"
-import styles from "./BarContainer.module.css"
+// import styles from "./BarContainer.module.css"
 import SideBar from "../SideBar/SideBar"
+import { Layout } from "antd"
 
 interface BarContainerProps {
   shouldContainSideBar: Boolean
@@ -21,10 +22,10 @@ const BarContainer: FunctionComponent<BarContainerProps> = ({ shouldContainSideB
 
   return (
     <BarContainerContext.Provider value={{ isShowSidebar, setIsShowSidebar }}>
-      <div className={styles.BarContainer}>
+      <Layout>
         <TopBar />
         {shouldContainSideBar && <SideBar project={project}>{children}</SideBar>}
-      </div>
+      </Layout>
     </BarContainerContext.Provider>
   )
 }
