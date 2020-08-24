@@ -23,17 +23,15 @@ export interface User {
 }
 
 export interface AppState {
-  projectListStatus: AppStatus
-  projectStatus: AppStatus
-  userStatus: AppStatus
+  projectDetailStatus: AppStatus
+  userDetailStatus: AppStatus
   currentProject: ProjectDetail | null
   user: User | null
 }
 
 const AppInitialState: AppState = {
-  projectListStatus: AppStatus.INITIAL,
-  projectStatus: AppStatus.INITIAL,
-  userStatus: AppStatus.INITIAL,
+  projectDetailStatus: AppStatus.INITIAL,
+  userDetailStatus: AppStatus.INITIAL,
   currentProject: null,
   user: null
 }

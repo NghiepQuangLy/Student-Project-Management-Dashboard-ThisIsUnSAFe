@@ -3,40 +3,40 @@ import { InitialProject, InitialUser } from "../usecase/UseCase"
 export type AppActionType =
   | "PROJECT_LIST_LOADING"
   | "PROJECT_LIST_SUCCESS"
-  | "PROJECT_LOADING"
-  | "PROJECT_SUCCESS"
-  | "USER_LOADING"
-  | "USER_SUCCESS"
+  | "PROJECT_DETAIL_LOADING"
+  | "PROJECT_DETAIL_SUCCESS"
+  | "USER_DETAIL_LOADING"
+  | "USER_DETAIL_SUCCESS"
 
 export interface AppAction<T extends AppActionType, P> {
   type: T
   payload: P
 }
 
-export type ProjectLoadingAction = AppAction<"PROJECT_LOADING", undefined>
+export type ProjectDetailLoadingAction = AppAction<"PROJECT_DETAIL_LOADING", undefined>
 
-export type ProjectSuccessAction = AppAction<"PROJECT_SUCCESS", InitialProject>
+export type ProjectDetailSuccessAction = AppAction<"PROJECT_DETAIL_SUCCESS", InitialProject>
 
-export type UserLoadingAction = AppAction<"USER_LOADING", undefined>
+export type UserDetailLoadingAction = AppAction<"USER_DETAIL_LOADING", undefined>
 
-export type UserSuccessAction = AppAction<"USER_SUCCESS", InitialUser>
+export type UserDetailSuccessAction = AppAction<"USER_DETAIL_SUCCESS", InitialUser>
 
-export const projectLoading = (): ProjectLoadingAction => ({
-  type: "PROJECT_LOADING",
+export const projectDetailLoading = (): ProjectDetailLoadingAction => ({
+  type: "PROJECT_DETAIL_LOADING",
   payload: undefined
 })
 
-export const projectSuccess = (project: InitialProject): ProjectSuccessAction => ({
-  type: "PROJECT_SUCCESS",
+export const projectDetailSuccess = (project: InitialProject): ProjectDetailSuccessAction => ({
+  type: "PROJECT_DETAIL_SUCCESS",
   payload: project
 })
 
-export const userLoading = (): UserLoadingAction => ({
-  type: "USER_LOADING",
+export const userDetailLoading = (): UserDetailLoadingAction => ({
+  type: "USER_DETAIL_LOADING",
   payload: undefined
 })
 
-export const userSuccess = (user: InitialUser): UserSuccessAction => ({
-  type: "USER_SUCCESS",
+export const userDetailSuccess = (user: InitialUser): UserDetailSuccessAction => ({
+  type: "USER_DETAIL_SUCCESS",
   payload: user
 })

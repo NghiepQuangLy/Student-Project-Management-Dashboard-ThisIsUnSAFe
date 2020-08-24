@@ -1,36 +1,22 @@
-import React, { FunctionComponent, useContext } from "react"
-import { BarContainerContext } from "../BarContainer/BarContainer"
-import BurgerButton from "../BurgerButton/BurgerButton"
+import React, { FunctionComponent } from "react"
+import "antd/dist/antd.css"
+import { Layout } from "antd"
 import styles from "./TopBar.module.css"
-import { GoogleLogout } from "react-google-login"
+import { useGoogleAuth } from "../GoogleAuthProvider/GoogleAuthProvider"
 
-interface TopBarProps {
-  shouldContainSideBar: Boolean
-  pageTitle: string
-}
+interface TopBarProps {}
 
-const responseGoogle = () => {
-  window.location.href = "/"
-}
+const { Header } = Layout
 
-const TopBar: FunctionComponent<TopBarProps> = ({ shouldContainSideBar, pageTitle }) => {
-  const { setIsShowSidebar } = useContext(BarContainerContext)
+const TopBar: FunctionComponent<TopBarProps> = ({}) => {
+  const { signOut } = useGoogleAuth()
   return (
-    <div className={styles.TopBar}>
-      {shouldContainSideBar && <BurgerButton onClick={() => setIsShowSidebar(true)} />}
-      <div className={styles.PageTitle}>{pageTitle}</div>
-
-      <GoogleLogout
-        clientId="12178522373-e5nmdu6ogip7e70f2sn645j30n55fgke.apps.googleusercontent.com"
-        buttonText="Logout"
-        onLogoutSuccess={responseGoogle}
-        render={(renderProps) => (
-          <div onClick={renderProps.onClick} className={styles.Logout}>
-            Log Out
-          </div>
-        )}
-      />
-    </div>
+    <Header className={styles.TopBar}>
+      <div className={styles.Logo} />
+      <button className={styles.Logout} onClick={signOut}>
+        Log Out
+      </button>
+    </Header>
   )
 }
 export default TopBar
