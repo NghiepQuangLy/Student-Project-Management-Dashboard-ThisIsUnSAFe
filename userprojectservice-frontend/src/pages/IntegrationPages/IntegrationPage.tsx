@@ -5,6 +5,7 @@ import * as AppAction from "../../state/AppAction"
 import { AppStatus } from "../../models/AppStatus"
 import BarContainer from "../../components/BarContainer/BarContainer"
 import { useGoogleAuth } from "../../components/GoogleAuthProvider/GoogleAuthProvider"
+import styles from "./Integration.module.css"
 
 const IntegrationPage: Page = ({ integration, state, dispatch }) => {
   const { googleUser } = useGoogleAuth()
@@ -18,15 +19,16 @@ const IntegrationPage: Page = ({ integration, state, dispatch }) => {
         dispatch(AppAction.projectDetailSuccess(project))
       })
     }
-  }, [dispatch, integration, state.projectDetailStatus, state.user])
+  }, [dispatch, integration, state.projectDetailStatus, state.user, emailAddress])
 
   return (
     <div>
       <BarContainer shouldContainSideBar={true} pageTitle="Integrations Page">
-        <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
-          Bill is a cat.
-        </div>
-        <iframe src="http://localhost:3000" />
+        {/*<div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>*/}
+        {/*  Bill is a cat.*/}
+        {/*</div>*/}
+        <iframe className={styles.Iframe} src="http://localhost:3000/Example" scrolling={"no"} />
+        {/*<iframe className={styles.Iframe} src="http://localhost:3000/" scrolling={"no"} />*/}
       </BarContainer>
     </div>
   )

@@ -16,6 +16,7 @@ import {
 import { useGoogleLogout } from "react-google-login"
 import Copyright from "../../pages/Resources/Styles"
 import { Link } from "react-router-dom"
+import styles from "./SideBar.module.css"
 
 const { SubMenu } = Menu
 const { Sider, Content, Footer } = Layout
@@ -42,8 +43,8 @@ const SideBar: FunctionComponent<SideBarProps> = ({ project, children }) => {
   const { isShowSidebar, setIsShowSidebar } = useContext(BarContainerContext)
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
-      <Sider collapsible collapsed={isShowSidebar} onCollapse={setIsShowSidebar}>
+    <Layout style={{ minHeight: "100vh", marginTop: "64px" }}>
+      <Sider collapsible collapsed={isShowSidebar} onCollapse={setIsShowSidebar} className={styles.SideBar}>
         <Menu defaultSelectedKeys={["1"]} defaultOpenKeys={["sub1"]} mode="inline" theme="dark">
           <Menu.Item key="1" icon={<DashboardOutlined />}>
             <Link to={{ pathname: "/project/" + project }}>Dashboard</Link>
@@ -55,6 +56,9 @@ const SideBar: FunctionComponent<SideBarProps> = ({ project, children }) => {
             <SubMenu key="sub2" title="Trello">
               <Menu.Item key="sub2-1">Trello Link 1</Menu.Item>
               <Menu.Item key="sub2-2">Trello Link 2</Menu.Item>
+              <Menu.Item key="sub2-3">Trello Link 2</Menu.Item>
+              <Menu.Item key="sub2-4">Trello Link 2</Menu.Item>
+              <Menu.Item key="sub2-5">Trello Link 2</Menu.Item>
             </SubMenu>
             <Menu.Item key="7">
               <Link to={{ pathname: "/integration" }}>Google Drive</Link>
@@ -84,7 +88,7 @@ const SideBar: FunctionComponent<SideBarProps> = ({ project, children }) => {
         </Menu>
       </Sider>
       <Layout className="site-layout">
-        <Content style={{ margin: "0 16px" }}>
+        <Content style={{ margin: "10px 50px" }}>
           <Breadcrumb style={{ margin: "16px 0" }}>
             <Breadcrumb.Item>
               <Link to={{ pathname: "/projects" }}>Project list</Link>

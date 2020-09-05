@@ -17,6 +17,7 @@ import ExportDataPage from "./pages/IntegrationPages/ExportDataPage"
 import TimeTrackingPage from "./pages/IntegrationPages/TimeTrackingPage"
 import ContactsPage from "./pages/IntegrationPages/ContactsPage"
 import GoogleAuthProvider from "./components/GoogleAuthProvider/GoogleAuthProvider"
+import Example from "./pages/Example/Example"
 
 setBasepath(process.env.REACT_APP_CONTEXT_PATH || "")
 
@@ -68,6 +69,9 @@ const App: FunctionComponent<AppProps> = ({ integration }) => {
             </Route>
             <Route path="/integration">
               <IntegrationPage integration={integration} state={state} dispatch={dispatch} />
+            </Route>
+            <Route path="/example">
+              <Example integration={integration} state={state} dispatch={dispatch} />
             </Route>
             <Route path="/">
               <Login integration={integration} state={state} dispatch={dispatch} />

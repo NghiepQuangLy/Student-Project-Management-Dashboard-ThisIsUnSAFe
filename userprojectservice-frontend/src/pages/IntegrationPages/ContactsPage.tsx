@@ -18,7 +18,7 @@ const ContactsPage: Page = ({ integration, state, dispatch }) => {
         dispatch(AppAction.projectDetailSuccess(project))
       })
     }
-  }, [dispatch, integration, state.projectDetailStatus, state.user])
+  }, [dispatch, integration, state.projectDetailStatus, state.user, emailAddress])
 
   return (
     <div>
