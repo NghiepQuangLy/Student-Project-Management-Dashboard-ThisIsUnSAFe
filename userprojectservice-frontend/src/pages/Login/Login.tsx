@@ -13,7 +13,7 @@ const Login: Page = ({ integration, state, dispatch }) => {
 
   return (
     <div className={styles.Login}>
-      {emailAddress && <Redirect to="/Projects" />}
+      {emailAddress && <Redirect to="/projects" />}
       {!isInitialized ? (
         <Loading />
       ) : (

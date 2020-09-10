@@ -18,7 +18,17 @@ import Copyright from "../../pages/Resources/Styles"
 import { Link, useHistory } from "react-router-dom"
 import styles from "./SideBar.module.css"
 import { ProjectDetail } from "../../state/AppState"
-import { PROJECT_ID_QUERY, TRELLO_ID_QUERY } from "../../util/useQuery"
+import {
+  GIT_ID_QUERY,
+  GOOGLE_DRIVE_ID_QUERY,
+  PROJECT_DETAIL_GIT_PATH,
+  PROJECT_DETAIL_GOOGLE_DRIVE_PATH,
+  PROJECT_DETAIL_PATH,
+  PROJECT_DETAIL_TRELLO_PATH,
+  PROJECT_ID_QUERY,
+  TRELLO_ID_QUERY,
+  useQuery
+} from "../../util/useQuery"
 
 const { SubMenu } = Menu
 const { Sider, Content, Footer } = Layout
@@ -26,6 +36,16 @@ const clientId = "12178522373-e5nmdu6ogip7e70f2sn645j30n55fgke.apps.googleuserco
 
 interface SideBarProps {
   projectDetails?: ProjectDetail
+}
+
+const SideBarKey = {
+  landing: "menu-item-landing",
+  linkGit: "sub-menu-git-item-link-new",
+  git: "sub-menu-git-item",
+  linkTrello: "sub-menu-trello-item-link-new",
+  trello: "sub-menu-trello-item",
+  linkGoogleDrive: "sub-menu-googledrive-item-link-new",
+  googleDrive: "sub-menu-googledrive-item"
 }
 
 const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) => {
@@ -50,32 +70,64 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
     history.push(path)
   }
 
+  const currentPath = window.location.pathname
+  const query: URLSearchParams = useQuery()
+  let defaultSelectedKey = SideBarKey.landing
+  let defaultOpenKeys = ["menu-item-integration"]
+
+  switch (currentPath) {
+    case PROJECT_DETAIL_GIT_PATH: {
+      const id = query?.get(GIT_ID_QUERY)
+      defaultSelectedKey = id ? `${SideBarKey.git}-${id}` : SideBarKey.linkGit
+      defaultOpenKeys.push("sub-menu-git")
+      break
+    }
+    case PROJECT_DETAIL_TRELLO_PATH: {
+      const id = query?.get(TRELLO_ID_QUERY)
+      defaultSelectedKey = id ? `${SideBarKey.trello}-${id}` : SideBarKey.linkTrello
+      defaultOpenKeys.push("sub-menu-trello")
+      break
+    }
+    case PROJECT_DETAIL_GOOGLE_DRIVE_PATH: {
+      const id = query?.get(GOOGLE_DRIVE_ID_QUERY)
+      defaultSelectedKey = id ? `${SideBarKey.googleDrive}-${id}` : SideBarKey.linkGoogleDrive
+      defaultOpenKeys.push("sub-menu-googledrive")
+      break
+    }
+    default: {
+      break
+    }
+  }
+
   return (
     <Layout style={{ minHeight: "100vh", marginTop: "64px" }}>
       <Sider collapsible collapsed={isShowSidebar} onCollapse={setIsShowSidebar} className={styles.SideBar}>
-        <Menu defaultSelectedKeys={["1"]} defaultOpenKeys={["sub1"]} mode="inline" theme="dark">
-          <Menu.Item key="1" icon={<DashboardOutlined />}>
-            <Link to={{ pathname: "/project/" + projectDetails }}>Dashboard</Link>
+        <Menu defaultSelectedKeys={[defaultSelectedKey]} defaultOpenKeys={defaultOpenKeys} mode="inline" theme="dark">
+          <Menu.Item
+            key={SideBarKey.landing}
+            icon={<DashboardOutlined />}
+            onClick={() => handleOnShowProjectDetailClicked(`${PROJECT_DETAIL_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)}
+          >
+            Dashboard
           </Menu.Item>
-          <SubMenu key="sub1" icon={<DesktopOutlined />} title="Integrations">
-            <Menu.Item key="sub1-1">
-              <Link to={{ pathname: "/integration" }}>Git</Link>
-            </Menu.Item>
-            <SubMenu key="sub-menu-trello" title="Trello">
+          <SubMenu key="menu-item-integration" icon={<DesktopOutlined />} title="Integrations">
+            <SubMenu key="sub-menu-git" title="Git">
               <Menu.Item
-                key="sub-menu-trello-item-link-new"
-                onClick={() => handleOnShowProjectDetailClicked(`/project/trello?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)}
+                key={SideBarKey.linkGit}
+                onClick={() =>
+                  handleOnShowProjectDetailClicked(`${PROJECT_DETAIL_GIT_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)
+                }
               >
                 + Link new
               </Menu.Item>
-              {projectDetails?.projectTrelloIds &&
-                projectDetails?.projectTrelloIds.map((id) => {
+              {projectDetails?.projectGitIds &&
+                projectDetails?.projectGitIds.map((id) => {
                   return (
                     <Menu.Item
-                      key={`sub-menu-trello-item-${id}`}
+                      key={`${SideBarKey.git}-${id}`}
                       onClick={() =>
                         handleOnShowProjectDetailClicked(
-                          `/project/trello?${PROJECT_ID_QUERY}=${projectDetails?.projectId}&${TRELLO_ID_QUERY}=${id}`
+                          `${PROJECT_DETAIL_GIT_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}&${GIT_ID_QUERY}=${id}`
                         )
                       }
                     >
@@ -84,9 +136,56 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
                   )
                 })}
             </SubMenu>
-            <Menu.Item key="7">
-              <Link to={{ pathname: "/integration" }}>Google Drive</Link>
-            </Menu.Item>
+            <SubMenu key="sub-menu-trello" title="Trello">
+              <Menu.Item
+                key={SideBarKey.linkTrello}
+                onClick={() =>
+                  handleOnShowProjectDetailClicked(`${PROJECT_DETAIL_TRELLO_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)
+                }
+              >
+                + Link new
+              </Menu.Item>
+              {projectDetails?.projectTrelloIds &&
+                projectDetails?.projectTrelloIds.map((id) => {
+                  return (
+                    <Menu.Item
+                      key={`${SideBarKey.linkTrello}-${id}`}
+                      onClick={() =>
+                        handleOnShowProjectDetailClicked(
+                          `${PROJECT_DETAIL_TRELLO_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}&${TRELLO_ID_QUERY}=${id}`
+                        )
+                      }
+                    >
+                      {id}
+                    </Menu.Item>
+                  )
+                })}
+            </SubMenu>
+            <SubMenu key="sub-menu-googledrive" title="Google Drive">
+              <Menu.Item
+                key={SideBarKey.linkGoogleDrive}
+                onClick={() =>
+                  handleOnShowProjectDetailClicked(`${PROJECT_DETAIL_GOOGLE_DRIVE_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)
+                }
+              >
+                + Link new
+              </Menu.Item>
+              {projectDetails?.projectGoogleDriveIds &&
+                projectDetails?.projectGoogleDriveIds.map((id) => {
+                  return (
+                    <Menu.Item
+                      key={`${SideBarKey.googleDrive}-${id}`}
+                      onClick={() =>
+                        handleOnShowProjectDetailClicked(
+                          `${PROJECT_DETAIL_GOOGLE_DRIVE_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}&${GOOGLE_DRIVE_ID_QUERY}=${id}`
+                        )
+                      }
+                    >
+                      {id}
+                    </Menu.Item>
+                  )
+                })}
+            </SubMenu>
           </SubMenu>
           <Menu.Item key="14" icon={<StarOutlined />}>
             <Link to={{ pathname: "/all-events" }}>All Events</Link>

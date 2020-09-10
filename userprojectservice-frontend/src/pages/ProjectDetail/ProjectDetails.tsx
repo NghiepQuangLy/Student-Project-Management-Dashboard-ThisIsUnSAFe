@@ -7,7 +7,8 @@ import { Redirect } from "react-router-dom"
 import BarContainer from "../../components/BarContainer/BarContainer"
 import ProjectDetailsLanding from "../../components/ProjectDetailsLanding/ProjectDetailsLanding"
 import { useGoogleAuth } from "../../components/GoogleAuthProvider/GoogleAuthProvider"
-import { PROJECT_ID_QUERY, useQuery } from "../../util/useQuery"
+import { PROJECT_DETAIL_PATH, PROJECT_ID_QUERY, useQuery } from "../../util/useQuery"
+import ProjectDetailsIntegration from "../../components/ProjectDetailsIntegration/ProjectDetailsIntegration"
 
 const ProjectDetails: Page = ({ integration, state, dispatch }) => {
   const { googleUser, isInitialized } = useGoogleAuth()
@@ -15,8 +16,7 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
 
   const query: URLSearchParams = useQuery()
   const projectId = query?.get(PROJECT_ID_QUERY)
-
-  console.log(window.location.pathname)
+  const currentPath = window.location.pathname
 
   useLayoutEffect(() => {
     if (state.projectDetailStatus === AppStatus.INITIAL && emailAddress && projectId) {
@@ -40,8 +40,10 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
           <h1>Loading</h1>
         ) : state.projectDetailStatus === AppStatus.FAILURE ? (
           <h1>Something went wrong.</h1>
-        ) : (
+        ) : currentPath === PROJECT_DETAIL_PATH ? (
           <ProjectDetailsLanding state={state} />
+        ) : (
+          <ProjectDetailsIntegration path={currentPath} />
         )}
       </BarContainer>
     </div>
