@@ -1,10 +1,12 @@
-import { InitialProject, InitialUser } from "../usecase/UseCase"
+import { InitialUser } from "../usecase/UseCase"
+import { ProjectResponse } from "../models/ProjectResponse"
 
 export type AppActionType =
   | "PROJECT_LIST_LOADING"
   | "PROJECT_LIST_SUCCESS"
   | "PROJECT_DETAIL_LOADING"
   | "PROJECT_DETAIL_SUCCESS"
+  | "PROJECT_DETAIL_FAILURE"
   | "USER_DETAIL_LOADING"
   | "USER_DETAIL_SUCCESS"
 
@@ -15,7 +17,9 @@ export interface AppAction<T extends AppActionType, P> {
 
 export type ProjectDetailLoadingAction = AppAction<"PROJECT_DETAIL_LOADING", undefined>
 
-export type ProjectDetailSuccessAction = AppAction<"PROJECT_DETAIL_SUCCESS", InitialProject>
+export type ProjectDetailSuccessAction = AppAction<"PROJECT_DETAIL_SUCCESS", ProjectResponse>
+
+export type ProjectDetailFailureAction = AppAction<"PROJECT_DETAIL_FAILURE", undefined>
 
 export type UserDetailLoadingAction = AppAction<"USER_DETAIL_LOADING", undefined>
 
@@ -26,9 +30,14 @@ export const projectDetailLoading = (): ProjectDetailLoadingAction => ({
   payload: undefined
 })
 
-export const projectDetailSuccess = (project: InitialProject): ProjectDetailSuccessAction => ({
+export const projectDetailSuccess = (project: ProjectResponse): ProjectDetailSuccessAction => ({
   type: "PROJECT_DETAIL_SUCCESS",
   payload: project
+})
+
+export const projectDetailFailure = (): ProjectDetailFailureAction => ({
+  type: "PROJECT_DETAIL_FAILURE",
+  payload: undefined
 })
 
 export const userDetailLoading = (): UserDetailLoadingAction => ({

@@ -12,8 +12,15 @@ const MockIntegration: Integration = {
           projectGoogleFolderIds: ["1", "tesre22"],
           projectTrelloIds: ["1", "2", "50", "501", "tesre22"]
         })
-      }, 3000)
+      }, 1000)
     }),
+
+  // getProject: async () =>
+  //   new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       reject({})
+  //     }, 1000)
+  //   }),
 
   getUser: async () =>
     new Promise((resolve) => {

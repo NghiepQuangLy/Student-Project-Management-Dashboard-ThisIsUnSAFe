@@ -1,5 +1,6 @@
 export enum AppStatus {
   INITIAL,
   LOADING,
-  SUCCESS
+  SUCCESS,
+  FAILURE
 }
