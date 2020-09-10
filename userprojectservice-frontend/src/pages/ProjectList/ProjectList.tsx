@@ -25,7 +25,6 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
   const emailAddress = googleUser?.getBasicProfile()?.getEmail()
   console.log(isInitialized)
   console.log(emailAddress)
-  console.log(state.userDetailStatus)
 
   useLayoutEffect(() => {
     if (state.userDetailStatus === AppStatus.INITIAL && emailAddress) {
@@ -46,7 +45,7 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
 
   return (
     <div>
-      <BarContainer shouldContainSideBar={false} pageTitle="Project List" />
+      <BarContainer shouldContainSideBar={false} />
 
       {!isInitialized || (!emailAddress && <Redirect to="/" />)}
       <div>

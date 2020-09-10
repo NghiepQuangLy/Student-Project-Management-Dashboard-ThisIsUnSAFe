@@ -20,7 +20,7 @@ const ContactsPage: Page = ({ integration, state, dispatch }) => {
 
   return (
     <div>
-      <BarContainer shouldContainSideBar={true} pageTitle="Integrations Page">
+      <BarContainer shouldContainSideBar={true}>
         <div className="site-layout-background">Contacts Page.</div>
         <iframe src="http://localhost:3000" width="1450" height="800" />
       </BarContainer>

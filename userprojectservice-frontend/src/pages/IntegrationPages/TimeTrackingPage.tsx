@@ -20,7 +20,7 @@ const TimeTrackingPage: Page = ({ integration, state, dispatch }) => {
 
   return (
     <div>
-      <BarContainer shouldContainSideBar={true} pageTitle="Integrations Page">
+      <BarContainer shouldContainSideBar={true}>
         <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
           Time Tracking Page.
         </div>

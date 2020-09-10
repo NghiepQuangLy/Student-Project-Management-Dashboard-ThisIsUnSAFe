@@ -15,20 +15,24 @@ import {
 } from "@ant-design/icons"
 import { useGoogleLogout } from "react-google-login"
 import Copyright from "../../pages/Resources/Styles"
-import { Link } from "react-router-dom"
+import { Link, useHistory } from "react-router-dom"
 import styles from "./SideBar.module.css"
+import { ProjectDetail } from "../../state/AppState"
+import { PROJECT_ID_QUERY, TRELLO_ID_QUERY } from "../../util/useQuery"
 
 const { SubMenu } = Menu
 const { Sider, Content, Footer } = Layout
 const clientId = "12178522373-e5nmdu6ogip7e70f2sn645j30n55fgke.apps.googleusercontent.com"
 
 interface SideBarProps {
-  project?: string
+  projectDetails?: ProjectDetail
 }
 
-const SideBar: FunctionComponent<SideBarProps> = ({ project, children }) => {
+const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) => {
+  const history = useHistory()
+
   const onLogoutSuccess = () => {
-    window.location.href = "/"
+    history.push("/")
   }
   const onFailure = () => {
     console.log("Logout failed")
@@ -42,23 +46,43 @@ const SideBar: FunctionComponent<SideBarProps> = ({ project, children }) => {
 
   const { isShowSidebar, setIsShowSidebar } = useContext(BarContainerContext)
 
+  const handleOnShowProjectDetailClicked = (path: string) => {
+    history.push(path)
+  }
+
   return (
     <Layout style={{ minHeight: "100vh", marginTop: "64px" }}>
       <Sider collapsible collapsed={isShowSidebar} onCollapse={setIsShowSidebar} className={styles.SideBar}>
         <Menu defaultSelectedKeys={["1"]} defaultOpenKeys={["sub1"]} mode="inline" theme="dark">
           <Menu.Item key="1" icon={<DashboardOutlined />}>
-            <Link to={{ pathname: "/project/" + project }}>Dashboard</Link>
+            <Link to={{ pathname: "/project/" + projectDetails }}>Dashboard</Link>
           </Menu.Item>
           <SubMenu key="sub1" icon={<DesktopOutlined />} title="Integrations">
             <Menu.Item key="sub1-1">
               <Link to={{ pathname: "/integration" }}>Git</Link>
             </Menu.Item>
-            <SubMenu key="sub2" title="Trello">
-              <Menu.Item key="sub2-1">Trello Link 1</Menu.Item>
-              <Menu.Item key="sub2-2">Trello Link 2</Menu.Item>
-              <Menu.Item key="sub2-3">Trello Link 2</Menu.Item>
-              <Menu.Item key="sub2-4">Trello Link 2</Menu.Item>
-              <Menu.Item key="sub2-5">Trello Link 2</Menu.Item>
+            <SubMenu key="sub-menu-trello" title="Trello">
+              <Menu.Item
+                key="sub-menu-trello-item-link-new"
+                onClick={() => handleOnShowProjectDetailClicked(`/project/trello?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)}
+              >
+                + Link new
+              </Menu.Item>
+              {projectDetails?.projectTrelloIds &&
+                projectDetails?.projectTrelloIds.map((id) => {
+                  return (
+                    <Menu.Item
+                      key={`sub-menu-trello-item-${id}`}
+                      onClick={() =>
+                        handleOnShowProjectDetailClicked(
+                          `/project/trello?${PROJECT_ID_QUERY}=${projectDetails?.projectId}&${TRELLO_ID_QUERY}=${id}`
+                        )
+                      }
+                    >
+                      {id}
+                    </Menu.Item>
+                  )
+                })}
             </SubMenu>
             <Menu.Item key="7">
               <Link to={{ pathname: "/integration" }}>Google Drive</Link>
