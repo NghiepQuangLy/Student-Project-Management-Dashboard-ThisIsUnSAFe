@@ -3,15 +3,14 @@ import { BarContainerContext } from "../BarContainer/BarContainer"
 import { Breadcrumb, Layout, Menu } from "antd"
 import "antd/dist/antd.css"
 import {
-  DashboardOutlined,
   ClockCircleOutlined,
-  DesktopOutlined,
-  WarningOutlined,
-  ExportOutlined,
-  ScheduleOutlined,
   ContactsOutlined,
+  DashboardOutlined,
+  DesktopOutlined,
+  ExportOutlined,
   LogoutOutlined,
-  StarOutlined
+  ScheduleOutlined,
+  WarningOutlined
 } from "@ant-design/icons"
 import { useGoogleLogout } from "react-google-login"
 import Copyright from "../../pages/Resources/Styles"
@@ -21,9 +20,14 @@ import { ProjectDetail } from "../../state/AppState"
 import {
   GIT_ID_QUERY,
   GOOGLE_DRIVE_ID_QUERY,
+  PROJECT_DETAIL_CONSTRACTS_PATH,
+  PROJECT_DETAIL_EXPORT_DATA_PATH,
   PROJECT_DETAIL_GIT_PATH,
   PROJECT_DETAIL_GOOGLE_DRIVE_PATH,
   PROJECT_DETAIL_PATH,
+  PROJECT_DETAIL_PROJECT_PROBLEMS_PATH,
+  PROJECT_DETAIL_REMINDERS_PATH,
+  PROJECT_DETAIL_TIME_TRACKING_PATH,
   PROJECT_DETAIL_TRELLO_PATH,
   PROJECT_ID_QUERY,
   TRELLO_ID_QUERY,
@@ -44,8 +48,14 @@ const SideBarKey = {
   git: "sub-menu-git-item",
   linkTrello: "sub-menu-trello-item-link-new",
   trello: "sub-menu-trello-item",
-  linkGoogleDrive: "sub-menu-googledrive-item-link-new",
-  googleDrive: "sub-menu-googledrive-item"
+  linkGoogleDrive: "sub-menu-google-drive-item-link-new",
+  googleDrive: "sub-menu-google-drive-item",
+  reminder: "menu-item-reminders",
+  projectProblems: "menu-item-project-problems",
+  exportData: "menu-item-export-data",
+  timeTracking: "menu-item-time-tracking",
+  contacts: "menu-item-contacts",
+  logOut: "menu-item-logout"
 }
 
 const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) => {
@@ -74,24 +84,53 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
   const query: URLSearchParams = useQuery()
   let defaultSelectedKey = SideBarKey.landing
   let defaultOpenKeys = ["menu-item-integration"]
+  let currentPathName = "Dashboard"
 
   switch (currentPath) {
     case PROJECT_DETAIL_GIT_PATH: {
       const id = query?.get(GIT_ID_QUERY)
       defaultSelectedKey = id ? `${SideBarKey.git}-${id}` : SideBarKey.linkGit
       defaultOpenKeys.push("sub-menu-git")
+      currentPathName = "Git"
       break
     }
     case PROJECT_DETAIL_TRELLO_PATH: {
       const id = query?.get(TRELLO_ID_QUERY)
       defaultSelectedKey = id ? `${SideBarKey.trello}-${id}` : SideBarKey.linkTrello
       defaultOpenKeys.push("sub-menu-trello")
+      currentPathName = "Trello"
       break
     }
     case PROJECT_DETAIL_GOOGLE_DRIVE_PATH: {
       const id = query?.get(GOOGLE_DRIVE_ID_QUERY)
       defaultSelectedKey = id ? `${SideBarKey.googleDrive}-${id}` : SideBarKey.linkGoogleDrive
       defaultOpenKeys.push("sub-menu-googledrive")
+      currentPathName = "Google Drive"
+      break
+    }
+    case PROJECT_DETAIL_REMINDERS_PATH: {
+      defaultSelectedKey = SideBarKey.reminder
+      currentPathName = "Reminders"
+      break
+    }
+    case PROJECT_DETAIL_PROJECT_PROBLEMS_PATH: {
+      defaultSelectedKey = SideBarKey.projectProblems
+      currentPathName = "Project Problems"
+      break
+    }
+    case PROJECT_DETAIL_EXPORT_DATA_PATH: {
+      defaultSelectedKey = SideBarKey.exportData
+      currentPathName = "Export Data"
+      break
+    }
+    case PROJECT_DETAIL_TIME_TRACKING_PATH: {
+      defaultSelectedKey = SideBarKey.timeTracking
+      currentPathName = "Time Tracking"
+      break
+    }
+    case PROJECT_DETAIL_CONSTRACTS_PATH: {
+      defaultSelectedKey = SideBarKey.contacts
+      currentPathName = "Contacts"
       break
     }
     default: {
@@ -149,7 +188,7 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
                 projectDetails?.projectTrelloIds.map((id) => {
                   return (
                     <Menu.Item
-                      key={`${SideBarKey.linkTrello}-${id}`}
+                      key={`${SideBarKey.trello}-${id}`}
                       onClick={() =>
                         handleOnShowProjectDetailClicked(
                           `${PROJECT_DETAIL_TRELLO_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}&${TRELLO_ID_QUERY}=${id}`
@@ -187,25 +226,52 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
                 })}
             </SubMenu>
           </SubMenu>
-          <Menu.Item key="14" icon={<StarOutlined />}>
-            <Link to={{ pathname: "/all-events" }}>All Events</Link>
-          </Menu.Item>
-          <Menu.Item key="8" icon={<ClockCircleOutlined />}>
+          <Menu.Item
+            key={SideBarKey.reminder}
+            icon={<ClockCircleOutlined />}
+            onClick={() =>
+              handleOnShowProjectDetailClicked(`${PROJECT_DETAIL_REMINDERS_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)
+            }
+          >
             Reminders
           </Menu.Item>
-          <Menu.Item key="9" icon={<WarningOutlined />}>
+          <Menu.Item
+            key={SideBarKey.projectProblems}
+            icon={<WarningOutlined />}
+            onClick={() =>
+              handleOnShowProjectDetailClicked(`${PROJECT_DETAIL_PROJECT_PROBLEMS_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)
+            }
+          >
             Project Problems
           </Menu.Item>
-          <Menu.Item key="10" icon={<ExportOutlined />}>
-            <Link to={{ pathname: "/export-data" }}>Export Data</Link>
+          <Menu.Item
+            key={SideBarKey.exportData}
+            icon={<ExportOutlined />}
+            onClick={() =>
+              handleOnShowProjectDetailClicked(`${PROJECT_DETAIL_EXPORT_DATA_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)
+            }
+          >
+            Export Data
           </Menu.Item>
-          <Menu.Item key="11" icon={<ScheduleOutlined />}>
-            <Link to={{ pathname: "/time-tracking" }}>Time Tracking</Link>
+          <Menu.Item
+            key={SideBarKey.timeTracking}
+            icon={<ScheduleOutlined />}
+            onClick={() =>
+              handleOnShowProjectDetailClicked(`${PROJECT_DETAIL_TIME_TRACKING_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)
+            }
+          >
+            Time Tracking
           </Menu.Item>
-          <Menu.Item key="12" icon={<ContactsOutlined />}>
-            <Link to={{ pathname: "/contacts" }}>Contacts</Link>
+          <Menu.Item
+            key={SideBarKey.contacts}
+            icon={<ContactsOutlined />}
+            onClick={() =>
+              handleOnShowProjectDetailClicked(`${PROJECT_DETAIL_CONSTRACTS_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)
+            }
+          >
+            Contacts
           </Menu.Item>
-          <Menu.Item key="13" icon={<LogoutOutlined />} onClick={signOut}>
+          <Menu.Item key={SideBarKey.logOut} icon={<LogoutOutlined />} onClick={signOut}>
             Logout
           </Menu.Item>
         </Menu>
@@ -214,9 +280,9 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
         <Content style={{ margin: "10px 50px" }}>
           <Breadcrumb style={{ margin: "16px 0" }}>
             <Breadcrumb.Item>
-              <Link to={{ pathname: "/projects" }}>Project list</Link>
+              <Link to={{ pathname: "/projects" }}>Project List</Link>
             </Breadcrumb.Item>
-            <Breadcrumb.Item>Bill</Breadcrumb.Item>
+            <Breadcrumb.Item>{currentPathName}</Breadcrumb.Item>
           </Breadcrumb>
           {children}
         </Content>

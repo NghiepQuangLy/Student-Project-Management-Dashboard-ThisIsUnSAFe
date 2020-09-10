@@ -7,10 +7,6 @@ import AppInitialState from "./state/AppState"
 import { setBasepath } from "hookrouter"
 import ProjectList from "./pages/ProjectList/ProjectList"
 import ProjectDetails from "./pages/ProjectDetail/ProjectDetails"
-import AllEventsPage from "./pages/IntegrationPages/AllEventsPage"
-import ExportDataPage from "./pages/IntegrationPages/ExportDataPage"
-import TimeTrackingPage from "./pages/IntegrationPages/TimeTrackingPage"
-import ContactsPage from "./pages/IntegrationPages/ContactsPage"
 import GoogleAuthProvider from "./components/GoogleAuthProvider/GoogleAuthProvider"
 import Example from "./pages/Example/Example"
 import { PROJECT_DETAIL_PATH } from "./util/useQuery"
@@ -38,18 +34,6 @@ const App: FunctionComponent<AppProps> = ({ integration }) => {
             </Route>
             <Route path={`${PROJECT_DETAIL_PATH}`}>
               <ProjectDetails integration={integration} state={state} dispatch={dispatch} />
-            </Route>
-            <Route path="/all-events">
-              <AllEventsPage integration={integration} state={state} dispatch={dispatch} />
-            </Route>
-            <Route path="/export-data">
-              <ExportDataPage integration={integration} state={state} dispatch={dispatch} />
-            </Route>
-            <Route path="/time-tracking">
-              <TimeTrackingPage integration={integration} state={state} dispatch={dispatch} />
-            </Route>
-            <Route path="/contacts">
-              <ContactsPage integration={integration} state={state} dispatch={dispatch} />
             </Route>
             <Route path="/example">
               <Example integration={integration} state={state} dispatch={dispatch} />
