@@ -28,6 +28,19 @@
   border: none;
 }
 
+.Projects {
+  position: absolute;
+  right: 0;
+  padding-right: 11em;
+  font-size: 11pt;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  background-color: Transparent;
+  font-family: "RobotoCondensed";
+  border: none;
+}
+
 .Logout:hover {
   opacity: 0.7;
 }
