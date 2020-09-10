@@ -15,6 +15,13 @@ const MockIntegration: Integration = {
       }, 3000)
     }),
 
+  // getProject: async () =>
+  //   new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       reject({})
+  //     }, 1000)
+  //   }),
+
   getUser: async () =>
     new Promise((resolve) => {
       setTimeout(() => {

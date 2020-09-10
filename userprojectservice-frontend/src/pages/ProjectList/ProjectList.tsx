@@ -1,7 +1,7 @@
 import React, { useLayoutEffect } from "react"
 import "./ProjectList.module.css"
 import { Page } from "../Page"
-import { Link, Redirect } from "react-router-dom"
+import { Redirect, useHistory } from "react-router-dom"
 import * as UseCase from "../../usecase/UseCase"
 import * as AppAction from "../../state/AppAction"
 import { AppStatus } from "../../models/AppStatus"
@@ -14,14 +14,18 @@ import Box from "@material-ui/core/Box"
 import Copyright, { useStyles } from "../Resources/Styles"
 import BarContainer from "../../components/BarContainer/BarContainer"
 import { useGoogleAuth } from "../../components/GoogleAuthProvider/GoogleAuthProvider"
+import { PROJECT_ID_QUERY } from "../../util/useQuery"
 
 const ProjectList: Page = ({ integration, state, dispatch }) => {
+  const history = useHistory()
+
   const isEmpty = state.userDetailStatus === AppStatus.SUCCESS && state.user?.projects.length === 0
 
   const { googleUser, isInitialized } = useGoogleAuth()
   const emailAddress = googleUser?.getBasicProfile()?.getEmail()
   console.log(isInitialized)
   console.log(emailAddress)
+  console.log(state.userDetailStatus)
 
   useLayoutEffect(() => {
     if (state.userDetailStatus === AppStatus.INITIAL && emailAddress) {
@@ -31,6 +35,10 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
       })
     }
   }, [dispatch, integration, state.userDetailStatus, state.user, isInitialized, emailAddress])
+
+  const handleOnShowProjectDetailsClicked = (projectId: String) => {
+    history.push(`/project?${PROJECT_ID_QUERY}=${projectId}`)
+  }
 
   // Page Styling
   const classes = useStyles()
@@ -93,16 +101,10 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
                           {state.user &&
                             state.user.projects.map((item) => {
                               return (
-                                <Link
-                                  key={item.projectId}
-                                  to={{
-                                    pathname: `/project/${item.projectId}`,
-                                    state: { from: "item.projectId" }
-                                  }}
-                                >
+                                <div key={item.projectId} onClick={() => handleOnShowProjectDetailsClicked(item.projectId)}>
                                   {"projectId: " + item.projectId + "|projectName:" + item.projectName}
                                   <br />
-                                </Link>
+                                </div>
                               )
                             })}
                         </List>

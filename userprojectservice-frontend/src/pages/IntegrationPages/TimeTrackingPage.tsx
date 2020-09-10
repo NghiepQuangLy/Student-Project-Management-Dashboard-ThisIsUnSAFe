@@ -1,7 +1,5 @@
 import React, { useLayoutEffect } from "react"
 import { Page } from "../Page"
-import * as UseCase from "../../usecase/UseCase"
-import * as AppAction from "../../state/AppAction"
 import { AppStatus } from "../../models/AppStatus"
 import BarContainer from "../../components/BarContainer/BarContainer"
 import { useGoogleAuth } from "../../components/GoogleAuthProvider/GoogleAuthProvider"
@@ -12,11 +10,11 @@ const TimeTrackingPage: Page = ({ integration, state, dispatch }) => {
 
   useLayoutEffect(() => {
     if (state.projectDetailStatus === AppStatus.INITIAL && emailAddress && state.user?.projects[0].projectId) {
-      dispatch(AppAction.projectDetailLoading())
-
-      UseCase.loadInitialProject(integration, emailAddress, state.user?.projects[0].projectId).then((project) => {
-        dispatch(AppAction.projectDetailSuccess(project))
-      })
+      // dispatch(AppAction.projectDetailLoading())
+      //
+      // UseCase.loadInitialProject(integration, emailAddress, state.user?.projects[0].projectId).then((project) => {
+      //   dispatch(AppAction.projectDetailSuccess(project))
+      // })
     }
   }, [dispatch, integration, state.projectDetailStatus, state.user, emailAddress])
 

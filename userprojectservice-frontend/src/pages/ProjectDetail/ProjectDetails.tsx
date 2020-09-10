@@ -1,7 +1,6 @@
 import React, { useLayoutEffect } from "react"
 import "../ProjectList/ProjectList.module.css"
 import { Page } from "../Page"
-import * as UseCase from "../../usecase/UseCase"
 import * as AppAction from "../../state/AppAction"
 import { AppStatus } from "../../models/AppStatus"
 
@@ -19,20 +18,27 @@ import TabPanel, { a11yProps } from "../Resources/Tabs"
 import { Redirect } from "react-router-dom"
 import BarContainer from "../../components/BarContainer/BarContainer"
 import { useGoogleAuth } from "../../components/GoogleAuthProvider/GoogleAuthProvider"
+import { PROJECT_ID_QUERY, useQuery } from "../../util/useQuery"
 
 const ProjectDetails: Page = ({ integration, state, dispatch }) => {
   const { googleUser, isInitialized } = useGoogleAuth()
   const emailAddress = googleUser?.getBasicProfile()?.getEmail()
 
+  const query: URLSearchParams = useQuery()
+  const projectId = query?.get(PROJECT_ID_QUERY)
+
   useLayoutEffect(() => {
-    if (state.projectDetailStatus === AppStatus.INITIAL && emailAddress && state.user?.projects[0].projectId) {
+    if (state.projectDetailStatus === AppStatus.INITIAL && emailAddress && projectId) {
       dispatch(AppAction.projectDetailLoading())
 
-      UseCase.loadInitialProject(integration, emailAddress, state.user?.projects[0].projectId).then((project) => {
-        dispatch(AppAction.projectDetailSuccess(project))
-      })
+      integration
+        .getProject(emailAddress, projectId)
+        .then((project) => {
+          dispatch(AppAction.projectDetailSuccess(project))
+        })
+        .catch(() => dispatch(AppAction.projectDetailFailure()))
     }
-  }, [dispatch, integration, state.projectDetailStatus, state.user, emailAddress])
+  }, [dispatch, integration, state.projectDetailStatus, emailAddress, projectId])
 
   function linkIntegration(integrate: string, param: string) {
     let projectid = param
@@ -77,8 +83,11 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
     <div>
       <BarContainer shouldContainSideBar={true} project={state.user?.projects[0].projectId} pageTitle="Dashboard">
         {!isInitialized || (!emailAddress && <Redirect to="/" />)}
-        {state.projectDetailStatus === AppStatus.LOADING ? (
+        {!projectId && <Redirect to="/projects" />}
+        {state.projectDetailStatus === AppStatus.INITIAL || state.projectDetailStatus === AppStatus.LOADING ? (
           <h1>Loading</h1>
+        ) : state.projectDetailStatus === AppStatus.FAILURE ? (
+          <h1>Something went wrong.</h1>
         ) : (
           <div className={classes.root}>
             {/* <AppBar position="absolute" color="primary" className={clsx(classes.appBar, !open && classes.appBarShift)}>

@@ -29,6 +29,13 @@ const AppReducer: Reducer<AppState, AppAction<AppActionType, any>> = (prevState,
       }
     }
 
+    case "PROJECT_DETAIL_FAILURE": {
+      return {
+        ...prevState,
+        projectDetailStatus: AppStatus.FAILURE
+      }
+    }
+
     case "USER_DETAIL_LOADING": {
       return {
         ...prevState,
