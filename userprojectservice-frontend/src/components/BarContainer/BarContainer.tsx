@@ -1,6 +1,6 @@
 import React, { Dispatch, FunctionComponent, SetStateAction, useState } from "react"
 import TopBar from "../TopBar/TopBar"
-// import styles from "./BarContainer.module.css"
+import styles from "./BarContainer.module.css"
 import SideBar from "../SideBar/SideBar"
 import { Layout } from "antd"
 import { ProjectDetail } from "../../state/AppState"
@@ -24,7 +24,9 @@ const BarContainer: FunctionComponent<BarContainerProps> = ({ shouldContainSideB
     <BarContainerContext.Provider value={{ isShowSidebar, setIsShowSidebar }}>
       <Layout>
         <TopBar />
-        {shouldContainSideBar && <SideBar projectDetails={projectDetails}>{children}</SideBar>}
+        <div className={styles.BottomContainer}>
+          {shouldContainSideBar ? <SideBar projectDetails={projectDetails}>{children}</SideBar> : <div>{children}</div>}
+        </div>
       </Layout>
     </BarContainerContext.Provider>
   )

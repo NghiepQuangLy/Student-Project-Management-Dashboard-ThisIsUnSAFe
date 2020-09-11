@@ -10,6 +10,7 @@ import { useGoogleAuth } from "../../components/GoogleAuthProvider/GoogleAuthPro
 import { PROJECT_DETAIL_PATH, PROJECT_ID_QUERY, useQuery } from "../../util/useQuery"
 import ProjectDetailsIntegration from "../../components/ProjectDetailsIntegration/ProjectDetailsIntegration"
 import Loading from "../../components/Loading/Loading"
+import styles from "./ProjectDetails.module.css"
 
 const ProjectDetails: Page = ({ integration, state, dispatch }) => {
   const { googleUser, isSignedIn, isInitialized } = useGoogleAuth()
@@ -32,32 +33,38 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
     }
   }, [dispatch, integration, state.projectDetailStatus, emailAddress, projectId])
 
+  const isLoading =
+    !isInitialized ||
+    (isInitialized &&
+      isSignedIn &&
+      emailAddress &&
+      projectId &&
+      (state.projectDetailStatus === AppStatus.INITIAL || state.projectDetailStatus === AppStatus.LOADING))
+  const isRedirectToLogin = !isLoading && !isSignedIn
+  const isRedirectToProjectList = !isLoading && isSignedIn && !projectId
+  const isErr = !isLoading && (state.projectDetailStatus === AppStatus.FAILURE || (isSignedIn && !emailAddress))
+  const isSucceed = state.projectDetailStatus === AppStatus.SUCCESS
+
   return (
     <div>
-      {!isInitialized ? (
-        <Loading />
-      ) : isSignedIn ? (
-        emailAddress ? (
-          projectId ? (
-            <BarContainer shouldContainSideBar={true} projectDetails={state.currentProject ?? undefined}>
-              {state.projectDetailStatus === AppStatus.INITIAL || state.projectDetailStatus === AppStatus.LOADING ? (
-                <h1>Loading</h1>
-              ) : state.projectDetailStatus === AppStatus.FAILURE ? (
-                <h1>Something went wrong.</h1>
-              ) : currentPath === PROJECT_DETAIL_PATH ? (
-                <ProjectDetailsLanding state={state} />
-              ) : (
-                <ProjectDetailsIntegration path={currentPath} />
-              )}
-            </BarContainer>
-          ) : (
-            <Redirect to="/projects" />
-          )
-        ) : (
-          <h1>something went wrong</h1>
-        )
-      ) : (
-        <Redirect to="/" />
+      {isLoading && (
+        <BarContainer shouldContainSideBar={false}>
+          <div className={styles.Loading}>
+            <Loading iconColor={"black"} />
+          </div>
+        </BarContainer>
+      )}
+      {isRedirectToLogin && <Redirect to="/" />}
+      {isRedirectToProjectList && <Redirect to="/projects" />}
+      {isErr && (
+        <BarContainer shouldContainSideBar={false}>
+          <h1>Something went wrong.</h1>
+        </BarContainer>
+      )}
+      {isSucceed && (
+        <BarContainer shouldContainSideBar={true} projectDetails={state.currentProject ?? undefined}>
+          {currentPath === PROJECT_DETAIL_PATH ? <ProjectDetailsLanding state={state} /> : <ProjectDetailsIntegration />}
+        </BarContainer>
       )}
     </div>
   )

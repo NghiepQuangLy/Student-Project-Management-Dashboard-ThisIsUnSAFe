@@ -127,7 +127,7 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
   }
 
   return (
-    <Layout style={{ minHeight: "100vh", marginTop: "64px" }}>
+    <Layout style={{ minHeight: "100vh" }}>
       <Sider collapsible collapsed={isShowSidebar} onCollapse={setIsShowSidebar} className={styles.SideBar}>
         <Menu defaultSelectedKeys={[defaultSelectedKey]} defaultOpenKeys={defaultOpenKeys} mode="inline" theme="dark">
           <Menu.Item

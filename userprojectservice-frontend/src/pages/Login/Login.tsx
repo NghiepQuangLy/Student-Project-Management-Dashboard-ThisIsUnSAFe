@@ -14,7 +14,7 @@ const Login: Page = ({ integration, state, dispatch }) => {
   return (
     <div className={styles.Login}>
       {!isInitialized ? (
-        <Loading />
+        <Loading iconColor={"white"} />
       ) : isSignedIn ? (
         emailAddress ? (
           <Redirect to="/projects" />

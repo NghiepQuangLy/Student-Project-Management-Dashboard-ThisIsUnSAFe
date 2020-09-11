@@ -45,12 +45,10 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
   return (
     <div>
       {!isInitialized ? (
-        <Loading />
+        <Loading iconColor={"black"} />
       ) : isSignedIn ? (
         emailAddress ? (
-          <div>
-            <BarContainer shouldContainSideBar={false} />
-
+          <BarContainer shouldContainSideBar={false}>
             <div className={classes.root}>
               {/*<CssBaseline />*/}
               {/*<AppBar position="absolute" color="primary" className={clsx(classes.appBar, !open && classes.appBarShift)}>*/}
@@ -120,7 +118,7 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
                 </Container>
               </main>
             </div>
-          </div>
+          </BarContainer>
         ) : (
           <h1>something went wrong</h1>
         )
