@@ -5,11 +5,11 @@ import styles from "./TopBar.module.css"
 import { useGoogleAuth } from "../GoogleAuthProvider/GoogleAuthProvider"
 import { Link } from "react-router-dom"
 
-interface TopBarProps { }
+interface TopBarProps {}
 
 const { Header } = Layout
 
-const TopBar: FunctionComponent<TopBarProps> = ({ }) => {
+const TopBar: FunctionComponent<TopBarProps> = () => {
   const { signOut } = useGoogleAuth()
   return (
     <Header className={styles.TopBar}>

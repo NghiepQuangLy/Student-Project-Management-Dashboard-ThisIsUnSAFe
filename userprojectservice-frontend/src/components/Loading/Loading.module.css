@@ -8,10 +8,18 @@
   position: absolute;
   width: 6px;
   height: 6px;
-  background: #fff;
   border-radius: 50%;
   animation: Loading 1.2s linear infinite;
 }
+
+.LoadingWhite div {
+  background: #fff;
+}
+
+.LoadingBlack div {
+  background: #000000;
+}
+
 .Loading div:nth-child(1) {
   animation-delay: 0s;
   top: 37px;

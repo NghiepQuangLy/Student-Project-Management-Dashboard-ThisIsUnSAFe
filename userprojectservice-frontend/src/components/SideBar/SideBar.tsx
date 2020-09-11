@@ -12,7 +12,6 @@ import {
   ScheduleOutlined,
   WarningOutlined
 } from "@ant-design/icons"
-import { useGoogleLogout } from "react-google-login"
 import Copyright from "../../pages/Resources/Styles"
 import { Link, useHistory } from "react-router-dom"
 import styles from "./SideBar.module.css"
@@ -33,10 +32,10 @@ import {
   TRELLO_ID_QUERY,
   useQuery
 } from "../../util/useQuery"
+import { useGoogleAuth } from "../GoogleAuthProvider/GoogleAuthProvider"
 
 const { SubMenu } = Menu
 const { Sider, Content, Footer } = Layout
-const clientId = "12178522373-e5nmdu6ogip7e70f2sn645j30n55fgke.apps.googleusercontent.com"
 
 interface SideBarProps {
   projectDetails?: ProjectDetail
@@ -61,18 +60,7 @@ const SideBarKey = {
 const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) => {
   const history = useHistory()
 
-  const onLogoutSuccess = () => {
-    history.push("/")
-  }
-  const onFailure = () => {
-    console.log("Logout failed")
-  }
-
-  const { signOut } = useGoogleLogout({
-    clientId,
-    onLogoutSuccess,
-    onFailure
-  })
+  const { signOut } = useGoogleAuth()
 
   const { isShowSidebar, setIsShowSidebar } = useContext(BarContainerContext)
 
@@ -139,7 +127,7 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
   }
 
   return (
-    <Layout style={{ minHeight: "100vh", marginTop: "64px" }}>
+    <Layout style={{ minHeight: "100vh" }}>
       <Sider collapsible collapsed={isShowSidebar} onCollapse={setIsShowSidebar} className={styles.SideBar}>
         <Menu defaultSelectedKeys={[defaultSelectedKey]} defaultOpenKeys={defaultOpenKeys} mode="inline" theme="dark">
           <Menu.Item
