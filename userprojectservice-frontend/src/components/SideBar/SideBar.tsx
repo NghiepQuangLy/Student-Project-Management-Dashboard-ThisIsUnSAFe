@@ -12,7 +12,6 @@ import {
   ScheduleOutlined,
   WarningOutlined
 } from "@ant-design/icons"
-import { useGoogleLogout } from "react-google-login"
 import Copyright from "../../pages/Resources/Styles"
 import { Link, useHistory } from "react-router-dom"
 import styles from "./SideBar.module.css"
@@ -33,6 +32,7 @@ import {
   TRELLO_ID_QUERY,
   useQuery
 } from "../../util/useQuery"
+import { useGoogleLogout } from "react-google-login"
 
 const { SubMenu } = Menu
 const { Sider, Content, Footer } = Layout
@@ -60,6 +60,8 @@ const SideBarKey = {
 
 const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) => {
   const history = useHistory()
+
+  // const { signOut } = useGoogleAuth()
 
   const onLogoutSuccess = () => {
     history.push("/")

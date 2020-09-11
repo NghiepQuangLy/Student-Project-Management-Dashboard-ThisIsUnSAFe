@@ -9,10 +9,17 @@ import ProjectDetailsLanding from "../../components/ProjectDetailsLanding/Projec
 import { useGoogleAuth } from "../../components/GoogleAuthProvider/GoogleAuthProvider"
 import { PROJECT_DETAIL_PATH, PROJECT_ID_QUERY, useQuery } from "../../util/useQuery"
 import ProjectDetailsIntegration from "../../components/ProjectDetailsIntegration/ProjectDetailsIntegration"
+import Loading from "../../components/Loading/Loading"
 
 const ProjectDetails: Page = ({ integration, state, dispatch }) => {
-  const { googleUser, isInitialized } = useGoogleAuth()
+  const { googleUser, isSignedIn, isInitialized } = useGoogleAuth()
   const emailAddress = googleUser?.getBasicProfile()?.getEmail()
+  // console.log(`isInitialized: ${isInitialized}`)
+  console.log(`isSignedIn: ${isSignedIn}`)
+  // const isInitialized = isSignedIn
+  console.log(`isInitialized: ${isInitialized}`)
+
+  // useGoogleAuth()
 
   const query: URLSearchParams = useQuery()
   const projectId = query?.get(PROJECT_ID_QUERY)
@@ -33,19 +40,31 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
 
   return (
     <div>
-      <BarContainer shouldContainSideBar={true} projectDetails={state.currentProject ?? undefined}>
-        {!isInitialized || (!emailAddress && <Redirect to="/" />)}
-        {!projectId && <Redirect to="/projects" />}
-        {state.projectDetailStatus === AppStatus.INITIAL || state.projectDetailStatus === AppStatus.LOADING ? (
-          <h1>Loading</h1>
-        ) : state.projectDetailStatus === AppStatus.FAILURE ? (
-          <h1>Something went wrong.</h1>
-        ) : currentPath === PROJECT_DETAIL_PATH ? (
-          <ProjectDetailsLanding state={state} />
+      {!isInitialized ? (
+        <Loading />
+      ) : isSignedIn ? (
+        emailAddress ? (
+          projectId ? (
+            <BarContainer shouldContainSideBar={true} projectDetails={state.currentProject ?? undefined}>
+              {state.projectDetailStatus === AppStatus.INITIAL || state.projectDetailStatus === AppStatus.LOADING ? (
+                <h1>Loading</h1>
+              ) : state.projectDetailStatus === AppStatus.FAILURE ? (
+                <h1>Something went wrong.</h1>
+              ) : currentPath === PROJECT_DETAIL_PATH ? (
+                <ProjectDetailsLanding state={state} />
+              ) : (
+                <ProjectDetailsIntegration path={currentPath} />
+              )}
+            </BarContainer>
+          ) : (
+            <Redirect to="/projects" />
+          )
         ) : (
-          <ProjectDetailsIntegration path={currentPath} />
-        )}
-      </BarContainer>
+          <h1>something went wrong</h1>
+        )
+      ) : (
+        <Redirect to="/" />
+      )}
     </div>
   )
 }

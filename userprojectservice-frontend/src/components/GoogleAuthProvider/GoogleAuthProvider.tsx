@@ -13,11 +13,6 @@ const GoogleAuthProvider: FunctionComponent = ({ children }) => {
     redirectUri: process.env.REACT_APP_GOOGLE_REDIRECT_URI
   })
 
-  const { googleUser, isInitialized } = googleAuth
-  const emailAddress = googleUser?.getBasicProfile()?.getEmail()
-  console.log(isInitialized)
-  console.log(emailAddress)
-
   return <GoogleAuthContext.Provider value={googleAuth}>{children}</GoogleAuthContext.Provider>
 }
 
