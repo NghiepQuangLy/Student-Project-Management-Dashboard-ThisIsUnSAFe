@@ -14,12 +14,6 @@ import Loading from "../../components/Loading/Loading"
 const ProjectDetails: Page = ({ integration, state, dispatch }) => {
   const { googleUser, isSignedIn, isInitialized } = useGoogleAuth()
   const emailAddress = googleUser?.getBasicProfile()?.getEmail()
-  // console.log(`isInitialized: ${isInitialized}`)
-  console.log(`isSignedIn: ${isSignedIn}`)
-  // const isInitialized = isSignedIn
-  console.log(`isInitialized: ${isInitialized}`)
-
-  // useGoogleAuth()
 
   const query: URLSearchParams = useQuery()
   const projectId = query?.get(PROJECT_ID_QUERY)

@@ -32,11 +32,10 @@ import {
   TRELLO_ID_QUERY,
   useQuery
 } from "../../util/useQuery"
-import { useGoogleLogout } from "react-google-login"
+import { useGoogleAuth } from "../GoogleAuthProvider/GoogleAuthProvider"
 
 const { SubMenu } = Menu
 const { Sider, Content, Footer } = Layout
-const clientId = "12178522373-e5nmdu6ogip7e70f2sn645j30n55fgke.apps.googleusercontent.com"
 
 interface SideBarProps {
   projectDetails?: ProjectDetail
@@ -61,20 +60,7 @@ const SideBarKey = {
 const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) => {
   const history = useHistory()
 
-  // const { signOut } = useGoogleAuth()
-
-  const onLogoutSuccess = () => {
-    history.push("/")
-  }
-  const onFailure = () => {
-    console.log("Logout failed")
-  }
-
-  const { signOut } = useGoogleLogout({
-    clientId,
-    onLogoutSuccess,
-    onFailure
-  })
+  const { signOut } = useGoogleAuth()
 
   const { isShowSidebar, setIsShowSidebar } = useContext(BarContainerContext)
 
