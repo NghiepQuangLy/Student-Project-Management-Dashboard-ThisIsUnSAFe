@@ -8,14 +8,19 @@ import { useGoogleAuth } from "../../components/GoogleAuthProvider/GoogleAuthPro
 import Loading from "../../components/Loading/Loading"
 
 const Login: Page = ({ integration, state, dispatch }) => {
-  const { signIn, googleUser, isInitialized } = useGoogleAuth()
+  const { signIn, googleUser, isInitialized, isSignedIn } = useGoogleAuth()
   const emailAddress = googleUser?.getBasicProfile()?.getEmail()
 
   return (
     <div className={styles.Login}>
-      {emailAddress && <Redirect to="/projects" />}
       {!isInitialized ? (
-        <Loading />
+        <Loading iconColor={"white"} />
+      ) : isSignedIn ? (
+        emailAddress ? (
+          <Redirect to="/projects" />
+        ) : (
+          <h1>something went wrong</h1>
+        )
       ) : (
         <div className={styles.Rectangle}>
           <h1 className={styles.Welcome}>Welcome to SPMD</h1>

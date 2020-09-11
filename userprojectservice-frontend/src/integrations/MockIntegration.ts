@@ -45,7 +45,7 @@ const MockIntegration: Integration = {
             }
           ]
         })
-      }, 3000)
+      }, 1000)
     })
 }
 
