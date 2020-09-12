@@ -130,20 +130,20 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
                           ) : isEmpty ? (
                             <h1>Empty History</h1>
                           ) : (
-                              <TreeView
+                                <TreeView
                                   className={classes.root}
                                   defaultCollapseIcon={<ExpandMoreIcon />}
                                   defaultExpandIcon={<ChevronRightIcon />}
-                              >
-                            {state.user &&
-                            state.user.projects.map((item) => {
-                              return (
-                              <TreeItem nodeId={item.projectId} label={"projectId: " + item.projectId + "|projectName:" + item.projectName} onClick={() => handleOnShowProjectDetailsClicked(item.projectId)}>
-                              </TreeItem>
-                              )
-                            })}
-                              </TreeView>
-                          )}
+                                >
+                                  {state.user &&
+                                    state.user.projects.map((item) => {
+                                      return (
+                                        <TreeItem nodeId={item.projectId} label={"projectId: " + item.projectId + "|projectName:" + item.projectName} onClick={() => handleOnShowProjectDetailsClicked(item.projectId)}>
+                                        </TreeItem>
+                                      )
+                                    })}
+                                </TreeView>
+                              )}
                         </Container>
                       </Paper>
                     </Grid>
@@ -156,11 +156,11 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
             </div>
           </BarContainer>
         ) : (
-          <h1>something went wrong</h1>
-        )
+            <h1>something went wrong</h1>
+          )
       ) : (
-        <Redirect to="/" />
-      )}
+            <Redirect to="/" />
+          )}
     </div>
   )
 }
