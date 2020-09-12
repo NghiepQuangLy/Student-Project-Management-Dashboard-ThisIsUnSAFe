@@ -16,10 +16,16 @@ import BarContainer from "../../components/BarContainer/BarContainer"
 import { useGoogleAuth } from "../../components/GoogleAuthProvider/GoogleAuthProvider"
 import { PROJECT_ID_QUERY } from "../../util/useQuery"
 import Loading from "../../components/Loading/Loading"
-import TreeView from '@material-ui/lab/TreeView';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import TreeItem from '@material-ui/lab/TreeItem';
+import TreeView from "@material-ui/lab/TreeView"
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
+import ChevronRightIcon from "@material-ui/icons/ChevronRight"
+import TreeItem from "@material-ui/lab/TreeItem"
+
+export interface Node {
+  id: string
+  name: string
+  data?: { [id: string]: Node }
+}
 
 const ProjectList: Page = ({ integration, state, dispatch }) => {
   const history = useHistory()
@@ -48,33 +54,52 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
 
   let projectListLength = state.user?.projects.length || 0
   let projectList = state.user?.projects.map((project) => project) || []
-  let projectUnits: Array<[string, Array<string>]> = []
-  console.log(projectList)
+  const units: { [id: string]: Node } = {}
   for (let i = 0; i < projectListLength; i++) {
-    let projectYear = projectList[i].projectYear || "n/a"
+    let project: { [id: string]: Node } = {}
+    let semester: { [id: string]: Node } = {}
+    let year: { [id: string]: Node } = {}
     let projectUnit = projectList[i].projectUnit || "n/a"
+    let projectYear = projectList[i].projectYear || "n/a"
+    let projectSemester = projectList[i].projectSemester || "n/a"
+    let projectId = projectList[i].projectId || "n/a"
+    let projectName = projectList[i].projectName || "n/a"
 
-    if (projectUnits.length === 0) {
-      projectUnits.push([projectUnit, [projectYear]])
+    if (units[projectUnit]) {
+      units[projectUnit] = { id: i.toString(), name: projectUnit, data: units[projectUnit].data }
+    } else {
+      units[projectUnit] = { id: i.toString(), name: projectUnit, data: year }
     }
-    else {
-      for (let j = 0; j < projectUnits.length; j++) {
-        if (projectUnits[j][0] === projectUnit) {
-          console.log("False Unit")
-        }
-        else {
-          projectUnits.push([projectUnit, [projectYear]])
-        }
-        if (projectUnits[j][1].includes(projectYear)) {
-          console.log("False Year")
-        }
-        else {
-          projectUnits[j][1].push(projectYear)
-        }
-      }
+
+    let yearData = (units[projectUnit] && units[projectUnit]?.data) || year
+
+    if (yearData[projectYear]) {
+      yearData[projectYear] = { id: i.toString(), name: projectYear, data: yearData[projectYear].data }
+    } else {
+      yearData[projectYear] = { id: i.toString(), name: projectYear, data: semester }
     }
+
+    let semesterData = yearData[projectYear].data || semester
+
+    if (semesterData[projectSemester]) {
+      semesterData[projectSemester] = { id: i.toString(), name: projectSemester, data: semesterData[projectSemester].data }
+    } else {
+      semesterData[projectSemester] = { id: i.toString(), name: projectSemester, data: project }
+    }
+
+    let projectData = semesterData[projectSemester].data || project
+
+    if (!projectData[projectId]) {
+      projectData[projectId] = { id: projectId, name: projectName }
+    }
+    //console.log(units)
   }
-  console.log(projectUnits)
+
+  const renderTree = (nodes: { [id: string]: Node }, nodeID: string, nodeName: string) => (
+    <TreeItem key={nodeID} nodeId={nodeID} label={nodeName}>
+      {nodes ? Object.keys(nodes).map((node) => renderTree(nodes[node].data || {}, nodes[node].id, nodes[node].name)) : null}
+    </TreeItem>
+  )
 
   return (
     <div>
@@ -100,7 +125,7 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
                     <Grid item xs={12} md={12} lg={12}>
                       <Paper className={userdetailheight}>
                         <Typography variant="h6" align={"center"} gutterBottom>
-                          Project Information
+                          Project List
                         </Typography>
                         <Typography variant="body1" gutterBottom>
                           <div>
@@ -130,6 +155,33 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
                           ) : isEmpty ? (
                             <h1>Empty History</h1>
                           ) : (
+<<<<<<< HEAD
+                            <TreeView
+                              className={classes.root}
+                              defaultCollapseIcon={<ExpandMoreIcon />}
+                              defaultExpanded={["root"]}
+                              defaultExpandIcon={<ChevronRightIcon />}
+                            >
+                              {Object.keys(units).map((node) => renderTree(units[node].data || {}, units[node].id, units[node].name))}
+                              <TreeItem
+                                key={"1"}
+                                nodeId={"1"}
+                                label={"test"}
+                                onClick={() => handleOnShowProjectDetailsClicked("1")}
+                              ></TreeItem>
+                              {/*state.user &&
+                                  Object.keys(units).map((nodes) => {
+                                    return (
+
+                                          <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}
+                                                    onClick={() => handleOnShowProjectDetailsClicked(nodes.id)}>
+                                          </TreeItem>
+                                      )}
+                                    )
+                                  }*/}
+                            </TreeView>
+                          )}
+=======
                                 <TreeView
                                   className={classes.root}
                                   defaultCollapseIcon={<ExpandMoreIcon />}
@@ -144,6 +196,7 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
                                     })}
                                 </TreeView>
                               )}
+>>>>>>> 5be752551a194e000e5de832b3e26db3e7bc70ec
                         </Container>
                       </Paper>
                     </Grid>
