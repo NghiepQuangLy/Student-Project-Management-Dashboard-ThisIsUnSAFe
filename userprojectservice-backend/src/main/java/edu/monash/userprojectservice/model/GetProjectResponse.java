@@ -15,7 +15,10 @@ public class GetProjectResponse {
     private String projectId;
     private String projectName;
     private List<String> projectGitIds;
-    private List<String> projectGoogleDriveIds;;
+    private List<String> projectGitNames;
+    private List<String> projectGoogleDriveIds;
+    private List<String> projectGoogleDriveNames;
     private List<String> projectGoogleFolderIds;
     private List<String> projectTrelloIds;
+    private List<String> projectTrelloNames;
 }

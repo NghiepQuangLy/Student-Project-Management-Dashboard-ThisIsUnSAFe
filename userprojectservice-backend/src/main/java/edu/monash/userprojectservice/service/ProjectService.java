@@ -82,9 +82,6 @@ public class ProjectService {
         List<GoogleFolderEntity> googleFolderEntities = googleFolderRepository.findGoogleFolderEntitiesByProjectId(projectId);
         List<TrelloEntity> trelloDetail = trelloRepository.findTrelloEntitiesByProjectId(projectId);
 
-        System.out.println(projectEntity.getProjectId());
-        System.out.println(projectEntity.getProjectName());
-
         log.info("{\"message\":\"Got project\", \"project\":\"{}\"}", projectId);
 
         return new ResponseEntity<GetProjectResponse>(
@@ -92,9 +89,12 @@ public class ProjectService {
                         String.valueOf(projectEntity.getProjectId()),
                         projectEntity.getProjectName(),
                         gitEntities.stream().map(GitEntity::getGitId).collect(Collectors.toList()),
+                        gitEntities.stream().map(GitEntity::getGitName).collect(Collectors.toList()),
                         googleDriveEntities.stream().map(GoogleDriveEntity::getGoogleDriveId).collect(Collectors.toList()),
+                        googleDriveEntities.stream().map(GoogleDriveEntity::getGoogleDriveName).collect(Collectors.toList()),
                         googleFolderEntities.stream().map(GoogleFolderEntity::getGoogleFolderId).collect(Collectors.toList()),
-                        trelloDetail.stream().map(TrelloEntity::getTrelloId).collect(Collectors.toList())
+                        trelloDetail.stream().map(TrelloEntity::getTrelloId).collect(Collectors.toList()),
+                        trelloDetail.stream().map(TrelloEntity::getTrelloName).collect(Collectors.toList())
                 ), OK
         );
     }

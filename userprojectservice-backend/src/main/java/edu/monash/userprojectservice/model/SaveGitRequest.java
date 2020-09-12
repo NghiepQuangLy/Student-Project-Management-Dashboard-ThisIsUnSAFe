@@ -20,4 +20,7 @@ public class SaveGitRequest {
 
     @NotNull
     private String projectId;
+
+    @NotNull
+    private String gitName;
 }
