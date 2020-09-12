@@ -37,7 +37,7 @@ public class ProjectController {
     @ResponseStatus(CREATED)
     @PostMapping("/create-project")
     public ResponseEntity setProjectUser(@RequestBody @Valid CreateProjectRequest createProjectRequest) throws SQLException {
-        return projectService.createProject(createProjectRequest.getEmailAddress(), createProjectRequest.getProjectName());
+        return projectService.createProject(createProjectRequest);
     }
 
     @ResponseStatus(CREATED)
