@@ -8,7 +8,7 @@ import { AppStatus } from "../../models/AppStatus"
 import clsx from "clsx"
 import Typography from "@material-ui/core/Typography"
 import Container from "@material-ui/core/Container"
-import { Grid, List } from "@material-ui/core"
+import { Grid } from "@material-ui/core"
 import Paper from "@material-ui/core/Paper"
 import Box from "@material-ui/core/Box"
 import Copyright, { useStyles } from "../Resources/Styles"
@@ -16,6 +16,10 @@ import BarContainer from "../../components/BarContainer/BarContainer"
 import { useGoogleAuth } from "../../components/GoogleAuthProvider/GoogleAuthProvider"
 import { PROJECT_ID_QUERY } from "../../util/useQuery"
 import Loading from "../../components/Loading/Loading"
+import TreeView from '@material-ui/lab/TreeView';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import TreeItem from '@material-ui/lab/TreeItem';
 
 const ProjectList: Page = ({ integration, state, dispatch }) => {
   const history = useHistory()
@@ -41,6 +45,36 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
   // Page Styling
   const classes = useStyles()
   const userdetailheight = clsx(classes.paper, classes.userdetailheight)
+
+  let projectListLength = state.user?.projects.length || 0
+  let projectList = state.user?.projects.map((project) => project) || []
+  let projectUnits: Array<[string, Array<string>]> = []
+  console.log(projectList)
+  for (let i = 0; i < projectListLength; i++) {
+    let projectYear = projectList[i].projectYear || "n/a"
+    let projectUnit = projectList[i].projectUnit || "n/a"
+
+    if (projectUnits.length === 0) {
+      projectUnits.push([projectUnit, [projectYear]])
+    }
+    else {
+      for (let j = 0; j < projectUnits.length; j++) {
+        if (projectUnits[j][0] === projectUnit) {
+          console.log("False Unit")
+        }
+        else {
+          projectUnits.push([projectUnit, [projectYear]])
+        }
+        if (projectUnits[j][1].includes(projectYear)) {
+          console.log("False Year")
+        }
+        else {
+          projectUnits[j][1].push(projectYear)
+        }
+      }
+    }
+  }
+  console.log(projectUnits)
 
   return (
     <div>
@@ -96,17 +130,19 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
                           ) : isEmpty ? (
                             <h1>Empty History</h1>
                           ) : (
-                            <List component="nav" aria-label="Trello Tab">
-                              {state.user &&
-                                state.user.projects.map((item) => {
-                                  return (
-                                    <div key={item.projectId} onClick={() => handleOnShowProjectDetailsClicked(item.projectId)}>
-                                      {"projectId: " + item.projectId + "|projectName:" + item.projectName}
-                                      <br />
-                                    </div>
-                                  )
-                                })}
-                            </List>
+                              <TreeView
+                                  className={classes.root}
+                                  defaultCollapseIcon={<ExpandMoreIcon />}
+                                  defaultExpandIcon={<ChevronRightIcon />}
+                              >
+                            {state.user &&
+                            state.user.projects.map((item) => {
+                              return (
+                              <TreeItem nodeId={item.projectId} label={"projectId: " + item.projectId + "|projectName:" + item.projectName} onClick={() => handleOnShowProjectDetailsClicked(item.projectId)}>
+                              </TreeItem>
+                              )
+                            })}
+                              </TreeView>
                           )}
                         </Container>
                       </Paper>

@@ -33,15 +33,24 @@ const MockIntegration: Integration = {
           projects: [
             {
               projectName: "projectName1",
-              projectId: "projectId2"
+              projectId: "projectId2",
+              projectUnit: "FIT2099",
+              projectYear: "2019",
+              projectSemester: "2"
             },
             {
               projectName: "projectName3",
-              projectId: "projectId4"
+              projectId: "projectId4",
+              projectUnit: "FIT2099",
+              projectYear: "2020",
+              projectSemester: "1"
             },
             {
               projectName: "projectName5",
-              projectId: "projectId6"
+              projectId: "projectId6",
+              projectUnit: "FIT3099",
+              projectYear: "2020",
+              projectSemester: "2"
             }
           ]
         })
