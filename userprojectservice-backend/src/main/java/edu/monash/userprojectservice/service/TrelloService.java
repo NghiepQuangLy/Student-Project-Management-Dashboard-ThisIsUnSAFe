@@ -3,6 +3,7 @@ package edu.monash.userprojectservice.service;
 import edu.monash.userprojectservice.ValidationHandler;
 import edu.monash.userprojectservice.model.GetTrelloResponse;
 import edu.monash.userprojectservice.model.SaveTrelloRequest;
+import edu.monash.userprojectservice.repository.googleDrive.GoogleDriveEntity;
 import edu.monash.userprojectservice.repository.trello.TrelloEntity;
 import edu.monash.userprojectservice.repository.trello.TrelloRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +44,7 @@ public class TrelloService {
         validationHandler.isValid(saveTrelloRequest.getEmailAddress(), saveTrelloRequest.getProjectId());
 
         // Store into database
-        trelloRepository.save(new TrelloEntity(saveTrelloRequest.getTrelloId(), saveTrelloRequest.getProjectId()));
+        trelloRepository.save(new TrelloEntity(saveTrelloRequest.getTrelloId(), saveTrelloRequest.getProjectId(), saveTrelloRequest.getTrelloName()));
 
         log.info("{\"message\":\"Inserted into Trello\", \"project\":\"{}\"}", saveTrelloRequest);
     }

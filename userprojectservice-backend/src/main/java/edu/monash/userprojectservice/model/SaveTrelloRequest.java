@@ -20,4 +20,7 @@ public class SaveTrelloRequest {
 
     @NotNull
     private String projectId;
+
+    @NotNull
+    private String trelloName;
 }
