@@ -1,6 +1,7 @@
 package edu.monash.userprojectservice.service;
 
 import edu.monash.userprojectservice.ValidationHandler;
+import edu.monash.userprojectservice.model.CreateProjectRequest;
 import edu.monash.userprojectservice.model.GetProjectResponse;
 import edu.monash.userprojectservice.model.GetTimesheetResponse;
 import edu.monash.userprojectservice.model.SaveTimesheetRequest;
@@ -105,7 +106,7 @@ public class ProjectService {
     // create a method
     // check for the user first, if it doesnt exist new responseEntity and return not found
     // if he exists then, return OK
-    public ResponseEntity<GetProjectResponse> createProject(List<String> emailAddress, String projectName) throws SQLException {
+    public ResponseEntity<GetProjectResponse> createProject(CreateProjectRequest createProjectRequest) throws SQLException {
         //check if the user is present in the system
 
         String projectId = UUID.randomUUID().toString();
@@ -114,7 +115,7 @@ public class ProjectService {
             projectId = UUID.randomUUID().toString();
         }
         // insert into db when project doesnt exist in the db
-        Boolean isSuccessful = createProjectRepository.save(projectId, emailAddress, projectName);
+        Boolean isSuccessful = createProjectRepository.save(projectId, createProjectRequest.getEmailAddress(), createProjectRequest.getProjectName(), createProjectRequest.getProjectUnit(), createProjectRequest.getProjectYear(), createProjectRequest.getProjectSemester());
         if (isSuccessful) {
             log.info("Project has been added!");
             return new ResponseEntity<>(
