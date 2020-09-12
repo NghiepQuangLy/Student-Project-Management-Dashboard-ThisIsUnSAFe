@@ -3,25 +3,27 @@ import "antd/dist/antd.css"
 import { Layout } from "antd"
 import styles from "./TopBar.module.css"
 import { useGoogleAuth } from "../GoogleAuthProvider/GoogleAuthProvider"
-import { useHistory } from 'react-router-dom';
+import { useHistory } from "react-router-dom"
 
-interface TopBarProps { }
+interface TopBarProps {}
 
 const { Header } = Layout
 
 const TopBar: FunctionComponent<TopBarProps> = () => {
   const { signOut } = useGoogleAuth()
 
-  let history = useHistory();
+  let history = useHistory()
 
   const redirect = () => {
-    history.push('/projects')
+    history.push("/projects")
   }
 
   return (
     <Header className={styles.TopBar}>
       <div className={styles.Logo} />
-      <button onClick={redirect} className={styles.Projects}>Projects</button>
+      <button onClick={redirect} className={styles.Projects}>
+        Projects
+      </button>
       <button className={styles.Logout} onClick={signOut}>
         Log out
       </button>

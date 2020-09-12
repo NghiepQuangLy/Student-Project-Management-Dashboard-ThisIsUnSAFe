@@ -52,9 +52,10 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
   const classes = useStyles()
   const userdetailheight = clsx(classes.paper, classes.userdetailheight)
 
+  let units: { [id: string]: Node } = {}
   let projectListLength = state.user?.projects.length || 0
   let projectList = state.user?.projects.map((project) => project) || []
-  const units: { [id: string]: Node } = {}
+  let count = 1
   for (let i = 0; i < projectListLength; i++) {
     let project: { [id: string]: Node } = {}
     let semester: { [id: string]: Node } = {}
@@ -66,25 +67,29 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
     let projectName = projectList[i].projectName || "n/a"
 
     if (units[projectUnit]) {
-      units[projectUnit] = { id: i.toString(), name: projectUnit, data: units[projectUnit].data }
+      units[projectUnit] = { id: units[projectUnit].id, name: projectUnit, data: units[projectUnit].data }
     } else {
-      units[projectUnit] = { id: i.toString(), name: projectUnit, data: year }
+      units[projectUnit] = { id: (count += 1).toString(), name: projectUnit, data: year }
     }
 
     let yearData = (units[projectUnit] && units[projectUnit]?.data) || year
 
     if (yearData[projectYear]) {
-      yearData[projectYear] = { id: i.toString(), name: projectYear, data: yearData[projectYear].data }
+      yearData[projectYear] = { id: yearData[projectYear].id, name: projectYear, data: yearData[projectYear].data }
     } else {
-      yearData[projectYear] = { id: i.toString(), name: projectYear, data: semester }
+      yearData[projectYear] = { id: (count += 1).toString(), name: projectYear, data: semester }
     }
 
     let semesterData = yearData[projectYear].data || semester
 
     if (semesterData[projectSemester]) {
-      semesterData[projectSemester] = { id: i.toString(), name: projectSemester, data: semesterData[projectSemester].data }
+      semesterData[projectSemester] = {
+        id: semesterData[projectSemester].id,
+        name: projectSemester,
+        data: semesterData[projectSemester].data
+      }
     } else {
-      semesterData[projectSemester] = { id: i.toString(), name: projectSemester, data: project }
+      semesterData[projectSemester] = { id: (count += 1).toString(), name: projectSemester, data: project }
     }
 
     let projectData = semesterData[projectSemester].data || project
@@ -92,14 +97,33 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
     if (!projectData[projectId]) {
       projectData[projectId] = { id: projectId, name: projectName }
     }
-    //console.log(units)
   }
 
-  const renderTree = (nodes: { [id: string]: Node }, nodeID: string, nodeName: string) => (
-    <TreeItem key={nodeID} nodeId={nodeID} label={nodeName}>
-      {nodes ? Object.keys(nodes).map((node) => renderTree(nodes[node].data || {}, nodes[node].id, nodes[node].name)) : null}
-    </TreeItem>
-  )
+  const root: Node = { id: "1", name: "Parent", data: units }
+
+  const renderTree = (nodes: Node) => {
+    console.log(nodes.data)
+    if (nodes.data === undefined) {
+      return (
+        <TreeItem
+          key={nodes.id}
+          nodeId={nodes.id}
+          label={nodes.name}
+          onClick={() => handleOnShowProjectDetailsClicked(nodes.id)}
+        ></TreeItem>
+      )
+    } else {
+      return (
+        <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
+          {nodes.data
+            ? Object.keys(nodes.data).map((node) => {
+                renderTree(nodes.data ? nodes.data[node] : nodes)
+              })
+            : null}
+        </TreeItem>
+      )
+    }
+  }
 
   return (
     <div>
@@ -155,20 +179,13 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
                           ) : isEmpty ? (
                             <h1>Empty History</h1>
                           ) : (
-<<<<<<< HEAD
                             <TreeView
                               className={classes.root}
                               defaultCollapseIcon={<ExpandMoreIcon />}
                               defaultExpanded={["root"]}
                               defaultExpandIcon={<ChevronRightIcon />}
                             >
-                              {Object.keys(units).map((node) => renderTree(units[node].data || {}, units[node].id, units[node].name))}
-                              <TreeItem
-                                key={"1"}
-                                nodeId={"1"}
-                                label={"test"}
-                                onClick={() => handleOnShowProjectDetailsClicked("1")}
-                              ></TreeItem>
+                              {renderTree(root)}
                               {/*state.user &&
                                   Object.keys(units).map((nodes) => {
                                     return (
@@ -181,22 +198,6 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
                                   }*/}
                             </TreeView>
                           )}
-=======
-                                <TreeView
-                                  className={classes.root}
-                                  defaultCollapseIcon={<ExpandMoreIcon />}
-                                  defaultExpandIcon={<ChevronRightIcon />}
-                                >
-                                  {state.user &&
-                                    state.user.projects.map((item) => {
-                                      return (
-                                        <TreeItem nodeId={item.projectId} label={"projectId: " + item.projectId + "|projectName:" + item.projectName} onClick={() => handleOnShowProjectDetailsClicked(item.projectId)}>
-                                        </TreeItem>
-                                      )
-                                    })}
-                                </TreeView>
-                              )}
->>>>>>> 5be752551a194e000e5de832b3e26db3e7bc70ec
                         </Container>
                       </Paper>
                     </Grid>
@@ -209,11 +210,11 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
             </div>
           </BarContainer>
         ) : (
-            <h1>something went wrong</h1>
-          )
+          <h1>something went wrong</h1>
+        )
       ) : (
-            <Redirect to="/" />
-          )}
+        <Redirect to="/" />
+      )}
     </div>
   )
 }
