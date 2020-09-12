@@ -40,10 +40,10 @@ public class CreateProjectRepository {
         Connection conn = DriverManager.getConnection(url, userName, password);
         try {
             conn.setAutoCommit(false);
-            projectsRepository.save(new ProjectEntity(projectId, projectName, null));
+            projectsRepository.save(new ProjectEntity(projectId, projectName, null, null, null, null));
             for(int i = 0; i < emailAddress.size(); i++) {
                 if (usersRepository.findUserEntityByEmailAddress(emailAddress.get(i)) != null) {
-                    usersProjectsRepository.save(new UsersProjectsEntity(emailAddress.get(i), projectId, new ProjectEntity(projectId, projectName, null), null));
+                    usersProjectsRepository.save(new UsersProjectsEntity(emailAddress.get(i), projectId, new ProjectEntity(projectId, projectName, null, null, null, null), null));
                 }
             }
 

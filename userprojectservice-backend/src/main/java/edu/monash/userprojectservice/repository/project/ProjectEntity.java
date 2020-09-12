@@ -28,6 +28,15 @@ public class ProjectEntity implements Serializable {
     @Column(name = "timesheet")
     private String timesheet;
 
+    @Column(name = "project_unit")
+    private String projectUnit;
+
+    @Column(name = "project_year")
+    private String projectYear;
+
+    @Column(name = "project_semester")
+    private String projectSemester;
+
     public void setTimesheet(String timesheet) {
         this.timesheet = timesheet;
     }

@@ -91,6 +91,9 @@ public class ProjectService {
                 new GetProjectResponse(
                         String.valueOf(projectEntity.getProjectId()),
                         projectEntity.getProjectName(),
+                        projectEntity.getProjectUnit(),
+                        projectEntity.getProjectYear(),
+                        projectEntity.getProjectSemester(),
                         gitEntities.stream().map(GitEntity::getGitId).collect(Collectors.toList()),
                         googleDriveEntities.stream().map(GoogleDriveEntity::getGoogleDriveId).collect(Collectors.toList()),
                         googleFolderEntities.stream().map(GoogleFolderEntity::getGoogleFolderId).collect(Collectors.toList()),
