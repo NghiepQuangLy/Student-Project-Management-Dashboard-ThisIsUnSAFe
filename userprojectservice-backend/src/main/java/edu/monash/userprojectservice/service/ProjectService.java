@@ -92,7 +92,7 @@ public class ProjectService {
                 new GetProjectResponse(
                         String.valueOf(projectEntity.getProjectId()),
                         projectEntity.getProjectName(),
-                        projectEntity.getProjectUnit(),
+                        projectEntity.getUnitCode(),
                         projectEntity.getProjectYear(),
                         projectEntity.getProjectSemester(),
                         gitEntities.stream().map(GitEntity::getGitId).collect(Collectors.toList()),

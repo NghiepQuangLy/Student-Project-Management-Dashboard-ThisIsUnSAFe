@@ -28,8 +28,8 @@ public class ProjectEntity implements Serializable {
     @Column(name = "timesheet")
     private String timesheet;
 
-    @Column(name = "project_unit")
-    private String projectUnit;
+    @Column(name = "unit_code")
+    private String unitCode;
 
     @Column(name = "project_year")
     private String projectYear;
