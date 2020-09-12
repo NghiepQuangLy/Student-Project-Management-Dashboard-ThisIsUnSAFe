@@ -3,6 +3,10 @@ import ReactDOM from "react-dom"
 import "./index.css"
 import App from "./App"
 import { Integration } from "./integrations/Integration"
+import { Helmet } from 'react-helmet'
+
+
+const TITLE = 'Student Project Management Dashboard'
 
 const init = async () => {
   const integrationModule = await import(`./integrations/${process.env.REACT_APP_INTEGRATION_TYPE}Integration.ts`)
@@ -12,6 +16,9 @@ const init = async () => {
   ReactDOM.render(
     <React.StrictMode>
       <App integration={integration} />
+      <Helmet>
+        <title>{TITLE}</title>
+      </Helmet>
     </React.StrictMode>,
     document.getElementById("root")
   )
