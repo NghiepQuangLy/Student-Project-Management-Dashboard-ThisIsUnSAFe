@@ -1,8 +1,14 @@
 export interface ProjectResponse {
   projectId: string | null
   projectName: string | null
-  projectGitIds: string[]
-  projectGoogleDriveIds: string[]
+  projectGitIntegration: Integration[]
+  projectGoogleDriveIntegration: Integration[]
   projectGoogleFolderIds: string[]
-  projectTrelloIds: string[]
+  projectTrelloIntegration: Integration[]
+  projectTimesheet: string
+}
+
+export interface Integration {
+  integrationId: string
+  integrationName: string
 }

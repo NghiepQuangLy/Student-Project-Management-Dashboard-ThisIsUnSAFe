@@ -145,20 +145,20 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
                   handleOnShowProjectDetailClicked(`${PROJECT_DETAIL_GIT_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)
                 }
               >
-                + Link new
+                + Git
               </Menu.Item>
-              {projectDetails?.projectGitIds &&
-                projectDetails?.projectGitIds.map((id) => {
+              {projectDetails?.projectGitIntegrations &&
+                projectDetails?.projectGitIntegrations.map((projectIntegration) => {
                   return (
                     <Menu.Item
-                      key={`${SideBarKey.git}-${id}`}
+                      key={`${SideBarKey.git}-${projectIntegration.integrationId}`}
                       onClick={() =>
                         handleOnShowProjectDetailClicked(
-                          `${PROJECT_DETAIL_GIT_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}&${GIT_ID_QUERY}=${id}`
+                          `${PROJECT_DETAIL_GIT_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}&${GIT_ID_QUERY}=${projectIntegration.integrationId}`
                         )
                       }
                     >
-                      {id}
+                      {projectIntegration.integrationName}
                     </Menu.Item>
                   )
                 })}
@@ -170,20 +170,20 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
                   handleOnShowProjectDetailClicked(`${PROJECT_DETAIL_TRELLO_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)
                 }
               >
-                + Link new
+                + Trello
               </Menu.Item>
-              {projectDetails?.projectTrelloIds &&
-                projectDetails?.projectTrelloIds.map((id) => {
+              {projectDetails?.projectTrelloIntegrations &&
+                projectDetails?.projectTrelloIntegrations.map((projectIntegration) => {
                   return (
                     <Menu.Item
-                      key={`${SideBarKey.trello}-${id}`}
+                      key={`${SideBarKey.trello}-${projectIntegration.integrationId}`}
                       onClick={() =>
                         handleOnShowProjectDetailClicked(
-                          `${PROJECT_DETAIL_TRELLO_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}&${TRELLO_ID_QUERY}=${id}`
+                          `${PROJECT_DETAIL_TRELLO_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}&${TRELLO_ID_QUERY}=${projectIntegration.integrationId}`
                         )
                       }
                     >
-                      {id}
+                      {projectIntegration.integrationName}
                     </Menu.Item>
                   )
                 })}
@@ -195,20 +195,20 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
                   handleOnShowProjectDetailClicked(`${PROJECT_DETAIL_GOOGLE_DRIVE_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)
                 }
               >
-                + Link new
+                + Google Drive
               </Menu.Item>
-              {projectDetails?.projectGoogleDriveIds &&
-                projectDetails?.projectGoogleDriveIds.map((id) => {
+              {projectDetails?.projectGoogleDriveIntegrations &&
+                projectDetails?.projectGoogleDriveIntegrations.map((projectIntegration) => {
                   return (
                     <Menu.Item
-                      key={`${SideBarKey.googleDrive}-${id}`}
+                      key={`${SideBarKey.googleDrive}-${projectIntegration.integrationId}`}
                       onClick={() =>
                         handleOnShowProjectDetailClicked(
-                          `${PROJECT_DETAIL_GOOGLE_DRIVE_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}&${GOOGLE_DRIVE_ID_QUERY}=${id}`
+                          `${PROJECT_DETAIL_GOOGLE_DRIVE_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}&${GOOGLE_DRIVE_ID_QUERY}=${projectIntegration.integrationId}`
                         )
                       }
                     >
-                      {id}
+                      {projectIntegration.integrationName}
                     </Menu.Item>
                   )
                 })}
