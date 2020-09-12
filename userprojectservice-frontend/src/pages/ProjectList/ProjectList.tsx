@@ -155,6 +155,7 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
                           ) : isEmpty ? (
                             <h1>Empty History</h1>
                           ) : (
+<<<<<<< HEAD
                             <TreeView
                               className={classes.root}
                               defaultCollapseIcon={<ExpandMoreIcon />}
@@ -180,6 +181,22 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
                                   }*/}
                             </TreeView>
                           )}
+=======
+                                <TreeView
+                                  className={classes.root}
+                                  defaultCollapseIcon={<ExpandMoreIcon />}
+                                  defaultExpandIcon={<ChevronRightIcon />}
+                                >
+                                  {state.user &&
+                                    state.user.projects.map((item) => {
+                                      return (
+                                        <TreeItem nodeId={item.projectId} label={"projectId: " + item.projectId + "|projectName:" + item.projectName} onClick={() => handleOnShowProjectDetailsClicked(item.projectId)}>
+                                        </TreeItem>
+                                      )
+                                    })}
+                                </TreeView>
+                              )}
+>>>>>>> 5be752551a194e000e5de832b3e26db3e7bc70ec
                         </Container>
                       </Paper>
                     </Grid>
@@ -192,11 +209,11 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
             </div>
           </BarContainer>
         ) : (
-          <h1>something went wrong</h1>
-        )
+            <h1>something went wrong</h1>
+          )
       ) : (
-        <Redirect to="/" />
-      )}
+            <Redirect to="/" />
+          )}
     </div>
   )
 }

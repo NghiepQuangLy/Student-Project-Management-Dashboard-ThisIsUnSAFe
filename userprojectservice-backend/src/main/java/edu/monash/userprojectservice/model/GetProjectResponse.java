@@ -14,9 +14,10 @@ import java.util.List;
 public class GetProjectResponse {
     private String projectId;
     private String projectName;
-    private String projectUnit;
+    private String unitCode;
     private String projectYear;
     private String projectSemester;
+    private String projectTimesheet;
     private List<String> projectGitIds;
     private List<String> projectGoogleDriveIds;;
     private List<String> projectGoogleFolderIds;

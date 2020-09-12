@@ -25,11 +25,11 @@ public class ProjectEntity implements Serializable {
     @Column(name = "project_name")
     private String projectName;
 
-    @Column(name = "timesheet")
-    private String timesheet;
+    @Column(name = "project_timesheet")
+    private String projectTimesheet;
 
-    @Column(name = "project_unit")
-    private String projectUnit;
+    @Column(name = "unit_code")
+    private String unitCode;
 
     @Column(name = "project_year")
     private String projectYear;
@@ -38,6 +38,6 @@ public class ProjectEntity implements Serializable {
     private String projectSemester;
 
     public void setTimesheet(String timesheet) {
-        this.timesheet = timesheet;
+        this.projectTimesheet = timesheet;
     }
 }

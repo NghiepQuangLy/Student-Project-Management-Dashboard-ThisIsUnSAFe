@@ -92,9 +92,10 @@ public class ProjectService {
                 new GetProjectResponse(
                         String.valueOf(projectEntity.getProjectId()),
                         projectEntity.getProjectName(),
-                        projectEntity.getProjectUnit(),
+                        projectEntity.getUnitCode(),
                         projectEntity.getProjectYear(),
                         projectEntity.getProjectSemester(),
+                        projectEntity.getProjectTimesheet(),
                         gitEntities.stream().map(GitEntity::getGitId).collect(Collectors.toList()),
                         googleDriveEntities.stream().map(GoogleDriveEntity::getGoogleDriveId).collect(Collectors.toList()),
                         googleFolderEntities.stream().map(GoogleFolderEntity::getGoogleFolderId).collect(Collectors.toList()),
@@ -144,7 +145,7 @@ public class ProjectService {
             return null;
         }
 
-        return new GetTimesheetResponse(projectEntity.getTimesheet());
+        return new GetTimesheetResponse(projectEntity.getProjectTimesheet());
     }
 
     public void saveTimesheet(SaveTimesheetRequest saveTimesheetRequest) {
