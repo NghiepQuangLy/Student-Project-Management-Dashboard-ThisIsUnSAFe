@@ -20,10 +20,10 @@ const AppReducer: Reducer<AppState, AppAction<AppActionType, any>> = (prevState,
         currentProject: {
           projectId: projectSuccessAction.payload.projectId,
           projectName: projectSuccessAction.payload.projectName,
-          projectGitIds: projectSuccessAction.payload.projectGitIds,
-          projectGoogleDriveIds: projectSuccessAction.payload.projectGoogleDriveIds,
+          projectGitIntegrations: projectSuccessAction.payload.projectGitIntegration,
+          projectGoogleDriveIntegrations: projectSuccessAction.payload.projectGoogleDriveIntegration,
           projectGoogleFolderIds: projectSuccessAction.payload.projectGoogleFolderIds,
-          projectTrelloIds: projectSuccessAction.payload.projectTrelloIds
+          projectTrelloIntegrations: projectSuccessAction.payload.projectTrelloIntegration
         },
         projectDetailStatus: AppStatus.SUCCESS
       }
