@@ -20,10 +20,18 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import ChevronRightIcon from "@material-ui/icons/ChevronRight"
 import TreeItem from "@material-ui/lab/TreeItem"
 
-export interface Node {
-  id: string
-  name: string
-  data?: { [id: string]: Node }
+export interface Dictionary<T> {
+  [id: string]: T
+}
+
+export interface ProjectDictionary {
+  id: Dictionary<ProjectDictionary>
+  data?: ProjectData[] | undefined
+}
+
+export interface ProjectData {
+  projectId: string
+  projectName: string
 }
 
 const ProjectList: Page = ({ integration, state, dispatch }) => {
@@ -51,73 +59,75 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
   const classes = useStyles()
   const userdetailheight = clsx(classes.paper, classes.userdetailheight)
 
-  const renderEnd = (nodes: Node) => (
-    <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name} onClick={() => handleOnShowProjectDetailsClicked(nodes.id)}></TreeItem>
-  )
+  const renderEnd = (projectDatas: ProjectData[]) =>
+    projectDatas.map((projectData) => {
+      return (
+        <TreeItem
+          key={`projectId-${projectData.projectId}`}
+          nodeId={`projectId-${projectData.projectId}`}
+          label={projectData.projectName}
+          onClick={() => handleOnShowProjectDetailsClicked(projectData.projectId)}
+        />
+      )
+    })
 
-  const renderCont = (nodes: Node) => (
-    <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
-      {nodes.data ? Object.keys(nodes.data).map((node) => renderTree(nodes.data ? nodes.data[node] : nodes)) : null}
-    </TreeItem>
-  )
+  const renderCont = (root: Dictionary<ProjectDictionary>) =>
+    Object.keys(root).map((node) => {
+      return (
+        <TreeItem key={node} nodeId={node} label={node}>
+          {renderTree(root[node])}
+        </TreeItem>
+      )
+    })
 
-  const renderTree = (nodes: Node) => {
-    if (nodes.data === undefined) {
-      return renderEnd(nodes)
+  const renderTree = (root: ProjectDictionary) => {
+    if (!root.data) {
+      return renderCont(root.id)
     } else {
-      return renderCont(nodes)
+      return renderEnd(root.data)
     }
   }
 
   const calculate = () => {
-    let units: { [id: string]: Node } = {}
-    let projectListLength = state.user?.projects.length || 0
-    let projectList = state.user?.projects.map((project) => project) || []
-    let count = 1
-    for (let i = 0; i < projectListLength; i++) {
-      let project: { [id: string]: Node } = {}
-      let semester: { [id: string]: Node } = {}
-      let year: { [id: string]: Node } = {}
-      let projectUnit = projectList[i].projectUnitCode || "n/a"
-      let projectYear = projectList[i].projectYear || "n/a"
-      let projectSemester = projectList[i].projectSemester || "n/a"
-      let projectId = projectList[i].projectId || "n/a"
-      let projectName = projectList[i].projectName || "n/a"
+    const projects = state.user?.projects || []
+    let units: ProjectDictionary = { id: {} }
 
-      if (units[projectUnit]) {
-        units[projectUnit] = { id: units[projectUnit].id, name: projectUnit, data: units[projectUnit].data }
-      } else {
-        units[projectUnit] = { id: (count += 1).toString(), name: projectUnit, data: year }
+    projects.forEach((singleProject) => {
+      let year: ProjectDictionary = { id: {} }
+      let semester: ProjectDictionary = { id: {} }
+      let project: ProjectDictionary = { id: {} }
+
+      let projectUnit = singleProject.projectUnitCode || "unit"
+      let projectYear = singleProject.projectYear || "year"
+      let projectSemester = singleProject.projectSemester || "semester"
+      let projectId = singleProject.projectId || "n/a"
+      let projectName = singleProject.projectName || "n/a"
+
+      if (!units.id[projectUnit]) {
+        units.id[projectUnit] = year
       }
 
-      let yearData = (units[projectUnit] && units[projectUnit]?.data) || year
-
-      if (yearData[projectYear]) {
-        yearData[projectYear] = { id: yearData[projectYear].id, name: projectYear, data: yearData[projectYear].data }
-      } else {
-        yearData[projectYear] = { id: (count += 1).toString(), name: projectYear, data: semester }
+      const yearData = units.id[projectUnit]
+      if (!yearData.id[projectYear]) {
+        yearData.id[projectYear] = semester
       }
 
-      let semesterData = yearData[projectYear].data || semester
-
-      if (semesterData[projectSemester]) {
-        semesterData[projectSemester] = {
-          id: semesterData[projectSemester].id,
-          name: projectSemester,
-          data: semesterData[projectSemester].data
-        }
-      } else {
-        semesterData[projectSemester] = { id: (count += 1).toString(), name: projectSemester, data: project }
+      const semesterData = yearData.id[projectYear]
+      if (!semesterData.id[projectSemester]) {
+        semesterData.id[projectSemester] = project
       }
 
-      let projectData = semesterData[projectSemester].data || project
-
-      if (!projectData[projectId]) {
-        projectData[projectId] = { id: projectId, name: projectName }
+      const projectData = semesterData.id[projectSemester]
+      if (!projectData.data) {
+        projectData.data = []
       }
-    }
-    let root: Node = { id: "1", name: "Projects", data: units }
-    return renderTree(root)
+      projectData.data.push({
+        projectId: projectId,
+        projectName: projectName
+      })
+    })
+
+    return renderTree(units)
   }
 
   return (

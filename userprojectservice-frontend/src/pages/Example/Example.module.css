@@ -4,6 +4,7 @@
   align-items: center;
   text-align: center;
   display: flex;
+  background-color: white;
 
   /*flex: 1 0 auto;*/
   /*min-height: 100vh;*/

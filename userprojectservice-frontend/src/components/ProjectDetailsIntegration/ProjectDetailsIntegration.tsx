@@ -40,8 +40,8 @@ const ProjectDetailsIntegration: FunctionComponent<ProjectDetailsIntegrationProp
       break
     case PROJECT_DETAIL_GOOGLE_DRIVE_PATH:
       const driveId = query?.get(GOOGLE_DRIVE_ID_QUERY)
-      integrationIdQuery = driveId ? `&drive-id=${driveId}` : ""
-      url = `${process.env.REACT_APP_GOOGLE_DRIVE_URL}?project-id=${projectId}${integrationIdQuery}`
+      integrationIdQuery = driveId ? `drive?project_id=${projectId}&drive_id=${driveId}` : `update?project_id=${projectId}`
+      url = `${process.env.REACT_APP_GOOGLE_DRIVE_URL}${integrationIdQuery}`
       console.log(url)
       break
     case PROJECT_DETAIL_REMINDERS_PATH:
