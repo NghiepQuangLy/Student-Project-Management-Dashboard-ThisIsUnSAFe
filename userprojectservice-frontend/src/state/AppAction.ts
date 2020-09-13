@@ -1,5 +1,5 @@
-import { InitialUser } from "../usecase/UseCase"
 import { ProjectResponse } from "../models/ProjectResponse"
+import { UserResponse } from "../models/UserResponse"
 
 export type AppActionType =
   | "PROJECT_LIST_LOADING"
@@ -23,7 +23,7 @@ export type ProjectDetailFailureAction = AppAction<"PROJECT_DETAIL_FAILURE", und
 
 export type UserDetailLoadingAction = AppAction<"USER_DETAIL_LOADING", undefined>
 
-export type UserDetailSuccessAction = AppAction<"USER_DETAIL_SUCCESS", InitialUser>
+export type UserDetailSuccessAction = AppAction<"USER_DETAIL_SUCCESS", UserResponse>
 
 export const projectDetailLoading = (): ProjectDetailLoadingAction => ({
   type: "PROJECT_DETAIL_LOADING",
@@ -45,7 +45,7 @@ export const userDetailLoading = (): UserDetailLoadingAction => ({
   payload: undefined
 })
 
-export const userDetailSuccess = (user: InitialUser): UserDetailSuccessAction => ({
+export const userDetailSuccess = (user: UserResponse): UserDetailSuccessAction => ({
   type: "USER_DETAIL_SUCCESS",
   payload: user
 })

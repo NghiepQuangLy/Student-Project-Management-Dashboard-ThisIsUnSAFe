@@ -13,7 +13,6 @@ import Loading from "../../components/Loading/Loading"
 import styles from "./ProjectDetails.module.css"
 import ExampleDashboard from "../Example/ExampleDashboard"
 
-
 const ProjectDetails: Page = ({ integration, state, dispatch }) => {
   const { googleUser, isSignedIn, isInitialized } = useGoogleAuth()
   const emailAddress = googleUser?.getBasicProfile()?.getEmail()
