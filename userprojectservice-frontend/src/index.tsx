@@ -13,12 +13,12 @@ const init = async () => {
 
   const integration: Integration = integrationModule.default
     ReactDOM.render(
-          <div>
+        <React.StrictMode>
             <App integration={integration} />
               <Helmet>
                 <title>{TITLE}</title>
               </Helmet>
-          </div>,
+        </React.StrictMode>,
         document.getElementById("root")
     )
 
