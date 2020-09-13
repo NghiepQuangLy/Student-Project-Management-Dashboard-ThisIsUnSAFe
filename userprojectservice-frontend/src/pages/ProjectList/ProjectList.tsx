@@ -63,19 +63,15 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
 
   const renderCont = (nodes: Node) => (
     <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
-      {nodes.data
-        ? Object.keys(nodes.data).map((node) =>
-          renderTree(nodes.data ? nodes.data[node] : nodes)
-        )
-        : null}
+      {nodes.data ? Object.keys(nodes.data).map((node) => renderTree(nodes.data ? nodes.data[node] : nodes)) : null}
     </TreeItem>
   )
 
   const renderTree = (nodes: Node) => {
     if (nodes.data === undefined) {
-      return (renderEnd(nodes))
+      return renderEnd(nodes)
     } else {
-      return (renderCont(nodes))
+      return renderCont(nodes)
     }
   }
 
@@ -127,7 +123,7 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
       }
     }
     let root: Node = { id: "1", name: "Projects", data: units }
-    return (renderTree(root))
+    return renderTree(root)
   }
 
   return (
