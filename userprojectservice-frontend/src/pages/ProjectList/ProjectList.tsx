@@ -97,9 +97,9 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
       let semester: ProjectDictionary = { id: {} }
       let project: ProjectDictionary = { id: {} }
 
-      let projectUnit = singleProject.projectUnitCode || "n/a"
-      let projectYear = singleProject.projectYear || "n/a"
-      let projectSemester = singleProject.projectSemester || "n/a"
+      let projectUnit = singleProject.projectUnitCode || "unit"
+      let projectYear = singleProject.projectYear || "year"
+      let projectSemester = singleProject.projectSemester || "semester"
       let projectId = singleProject.projectId || "n/a"
       let projectName = singleProject.projectName || "n/a"
 
