@@ -5,12 +5,14 @@ import * as AppAction from "../../state/AppAction"
 import { AppStatus } from "../../models/AppStatus"
 import { Redirect } from "react-router-dom"
 import BarContainer from "../../components/BarContainer/BarContainer"
-import ProjectDetailsLanding from "../../components/ProjectDetailsLanding/ProjectDetailsLanding"
+// import ProjectDetailsLanding from "../../components/ProjectDetailsLanding/ProjectDetailsLanding"
 import { useGoogleAuth } from "../../components/GoogleAuthProvider/GoogleAuthProvider"
 import { PROJECT_DETAIL_PATH, PROJECT_ID_QUERY, useQuery } from "../../util/useQuery"
 import ProjectDetailsIntegration from "../../components/ProjectDetailsIntegration/ProjectDetailsIntegration"
 import Loading from "../../components/Loading/Loading"
 import styles from "./ProjectDetails.module.css"
+import ExampleDashboard from "../Example/ExampleDashboard"
+
 
 const ProjectDetails: Page = ({ integration, state, dispatch }) => {
   const { googleUser, isSignedIn, isInitialized } = useGoogleAuth()
@@ -63,7 +65,7 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
       )}
       {isSucceed && (
         <BarContainer shouldContainSideBar={true} projectDetails={state.currentProject ?? undefined}>
-          {currentPath === PROJECT_DETAIL_PATH ? <ProjectDetailsLanding state={state} /> : <ProjectDetailsIntegration />}
+          {currentPath === PROJECT_DETAIL_PATH ? <ExampleDashboard /> : <ProjectDetailsIntegration />}
         </BarContainer>
       )}
     </div>
