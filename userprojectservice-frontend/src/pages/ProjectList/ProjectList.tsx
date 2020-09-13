@@ -52,77 +52,83 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
   const classes = useStyles()
   const userdetailheight = clsx(classes.paper, classes.userdetailheight)
 
-  let units: { [id: string]: Node } = {}
-  let projectListLength = state.user?.projects.length || 0
-  let projectList = state.user?.projects.map((project) => project) || []
-  let count = 1
-  for (let i = 0; i < projectListLength; i++) {
-    let project: { [id: string]: Node } = {}
-    let semester: { [id: string]: Node } = {}
-    let year: { [id: string]: Node } = {}
-    let projectUnit = projectList[i].projectUnit || "n/a"
-    let projectYear = projectList[i].projectYear || "n/a"
-    let projectSemester = projectList[i].projectSemester || "n/a"
-    let projectId = projectList[i].projectId || "n/a"
-    let projectName = projectList[i].projectName || "n/a"
+  const renderEnd = (nodes: Node) => (
+    <TreeItem
+        key={nodes.id}
+        nodeId={nodes.id}
+        label={nodes.name}
+        onClick={() => handleOnShowProjectDetailsClicked(nodes.id)}>
+      null
+    </TreeItem>
+  )
 
-    if (units[projectUnit]) {
-      units[projectUnit] = { id: units[projectUnit].id, name: projectUnit, data: units[projectUnit].data }
+  const renderCont = (nodes: Node) => (
+      <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
+        {nodes.data
+            ? Object.keys(nodes.data).map((node) =>
+              renderTree(nodes.data ? nodes.data[node] : nodes)
+            )
+            : null}
+      </TreeItem>
+  )
+
+  const renderTree = (nodes: Node) => {
+    if (nodes.data === undefined) {
+      return (renderEnd(nodes))
     } else {
-      units[projectUnit] = { id: (count += 1).toString(), name: projectUnit, data: year }
-    }
-
-    let yearData = (units[projectUnit] && units[projectUnit]?.data) || year
-
-    if (yearData[projectYear]) {
-      yearData[projectYear] = { id: yearData[projectYear].id, name: projectYear, data: yearData[projectYear].data }
-    } else {
-      yearData[projectYear] = { id: (count += 1).toString(), name: projectYear, data: semester }
-    }
-
-    let semesterData = yearData[projectYear].data || semester
-
-    if (semesterData[projectSemester]) {
-      semesterData[projectSemester] = {
-        id: semesterData[projectSemester].id,
-        name: projectSemester,
-        data: semesterData[projectSemester].data
-      }
-    } else {
-      semesterData[projectSemester] = { id: (count += 1).toString(), name: projectSemester, data: project }
-    }
-
-    let projectData = semesterData[projectSemester].data || project
-
-    if (!projectData[projectId]) {
-      projectData[projectId] = { id: projectId, name: projectName }
+      return (renderCont(nodes))
     }
   }
 
-  const root: Node = { id: "1", name: "Parent", data: units }
+  const calculate = () => {
+    let units: { [id: string]: Node } = {}
+    let projectListLength = state.user?.projects.length || 0
+    let projectList = state.user?.projects.map((project) => project) || []
+    let count = 1
+    for (let i = 0; i < projectListLength; i++) {
+      let project: { [id: string]: Node } = {}
+      let semester: { [id: string]: Node } = {}
+      let year: { [id: string]: Node } = {}
+      let projectUnit = projectList[i].projectUnit || "n/a"
+      let projectYear = projectList[i].projectYear || "n/a"
+      let projectSemester = projectList[i].projectSemester || "n/a"
+      let projectId = projectList[i].projectId || "n/a"
+      let projectName = projectList[i].projectName || "n/a"
 
-  const renderTree = (nodes: Node) => {
-    console.log(nodes.data)
-    if (nodes.data === undefined) {
-      return (
-        <TreeItem
-          key={nodes.id}
-          nodeId={nodes.id}
-          label={nodes.name}
-          onClick={() => handleOnShowProjectDetailsClicked(nodes.id)}
-        ></TreeItem>
-      )
-    } else {
-      return (
-        <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
-          {nodes.data
-            ? Object.keys(nodes.data).map((node) => {
-                renderTree(nodes.data ? nodes.data[node] : nodes)
-              })
-            : null}
-        </TreeItem>
-      )
+      if (units[projectUnit]) {
+        units[projectUnit] = {id: units[projectUnit].id, name: projectUnit, data: units[projectUnit].data}
+      } else {
+        units[projectUnit] = {id: (count += 1).toString(), name: projectUnit, data: year}
+      }
+
+      let yearData = (units[projectUnit] && units[projectUnit]?.data) || year
+
+      if (yearData[projectYear]) {
+        yearData[projectYear] = {id: yearData[projectYear].id, name: projectYear, data: yearData[projectYear].data}
+      } else {
+        yearData[projectYear] = {id: (count += 1).toString(), name: projectYear, data: semester}
+      }
+
+      let semesterData = yearData[projectYear].data || semester
+
+      if (semesterData[projectSemester]) {
+        semesterData[projectSemester] = {
+          id: semesterData[projectSemester].id,
+          name: projectSemester,
+          data: semesterData[projectSemester].data
+        }
+      } else {
+        semesterData[projectSemester] = {id: (count += 1).toString(), name: projectSemester, data: project}
+      }
+
+      let projectData = semesterData[projectSemester].data || project
+
+      if (!projectData[projectId]) {
+        projectData[projectId] = {id: projectId, name: projectName}
+      }
     }
+    let root: Node = {id: "1", name: "Parent", data: units}
+    return(renderTree(root))
   }
 
   return (
@@ -185,17 +191,7 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
                               defaultExpanded={["root"]}
                               defaultExpandIcon={<ChevronRightIcon />}
                             >
-                              {renderTree(root)}
-                              {/*state.user &&
-                                  Object.keys(units).map((nodes) => {
-                                    return (
-
-                                          <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}
-                                                    onClick={() => handleOnShowProjectDetailsClicked(nodes.id)}>
-                                          </TreeItem>
-                                      )}
-                                    )
-                                  }*/}
+                              {calculate()}
                             </TreeView>
                           )}
                         </Container>

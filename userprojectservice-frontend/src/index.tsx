@@ -12,8 +12,17 @@ const init = async () => {
   const integrationModule = await import(`./integrations/${process.env.REACT_APP_INTEGRATION_TYPE}Integration.ts`)
 
   const integration: Integration = integrationModule.default
+    ReactDOM.render(
+          <div>
+            <App integration={integration} />
+              <Helmet>
+                <title>{TITLE}</title>
+              </Helmet>
+          </div>,
+        document.getElementById("root")
+    )
 
-  ReactDOM.render(
+    /*ReactDOM.render(
     <React.StrictMode>
       <App integration={integration} />
       <Helmet>
@@ -21,7 +30,7 @@ const init = async () => {
       </Helmet>
     </React.StrictMode>,
     document.getElementById("root")
-  )
+  )*/
 }
 
 init()
