@@ -9,7 +9,7 @@ export interface InitialUser {
   projects: Project[]
 }
 
-export const loadInitialUser = async (integration: Integration, emailAddress: String): Promise<InitialUser> => {
+export const loadInitialUser = async (integration: Integration, emailAddress: string): Promise<InitialUser> => {
   const userResponse = await integration.getUser(emailAddress)
 
   return {

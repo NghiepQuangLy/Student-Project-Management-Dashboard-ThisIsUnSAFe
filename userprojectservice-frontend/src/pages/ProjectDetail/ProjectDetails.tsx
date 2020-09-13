@@ -23,7 +23,11 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
   const currentPath = window.location.pathname
 
   useLayoutEffect(() => {
-    if (state.projectDetailStatus === AppStatus.INITIAL && emailAddress && projectId) {
+    const shouldGetProject =
+      state.projectDetailStatus === AppStatus.INITIAL ||
+      (state.projectDetailStatus === AppStatus.SUCCESS && state.currentProject?.projectId !== projectId)
+
+    if (emailAddress && projectId && shouldGetProject) {
       dispatch(AppAction.projectDetailLoading())
 
       integration
@@ -33,7 +37,7 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
         })
         .catch(() => dispatch(AppAction.projectDetailFailure()))
     }
-  }, [dispatch, integration, state.projectDetailStatus, emailAddress, projectId])
+  }, [dispatch, integration, state.projectDetailStatus, emailAddress, projectId, state.currentProject])
 
   const isLoading =
     !isInitialized ||

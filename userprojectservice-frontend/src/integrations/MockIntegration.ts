@@ -1,11 +1,11 @@
 import { Integration } from "./Integration"
 
 const MockIntegration: Integration = {
-  getProject: async () =>
+  getProject: async (emailAddress: string, projectId: string) =>
     new Promise((resolve) => {
       setTimeout(() => {
         resolve({
-          projectId: "2",
+          projectId: projectId,
           projectName: "TestProject2",
           projectGitIntegration: [
             {

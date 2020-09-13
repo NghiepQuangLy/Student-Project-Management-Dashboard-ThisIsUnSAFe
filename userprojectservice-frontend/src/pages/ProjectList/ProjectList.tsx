@@ -44,7 +44,7 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
     }
   }, [dispatch, integration, state.userDetailStatus, state.user, isInitialized, emailAddress])
 
-  const handleOnShowProjectDetailsClicked = (projectId: String) => {
+  const handleOnShowProjectDetailsClicked = (projectId: string) => {
     history.push(`/project?${PROJECT_ID_QUERY}=${projectId}`)
   }
 

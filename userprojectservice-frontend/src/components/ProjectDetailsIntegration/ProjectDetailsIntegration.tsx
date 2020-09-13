@@ -3,7 +3,7 @@ import styles from "./ProjectDetailsIntegration.module.css"
 import {
   GIT_ID_QUERY,
   GOOGLE_DRIVE_ID_QUERY,
-  PROJECT_DETAIL_CONSTRACTS_PATH,
+  PROJECT_DETAIL_CONTACTS_PATH,
   PROJECT_DETAIL_EXPORT_DATA_PATH,
   PROJECT_DETAIL_GIT_PATH,
   PROJECT_DETAIL_GOOGLE_DRIVE_PATH,
@@ -60,7 +60,7 @@ const ProjectDetailsIntegration: FunctionComponent<ProjectDetailsIntegrationProp
       url = `${process.env.REACT_APP_TIME_TRACKING_URL}?project-id=${projectId}`
       console.log(url)
       break
-    case PROJECT_DETAIL_CONSTRACTS_PATH:
+    case PROJECT_DETAIL_CONTACTS_PATH:
       url = `${process.env.REACT_APP_CONTACTS_URL}?project-id=${projectId}`
       console.log(url)
       break
