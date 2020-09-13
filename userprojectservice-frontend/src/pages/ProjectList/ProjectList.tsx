@@ -23,6 +23,7 @@ import TreeItem from "@material-ui/lab/TreeItem"
 export interface Node {
   id: string
   name: string
+  projectId?: string
   data?: { [id: string]: Node }
 }
 
@@ -52,7 +53,9 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
   const userdetailheight = clsx(classes.paper, classes.userdetailheight)
 
   const renderEnd = (nodes: Node) => (
-    <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name} onClick={() => handleOnShowProjectDetailsClicked(nodes.id)}></TreeItem>
+    <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name} onClick={() => handleOnShowProjectDetailsClicked(nodes.projectId ? nodes.projectId : nodes.id)}>
+
+    </TreeItem>
   )
 
   const renderCont = (nodes: Node) => (
@@ -62,7 +65,9 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
   )
 
   const renderTree = (nodes: Node) => {
+    console.log("renderTree: 0", nodes)
     if (nodes.data === undefined) {
+      //console.log("nodes.data === undefined", nodes)
       return renderEnd(nodes)
     } else {
       return renderCont(nodes)
@@ -74,6 +79,7 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
     let projectListLength = state.user?.projects.length || 0
     let projectList = state.user?.projects.map((project) => project) || []
     let count = 1
+    console.log("ProjectList: ", projectList)
     for (let i = 0; i < projectListLength; i++) {
       let project: { [id: string]: Node } = {}
       let semester: { [id: string]: Node } = {}
@@ -113,9 +119,11 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
       let projectData = semesterData[projectSemester].data || project
 
       if (!projectData[projectId]) {
-        projectData[projectId] = { id: projectId, name: projectName }
+        projectData[projectId] = { id: (count += 1).toString(), name: projectName, projectId: projectId }
+        //console.log("!projectData: ", units, projectData)
       }
     }
+    //console.log("Units: ", units)
     let root: Node = { id: "1", name: "Projects", data: units }
     return renderTree(root)
   }
