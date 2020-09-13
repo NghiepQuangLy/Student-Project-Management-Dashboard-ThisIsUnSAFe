@@ -65,7 +65,7 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
   )
 
   const renderTree = (nodes: Node) => {
-    console.log("renderTree: 0", nodes)
+    // console.log("renderTree: 0", nodes)
     if (nodes.data === undefined) {
       //console.log("nodes.data === undefined", nodes)
       return renderEnd(nodes)
@@ -79,7 +79,7 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
     let projectListLength = state.user?.projects.length || 0
     let projectList = state.user?.projects.map((project) => project) || []
     let count = 1
-    console.log("ProjectList: ", projectList)
+    // console.log("ProjectList: ", projectList)
     for (let i = 0; i < projectListLength; i++) {
       let project: { [id: string]: Node } = {}
       let semester: { [id: string]: Node } = {}
@@ -182,15 +182,15 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
                           ) : isEmpty ? (
                             <h1>Empty History</h1>
                           ) : (
-                            <TreeView
-                              className={classes.root}
-                              defaultCollapseIcon={<ExpandMoreIcon />}
-                              defaultExpanded={["root"]}
-                              defaultExpandIcon={<ChevronRightIcon />}
-                            >
-                              {calculate()}
-                            </TreeView>
-                          )}
+                                <TreeView
+                                  className={classes.root}
+                                  defaultCollapseIcon={<ExpandMoreIcon />}
+                                  defaultExpanded={["root"]}
+                                  defaultExpandIcon={<ChevronRightIcon />}
+                                >
+                                  {calculate()}
+                                </TreeView>
+                              )}
                         </Container>
                       </Paper>
                     </Grid>
@@ -203,11 +203,11 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
             </div>
           </BarContainer>
         ) : (
-          <h1>something went wrong</h1>
-        )
+            <h1>something went wrong</h1>
+          )
       ) : (
-        <Redirect to="/" />
-      )}
+            <Redirect to="/" />
+          )}
     </div>
   )
 }
