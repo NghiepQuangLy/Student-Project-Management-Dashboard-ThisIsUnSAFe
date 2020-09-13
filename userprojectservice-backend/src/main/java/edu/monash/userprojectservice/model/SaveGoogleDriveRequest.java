@@ -20,4 +20,7 @@ public class SaveGoogleDriveRequest {
 
     @NotNull
     private String projectId;
+
+    @NotNull
+    private String googleDriveName;
 }

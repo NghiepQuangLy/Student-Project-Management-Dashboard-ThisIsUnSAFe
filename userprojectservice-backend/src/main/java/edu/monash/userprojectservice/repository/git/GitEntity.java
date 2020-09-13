@@ -27,5 +27,9 @@ public class GitEntity implements Serializable {
     @Id
     @Column(name = "project_id")
     private String projectId;
+
+    @Id
+    @Column(name = "git_name")
+    private String gitName;
 }
 

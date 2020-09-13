@@ -7,10 +7,62 @@ const MockIntegration: Integration = {
         resolve({
           projectId: "2",
           projectName: "TestProject2",
-          projectGitIds: ["1", "1234", "tesre22"],
-          projectGoogleDriveIds: ["1", "2", "4", "tesre22"],
+          projectGitIntegration: [
+            {
+              integrationId: "git1",
+              integrationName: "gitname1"
+            },
+            {
+              integrationId: "git1234",
+              integrationName: "gitname2"
+            },
+            {
+              integrationId: "gittesre22",
+              integrationName: "gitname3"
+            }
+          ],
+          projectGoogleDriveIntegration: [
+            {
+              integrationId: "GoogleDrive1",
+              integrationName: "GoogleDriveoname1"
+            },
+            {
+              integrationId: "GoogleDrive2",
+              integrationName: "GoogleDriveoname2"
+            },
+            {
+              integrationId: "GoogleDrive4",
+              integrationName: "GoogleDriveoname3"
+            },
+            {
+              integrationId: "GoogleDrivetesre22",
+              integrationName: "GoogleDriveoname4"
+            }
+          ],
           projectGoogleFolderIds: ["1", "tesre22"],
-          projectTrelloIds: ["1", "2", "50", "501", "tesre22"]
+          projectTrelloIntegration: [
+            {
+              integrationId: "trell1",
+              integrationName: "trelloname1"
+            },
+            {
+              integrationId: "trell2",
+              integrationName: "trelloname2"
+            },
+            {
+              integrationId: "trell50",
+              integrationName: "trelloname3"
+            },
+            {
+              integrationId: "trell501",
+              integrationName: "trelloname3"
+            },
+            {
+              integrationId: "trellotesre22",
+              integrationName: "trelloname4"
+            }
+          ],
+          projectTimesheet: "Timesheet"
         })
       }, 1000)
     }),

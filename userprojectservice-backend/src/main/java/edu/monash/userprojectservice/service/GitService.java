@@ -43,7 +43,7 @@ public class GitService {
         validationHandler.isValid(saveGitRequest.getEmailAddress(), saveGitRequest.getProjectId());
 
         // Store into database
-        gitRepository.save(new GitEntity(saveGitRequest.getGitId(), saveGitRequest.getProjectId()));
+        gitRepository.save(new GitEntity(saveGitRequest.getGitId(), saveGitRequest.getProjectId(), saveGitRequest.getGitName()));
 
         log.info("{\"message\":\"Inserted into Git\", \"project\":\"{}\"}", saveGitRequest);
     }

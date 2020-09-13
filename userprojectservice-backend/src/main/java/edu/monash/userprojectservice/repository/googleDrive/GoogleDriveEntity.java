@@ -26,5 +26,9 @@ public class GoogleDriveEntity implements Serializable {
     @Id
     @Column(name = "project_id")
     private String projectId;
+
+    @Id
+    @Column(name = "drive_name")
+    private String googleDriveName;
 }
 

@@ -3,10 +3,15 @@ import { AppStatus } from "../models/AppStatus"
 export interface ProjectDetail {
   projectName: string | null
   projectId: string | null
-  projectGitIds: string[]
-  projectGoogleDriveIds: string[]
+  projectGitIntegrations: ProjectIntegration[]
+  projectGoogleDriveIntegrations: ProjectIntegration[]
   projectGoogleFolderIds: string[]
-  projectTrelloIds: string[]
+  projectTrelloIntegrations: ProjectIntegration[]
+}
+
+export interface ProjectIntegration {
+  integrationId: string
+  integrationName: string
 }
 
 export interface Project {

@@ -1,5 +1,6 @@
 package edu.monash.userprojectservice.model;
 
+import edu.monash.userprojectservice.service.IntegrationObjectResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,8 +19,8 @@ public class GetProjectResponse {
     private String projectYear;
     private String projectSemester;
     private String projectTimesheet;
-    private List<String> projectGitIds;
-    private List<String> projectGoogleDriveIds;;
+    private List<IntegrationObjectResponse> projectGitIntegration;
+    private List<IntegrationObjectResponse> projectGoogleDriveIntegration;
     private List<String> projectGoogleFolderIds;
-    private List<String> projectTrelloIds;
+    private List<IntegrationObjectResponse> projectTrelloIntegration;
 }

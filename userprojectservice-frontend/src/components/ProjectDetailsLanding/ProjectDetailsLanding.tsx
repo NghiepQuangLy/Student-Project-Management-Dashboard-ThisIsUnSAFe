@@ -118,11 +118,14 @@ const ProjectDetailsLanding: FunctionComponent<ProjectDetailsLandingProps> = ({ 
                   </Typography>
                   <Container style={{ maxHeight: 200, padding: 0, overflow: "auto" }}>
                     <List component="nav" aria-label="Google Tab">
-                      {state.currentProject?.projectGoogleDriveIds.map((item) => {
+                      {state.currentProject?.projectGoogleDriveIntegrations.map((item) => {
                         return (
                           <div>
-                            <ListItem button onClick={() => viewIntegration("Google Drives", state.currentProject!.projectId!, item)}>
-                              {item}
+                            <ListItem
+                              button
+                              onClick={() => viewIntegration("Google Drives", state.currentProject!.projectId!, item.integrationId)}
+                            >
+                              {item.integrationId}
                             </ListItem>
                             <Divider />
                           </div>
@@ -148,11 +151,11 @@ const ProjectDetailsLanding: FunctionComponent<ProjectDetailsLandingProps> = ({ 
                   </Typography>
                   <Container style={{ maxHeight: 200, padding: 0, overflow: "auto" }}>
                     <List component="nav" aria-label="Git Tab">
-                      {state.currentProject?.projectGitIds.map((item) => {
+                      {state.currentProject?.projectGitIntegrations.map((item) => {
                         return (
                           <div>
-                            <ListItem button onClick={() => viewIntegration("Git", state.currentProject!.projectId!, item)}>
-                              {item}
+                            <ListItem button onClick={() => viewIntegration("Git", state.currentProject!.projectId!, item.integrationId)}>
+                              {item.integrationId}
                             </ListItem>
                             <Divider />
                           </div>
@@ -178,11 +181,14 @@ const ProjectDetailsLanding: FunctionComponent<ProjectDetailsLandingProps> = ({ 
                   </Typography>
                   <Container style={{ maxHeight: 200, padding: 0, overflow: "auto" }}>
                     <List component="nav" aria-label="Trello Tab">
-                      {state.currentProject?.projectTrelloIds.map((item) => {
+                      {state.currentProject?.projectTrelloIntegrations.map((item) => {
                         return (
                           <div>
-                            <ListItem button onClick={() => viewIntegration("Trello", state.currentProject!.projectId!, item)}>
-                              {item}
+                            <ListItem
+                              button
+                              onClick={() => viewIntegration("Trello", state.currentProject!.projectId!, item.integrationId)}
+                            >
+                              {item.integrationId}
                             </ListItem>
                             <Divider />
                           </div>

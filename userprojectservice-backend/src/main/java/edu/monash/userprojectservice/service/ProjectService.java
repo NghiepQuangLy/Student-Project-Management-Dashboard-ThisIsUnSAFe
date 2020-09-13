@@ -81,10 +81,9 @@ public class ProjectService {
         List<GitEntity> gitEntities = gitRepository.findGitEntitiesByProjectId(projectId);
         List<GoogleDriveEntity> googleDriveEntities = googleDriveRepository.findGoogleDriveEntitiesByProjectId(projectId);
         List<GoogleFolderEntity> googleFolderEntities = googleFolderRepository.findGoogleFolderEntitiesByProjectId(projectId);
-        List<TrelloEntity> trelloDetail = trelloRepository.findTrelloEntitiesByProjectId(projectId);
+        List<TrelloEntity> trelloEntities = trelloRepository.findTrelloEntitiesByProjectId(projectId);
 
-        System.out.println(projectEntity.getProjectId());
-        System.out.println(projectEntity.getProjectName());
+
 
         log.info("{\"message\":\"Got project\", \"project\":\"{}\"}", projectId);
 
@@ -96,10 +95,10 @@ public class ProjectService {
                         projectEntity.getProjectYear(),
                         projectEntity.getProjectSemester(),
                         projectEntity.getProjectTimesheet(),
-                        gitEntities.stream().map(GitEntity::getGitId).collect(Collectors.toList()),
-                        googleDriveEntities.stream().map(GoogleDriveEntity::getGoogleDriveId).collect(Collectors.toList()),
+                        gitEntities.stream().map(gitEntity -> new IntegrationObjectResponse(gitEntity.getGitId(),gitEntity.getGitName())).collect(Collectors.toList()),
+                        googleDriveEntities.stream().map(googleDriveEntity -> new IntegrationObjectResponse(googleDriveEntity.getGoogleDriveId(),googleDriveEntity.getGoogleDriveName())).collect(Collectors.toList()),
                         googleFolderEntities.stream().map(GoogleFolderEntity::getGoogleFolderId).collect(Collectors.toList()),
-                        trelloDetail.stream().map(TrelloEntity::getTrelloId).collect(Collectors.toList())
+                        trelloEntities.stream().map(trelloEntity -> new IntegrationObjectResponse(trelloEntity.getTrelloId(),trelloEntity.getTrelloName())).collect(Collectors.toList())
                 ), OK
         );
     }
