@@ -3,26 +3,15 @@ import ReactDOM from "react-dom"
 import "./index.css"
 import App from "./App"
 import { Integration } from "./integrations/Integration"
-import { Helmet } from 'react-helmet'
+import { Helmet } from "react-helmet"
 
-
-const TITLE = 'Student Project Management Dashboard'
+const TITLE = "Student Project Management Dashboard"
 
 const init = async () => {
   const integrationModule = await import(`./integrations/${process.env.REACT_APP_INTEGRATION_TYPE}Integration.ts`)
 
   const integration: Integration = integrationModule.default
-    ReactDOM.render(
-        <React.StrictMode>
-            <App integration={integration} />
-              <Helmet>
-                <title>{TITLE}</title>
-              </Helmet>
-        </React.StrictMode>,
-        document.getElementById("root")
-    )
-
-    /*ReactDOM.render(
+  ReactDOM.render(
     <React.StrictMode>
       <App integration={integration} />
       <Helmet>
@@ -30,7 +19,7 @@ const init = async () => {
       </Helmet>
     </React.StrictMode>,
     document.getElementById("root")
-  )*/
+  )
 }
 
 init()

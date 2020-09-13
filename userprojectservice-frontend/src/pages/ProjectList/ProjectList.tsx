@@ -53,30 +53,22 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
   const userdetailheight = clsx(classes.paper, classes.userdetailheight)
 
   const renderEnd = (nodes: Node) => (
-      <TreeItem
-          key={nodes.id}
-          nodeId={nodes.id}
-          label={nodes.name}
-          onClick={() => handleOnShowProjectDetailsClicked(nodes.id)}>
-        null
-      </TreeItem>
+    <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name} onClick={() => handleOnShowProjectDetailsClicked(nodes.id)}>
+      null
+    </TreeItem>
   )
 
   const renderCont = (nodes: Node) => (
-      <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
-        {nodes.data
-            ? Object.keys(nodes.data).map((node) =>
-                renderTree(nodes.data ? nodes.data[node] : nodes)
-            )
-            : null}
-      </TreeItem>
+    <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
+      {nodes.data ? Object.keys(nodes.data).map((node) => renderTree(nodes.data ? nodes.data[node] : nodes)) : null}
+    </TreeItem>
   )
 
   const renderTree = (nodes: Node) => {
     if (nodes.data === undefined) {
-      return (renderEnd(nodes))
+      return renderEnd(nodes)
     } else {
-      return (renderCont(nodes))
+      return renderCont(nodes)
     }
   }
 
@@ -96,17 +88,17 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
       let projectName = projectList[i].projectName || "n/a"
 
       if (units[projectUnit]) {
-        units[projectUnit] = {id: units[projectUnit].id, name: projectUnit, data: units[projectUnit].data}
+        units[projectUnit] = { id: units[projectUnit].id, name: projectUnit, data: units[projectUnit].data }
       } else {
-        units[projectUnit] = {id: (count += 1).toString(), name: projectUnit, data: year}
+        units[projectUnit] = { id: (count += 1).toString(), name: projectUnit, data: year }
       }
 
       let yearData = (units[projectUnit] && units[projectUnit]?.data) || year
 
       if (yearData[projectYear]) {
-        yearData[projectYear] = {id: yearData[projectYear].id, name: projectYear, data: yearData[projectYear].data}
+        yearData[projectYear] = { id: yearData[projectYear].id, name: projectYear, data: yearData[projectYear].data }
       } else {
-        yearData[projectYear] = {id: (count += 1).toString(), name: projectYear, data: semester}
+        yearData[projectYear] = { id: (count += 1).toString(), name: projectYear, data: semester }
       }
 
       let semesterData = yearData[projectYear].data || semester
@@ -118,100 +110,100 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
           data: semesterData[projectSemester].data
         }
       } else {
-        semesterData[projectSemester] = {id: (count += 1).toString(), name: projectSemester, data: project}
+        semesterData[projectSemester] = { id: (count += 1).toString(), name: projectSemester, data: project }
       }
 
       let projectData = semesterData[projectSemester].data || project
 
       if (!projectData[projectId]) {
-        projectData[projectId] = {id: projectId, name: projectName}
+        projectData[projectId] = { id: projectId, name: projectName }
       }
     }
-    let root: Node = {id: "1", name: "Parent", data: units}
-    return(renderTree(root))
+    let root: Node = { id: "1", name: "Parent", data: units }
+    return renderTree(root)
   }
 
   return (
-      <div>
-        {!isInitialized ? (
-            <Loading iconColor={"black"} />
-        ) : isSignedIn ? (
-            emailAddress ? (
-                <BarContainer shouldContainSideBar={false}>
-                  <div className={classes.root}>
-                    {/*<CssBaseline />*/}
-                    {/*<AppBar position="absolute" color="primary" className={clsx(classes.appBar, !open && classes.appBarShift)}>*/}
-                    {/*  <Toolbar className={classes.toolbar}>*/}
-                    {/*    <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>*/}
-                    {/*      Project List*/}
-                    {/*    </Typography>*/}
-                    {/*  </Toolbar>*/}
-                    {/*</AppBar>*/}
-                    <main className={classes.content}>
-                      <div className={classes.appBarSpacer} />
-                      <Container maxWidth="lg" className={classes.container}>
-                        <Grid container spacing={3}>
-                          {/* Project Details */}
-                          <Grid item xs={12} md={12} lg={12}>
-                            <Paper className={userdetailheight}>
-                              <Typography variant="h6" align={"center"} gutterBottom>
-                                Project List
-                              </Typography>
-                              <Typography variant="body1" gutterBottom>
-                                <div>
-                                  {" "}
-                                  <strong>Given Name:</strong> {state.user?.givenName}{" "}
-                                </div>
-                                <div>
-                                  {" "}
-                                  <strong>Family Name:</strong> {state.user?.familyName}{" "}
-                                </div>
-                                <div>
-                                  {" "}
-                                  <strong>Email Address:</strong> {emailAddress}{" "}
-                                </div>
-                                <div>
-                                  {" "}
-                                  <strong>User Group:</strong> {state.user?.userGroup}{" "}
-                                </div>
-                                <div>
-                                  {" "}
-                                  <strong>Projects: </strong>{" "}
-                                </div>
-                              </Typography>
-                              <Container style={{ maxHeight: 200, padding: 0, overflow: "auto" }}>
-                                {state.userDetailStatus === AppStatus.LOADING ? (
-                                    <h1>Loading</h1>
-                                ) : isEmpty ? (
-                                    <h1>Empty History</h1>
-                                ) : (
-                                    <TreeView
-                                        className={classes.root}
-                                        defaultCollapseIcon={<ExpandMoreIcon />}
-                                        defaultExpanded={["root"]}
-                                        defaultExpandIcon={<ChevronRightIcon />}
-                                    >
-                                      {calculate()}
-                                    </TreeView>
-                                )}
-                              </Container>
-                            </Paper>
-                          </Grid>
-                        </Grid>
-                        <Box pt={4}>
-                          <Copyright />
-                        </Box>
-                      </Container>
-                    </main>
-                  </div>
-                </BarContainer>
-            ) : (
-                <h1>something went wrong</h1>
-            )
+    <div>
+      {!isInitialized ? (
+        <Loading iconColor={"black"} />
+      ) : isSignedIn ? (
+        emailAddress ? (
+          <BarContainer shouldContainSideBar={false}>
+            <div className={classes.root}>
+              {/*<CssBaseline />*/}
+              {/*<AppBar position="absolute" color="primary" className={clsx(classes.appBar, !open && classes.appBarShift)}>*/}
+              {/*  <Toolbar className={classes.toolbar}>*/}
+              {/*    <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>*/}
+              {/*      Project List*/}
+              {/*    </Typography>*/}
+              {/*  </Toolbar>*/}
+              {/*</AppBar>*/}
+              <main className={classes.content}>
+                <div className={classes.appBarSpacer} />
+                <Container maxWidth="lg" className={classes.container}>
+                  <Grid container spacing={3}>
+                    {/* Project Details */}
+                    <Grid item xs={12} md={12} lg={12}>
+                      <Paper className={userdetailheight}>
+                        <Typography variant="h6" align={"center"} gutterBottom>
+                          Project List
+                        </Typography>
+                        <Typography variant="body1" gutterBottom>
+                          <div>
+                            {" "}
+                            <strong>Given Name:</strong> {state.user?.givenName}{" "}
+                          </div>
+                          <div>
+                            {" "}
+                            <strong>Family Name:</strong> {state.user?.familyName}{" "}
+                          </div>
+                          <div>
+                            {" "}
+                            <strong>Email Address:</strong> {emailAddress}{" "}
+                          </div>
+                          <div>
+                            {" "}
+                            <strong>User Group:</strong> {state.user?.userGroup}{" "}
+                          </div>
+                          <div>
+                            {" "}
+                            <strong>Projects: </strong>{" "}
+                          </div>
+                        </Typography>
+                        <Container style={{ maxHeight: 200, padding: 0, overflow: "auto" }}>
+                          {state.userDetailStatus === AppStatus.LOADING ? (
+                            <h1>Loading</h1>
+                          ) : isEmpty ? (
+                            <h1>Empty History</h1>
+                          ) : (
+                            <TreeView
+                              className={classes.root}
+                              defaultCollapseIcon={<ExpandMoreIcon />}
+                              defaultExpanded={["root"]}
+                              defaultExpandIcon={<ChevronRightIcon />}
+                            >
+                              {calculate()}
+                            </TreeView>
+                          )}
+                        </Container>
+                      </Paper>
+                    </Grid>
+                  </Grid>
+                  <Box pt={4}>
+                    <Copyright />
+                  </Box>
+                </Container>
+              </main>
+            </div>
+          </BarContainer>
         ) : (
-            <Redirect to="/" />
-        )}
-      </div>
+          <h1>something went wrong</h1>
+        )
+      ) : (
+        <Redirect to="/" />
+      )}
+    </div>
   )
 }
 
