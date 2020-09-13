@@ -21,4 +21,13 @@ public class CreateProjectRequest {
     @NotBlank
     private String projectName;
 
+    @NotBlank
+    private String projectUnit;
+
+    @NotBlank
+    private String projectYear;
+
+    @NotBlank
+    private String projectSemester;
+
 }

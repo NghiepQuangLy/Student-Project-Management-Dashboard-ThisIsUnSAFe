@@ -36,14 +36,14 @@ public class CreateProjectRepository {
     String password;
 
     // create new method for insert...
-    public Boolean save(String projectId, List<String> emailAddress, String projectName) throws SQLException {
+    public Boolean save(String projectId, List<String> emailAddress, String projectName, String projectUnit, String projectYear, String projectSemester) throws SQLException {
         Connection conn = DriverManager.getConnection(url, userName, password);
         try {
             conn.setAutoCommit(false);
-            projectsRepository.save(new ProjectEntity(projectId, projectName, null));
+            projectsRepository.save(new ProjectEntity(projectId, projectName, null, projectUnit, projectYear, projectSemester));
             for(int i = 0; i < emailAddress.size(); i++) {
                 if (usersRepository.findUserEntityByEmailAddress(emailAddress.get(i)) != null) {
-                    usersProjectsRepository.save(new UsersProjectsEntity(emailAddress.get(i), projectId, new ProjectEntity(projectId, projectName, null), null));
+                    usersProjectsRepository.save(new UsersProjectsEntity(emailAddress.get(i), projectId, new ProjectEntity(projectId, projectName, null, projectUnit, projectYear, projectSemester), null));
                 }
             }
 

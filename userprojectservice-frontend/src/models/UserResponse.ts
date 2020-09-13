@@ -1,6 +1,9 @@
 export interface Project {
   projectName: string | null
   projectId: string
+  projectUnit: string | null
+  projectYear: string | null
+  projectSemester: string | null
 }
 
 export interface UserResponse {

@@ -41,6 +41,10 @@
   border: none;
 }
 
+.Projects:hover {
+  opacity: 0.7;
+}
+
 .Logout:hover {
   opacity: 0.7;
 }
