@@ -2,7 +2,6 @@ import React, { useLayoutEffect } from "react"
 import "./ProjectList.module.css"
 import { Page } from "../Page"
 import { Redirect, useHistory } from "react-router-dom"
-import * as UseCase from "../../usecase/UseCase"
 import * as AppAction from "../../state/AppAction"
 import { AppStatus } from "../../models/AppStatus"
 import clsx from "clsx"
@@ -38,13 +37,13 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
   useLayoutEffect(() => {
     if (state.userDetailStatus === AppStatus.INITIAL && emailAddress) {
       dispatch(AppAction.userDetailLoading())
-      UseCase.loadInitialUser(integration, emailAddress).then((user) => {
+      integration.getUser(emailAddress).then((user) => {
         dispatch(AppAction.userDetailSuccess(user))
       })
     }
   }, [dispatch, integration, state.userDetailStatus, state.user, isInitialized, emailAddress])
 
-  const handleOnShowProjectDetailsClicked = (projectId: String) => {
+  const handleOnShowProjectDetailsClicked = (projectId: string) => {
     history.push(`/project?${PROJECT_ID_QUERY}=${projectId}`)
   }
 
@@ -53,12 +52,7 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
   const userdetailheight = clsx(classes.paper, classes.userdetailheight)
 
   const renderEnd = (nodes: Node) => (
-    <TreeItem
-      key={nodes.id}
-      nodeId={nodes.id}
-      label={nodes.name}
-      onClick={() => handleOnShowProjectDetailsClicked(nodes.id)}>
-    </TreeItem>
+    <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name} onClick={() => handleOnShowProjectDetailsClicked(nodes.id)}></TreeItem>
   )
 
   const renderCont = (nodes: Node) => (
@@ -84,7 +78,7 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
       let project: { [id: string]: Node } = {}
       let semester: { [id: string]: Node } = {}
       let year: { [id: string]: Node } = {}
-      let projectUnit = projectList[i].projectUnit || "n/a"
+      let projectUnit = projectList[i].projectUnitCode || "n/a"
       let projectYear = projectList[i].projectYear || "n/a"
       let projectSemester = projectList[i].projectSemester || "n/a"
       let projectId = projectList[i].projectId || "n/a"
@@ -180,15 +174,15 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
                           ) : isEmpty ? (
                             <h1>Empty History</h1>
                           ) : (
-                                <TreeView
-                                  className={classes.root}
-                                  defaultCollapseIcon={<ExpandMoreIcon />}
-                                  defaultExpanded={["root"]}
-                                  defaultExpandIcon={<ChevronRightIcon />}
-                                >
-                                  {calculate()}
-                                </TreeView>
-                              )}
+                            <TreeView
+                              className={classes.root}
+                              defaultCollapseIcon={<ExpandMoreIcon />}
+                              defaultExpanded={["root"]}
+                              defaultExpandIcon={<ChevronRightIcon />}
+                            >
+                              {calculate()}
+                            </TreeView>
+                          )}
                         </Container>
                       </Paper>
                     </Grid>
@@ -201,11 +195,11 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
             </div>
           </BarContainer>
         ) : (
-            <h1>something went wrong</h1>
-          )
+          <h1>something went wrong</h1>
+        )
       ) : (
-            <Redirect to="/" />
-          )}
+        <Redirect to="/" />
+      )}
     </div>
   )
 }

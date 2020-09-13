@@ -2,12 +2,12 @@ import { ProjectResponse } from "../models/ProjectResponse"
 import { UserResponse } from "../models/UserResponse"
 
 export interface Integration {
-  getProject(emailAddress: String, projectId: String): Promise<ProjectResponse>
-  getUser(emailAddress: String): Promise<UserResponse>
+  getProject(emailAddress: string, projectId: string): Promise<ProjectResponse>
+  getUser(emailAddress: string): Promise<UserResponse>
 }
 
 const Integration: Integration = {
-  async getProject(emailAddress: String, projectId: String) {
+  async getProject(emailAddress: string, projectId: string) {
     return fetch(`${process.env.REACT_APP_HOST}/get-project?email=${emailAddress}&projectId=${projectId}`, {
       method: "GET"
     }).then(async (response) => {
@@ -24,7 +24,7 @@ const Integration: Integration = {
     })
   },
 
-  async getUser(emailAddress: String) {
+  async getUser(emailAddress: string) {
     return fetch(`${process.env.REACT_APP_HOST}/get-user?email=${emailAddress}`, {
       method: "GET"
     }).then(async (response) => {

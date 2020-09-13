@@ -10,7 +10,8 @@ import {
   ExportOutlined,
   LogoutOutlined,
   ScheduleOutlined,
-  WarningOutlined
+  WarningOutlined,
+  LinkOutlined
 } from "@ant-design/icons"
 import Copyright from "../../pages/Resources/Styles"
 import { Link, useHistory } from "react-router-dom"
@@ -19,7 +20,7 @@ import { ProjectDetail } from "../../state/AppState"
 import {
   GIT_ID_QUERY,
   GOOGLE_DRIVE_ID_QUERY,
-  PROJECT_DETAIL_CONSTRACTS_PATH,
+  PROJECT_DETAIL_CONTACTS_PATH,
   PROJECT_DETAIL_EXPORT_DATA_PATH,
   PROJECT_DETAIL_GIT_PATH,
   PROJECT_DETAIL_GOOGLE_DRIVE_PATH,
@@ -116,7 +117,7 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
       currentPathName = "Time Tracking"
       break
     }
-    case PROJECT_DETAIL_CONSTRACTS_PATH: {
+    case PROJECT_DETAIL_CONTACTS_PATH: {
       defaultSelectedKey = SideBarKey.contacts
       currentPathName = "Contacts"
       break
@@ -141,11 +142,12 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
             <SubMenu key="sub-menu-git" title="Git">
               <Menu.Item
                 key={SideBarKey.linkGit}
+                icon={<LinkOutlined />}
                 onClick={() =>
                   handleOnShowProjectDetailClicked(`${PROJECT_DETAIL_GIT_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)
                 }
               >
-                + Git
+                Git
               </Menu.Item>
               {projectDetails?.projectGitIntegrations &&
                 projectDetails?.projectGitIntegrations.map((projectIntegration) => {
@@ -166,11 +168,12 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
             <SubMenu key="sub-menu-trello" title="Trello">
               <Menu.Item
                 key={SideBarKey.linkTrello}
+                icon={<LinkOutlined />}
                 onClick={() =>
                   handleOnShowProjectDetailClicked(`${PROJECT_DETAIL_TRELLO_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)
                 }
               >
-                + Trello
+                Trello
               </Menu.Item>
               {projectDetails?.projectTrelloIntegrations &&
                 projectDetails?.projectTrelloIntegrations.map((projectIntegration) => {
@@ -191,11 +194,12 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
             <SubMenu key="sub-menu-googledrive" title="Google Drive">
               <Menu.Item
                 key={SideBarKey.linkGoogleDrive}
+                icon={<LinkOutlined />}
                 onClick={() =>
                   handleOnShowProjectDetailClicked(`${PROJECT_DETAIL_GOOGLE_DRIVE_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)
                 }
               >
-                + Google Drive
+                Google Drive
               </Menu.Item>
               {projectDetails?.projectGoogleDriveIntegrations &&
                 projectDetails?.projectGoogleDriveIntegrations.map((projectIntegration) => {
@@ -254,7 +258,7 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
             key={SideBarKey.contacts}
             icon={<ContactsOutlined />}
             onClick={() =>
-              handleOnShowProjectDetailClicked(`${PROJECT_DETAIL_CONSTRACTS_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)
+              handleOnShowProjectDetailClicked(`${PROJECT_DETAIL_CONTACTS_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)
             }
           >
             Contacts

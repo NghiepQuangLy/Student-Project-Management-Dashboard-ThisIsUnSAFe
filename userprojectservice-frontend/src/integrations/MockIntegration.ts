@@ -1,11 +1,11 @@
 import { Integration } from "./Integration"
 
 const MockIntegration: Integration = {
-  getProject: async () =>
+  getProject: async (emailAddress: string, projectId: string) =>
     new Promise((resolve) => {
       setTimeout(() => {
         resolve({
-          projectId: "2",
+          projectId: projectId,
           projectName: "TestProject2",
           projectGitIntegration: [
             {
@@ -86,21 +86,21 @@ const MockIntegration: Integration = {
             {
               projectName: "projectName1",
               projectId: "projectId2",
-              projectUnit: "FIT2099",
+              unitCode: "FIT2099",
               projectYear: "2019",
               projectSemester: "2"
             },
             {
               projectName: "projectName3",
               projectId: "projectId4",
-              projectUnit: "FIT2099",
+              unitCode: "FIT2099",
               projectYear: "2020",
               projectSemester: "1"
             },
             {
               projectName: "projectName5",
               projectId: "projectId6",
-              projectUnit: "FIT3099",
+              unitCode: "FIT3099",
               projectYear: "2020",
               projectSemester: "2"
             }

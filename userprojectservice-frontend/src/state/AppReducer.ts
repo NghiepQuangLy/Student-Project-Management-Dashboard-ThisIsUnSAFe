@@ -45,15 +45,25 @@ const AppReducer: Reducer<AppState, AppAction<AppActionType, any>> = (prevState,
 
     case "USER_DETAIL_SUCCESS": {
       const userSuccessAction = action as UserDetailSuccessAction
+      const projects = []
+      for (let project of userSuccessAction.payload.projects) {
+        projects.push({
+          projectName: project.projectName,
+          projectId: project.projectId,
+          projectUnitCode: project.unitCode,
+          projectYear: project.projectYear,
+          projectSemester: project.projectSemester
+        })
+      }
 
       return {
         ...prevState,
         user: {
-          givenName: userSuccessAction.payload.givenName,
-          familyName: userSuccessAction.payload.familyName,
+          givenName: userSuccessAction.payload.firstName,
+          familyName: userSuccessAction.payload.lastName,
           emailAddress: userSuccessAction.payload.emailAddress,
           userGroup: userSuccessAction.payload.userGroup,
-          projects: userSuccessAction.payload.projects
+          projects: projects
         },
         userDetailStatus: AppStatus.SUCCESS
       }
