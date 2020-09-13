@@ -90,6 +90,9 @@ public class UserService {
         return ProjectListResponse.builder()
                 .projectId(projectEntity.getProjectId())
                 .projectName(projectEntity.getProjectEntity().getProjectName())
+                .projectUnitCode(projectEntity.getProjectEntity().getUnitCode())
+                .projectYear(projectEntity.getProjectEntity().getProjectYear())
+                .projectSemester(projectEntity.getProjectEntity().getProjectSemester())
                 .build();
     }
 }

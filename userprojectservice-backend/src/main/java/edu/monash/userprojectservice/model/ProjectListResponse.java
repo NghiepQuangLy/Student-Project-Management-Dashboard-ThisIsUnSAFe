@@ -14,4 +14,7 @@ import java.lang.reflect.Array;
 public class ProjectListResponse {
     private String projectId;
     private String projectName;
+    private String projectUnitCode;
+    private String projectYear;
+    private String projectSemester;
 }

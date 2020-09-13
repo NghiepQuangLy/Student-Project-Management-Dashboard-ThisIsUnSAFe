@@ -1,7 +1,7 @@
 export interface Project {
   projectName: string | null
   projectId: string
-  unitCode: string | null
+  projectUnitCode: string | null
   projectYear: string | null
   projectSemester: string | null
 }

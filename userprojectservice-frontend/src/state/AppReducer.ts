@@ -50,7 +50,7 @@ const AppReducer: Reducer<AppState, AppAction<AppActionType, any>> = (prevState,
         projects.push({
           projectName: project.projectName,
           projectId: project.projectId,
-          projectUnitCode: project.unitCode,
+          projectUnitCode: project.projectUnitCode,
           projectYear: project.projectYear,
           projectSemester: project.projectSemester
         })
