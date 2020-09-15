@@ -1,0 +1,39 @@
+@font-face {
+    font-family: Robo;
+    src: url(../../resources/fonts/RobotoSlab-Bold.ttf);
+    font-weight: 800;
+  }
+
+  h1{
+    font-family: 'Robo';
+    text-align:"center";
+    font-size: 1.6em;
+  }
+
+  h2{
+    font-family: 'Robo';
+    text-align:"center";
+    font-size: 1.4em; 
+  }
+
+  .HeaderContainer0 {
+    margin: 0 auto;
+    padding-top: 20px;
+ }
+
+  .HeaderContainer {
+    width: 20%;
+    padding-left: 40px;
+    padding-top: 15px;
+ }
+
+ .UserDetails{
+    margin-left: 60px
+ }
+
+ .HeaderContainer2 {
+    width: 20%;
+    padding-left: 40px;
+
+
+ }

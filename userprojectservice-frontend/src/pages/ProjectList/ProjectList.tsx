@@ -1,5 +1,4 @@
 import React, { useLayoutEffect } from "react"
-import "./ProjectList.module.css"
 import { Page } from "../Page"
 import { Redirect, useHistory } from "react-router-dom"
 import * as AppAction from "../../state/AppAction"
@@ -19,6 +18,7 @@ import TreeView from "@material-ui/lab/TreeView"
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import ChevronRightIcon from "@material-ui/icons/ChevronRight"
 import TreeItem from "@material-ui/lab/TreeItem"
+import styles from "./ProjectList.module.css"
 
 export interface Dictionary<T> {
   [id: string]: T
@@ -153,47 +153,60 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
                     {/* Project Details */}
                     <Grid item xs={12} md={12} lg={12}>
                       <Paper className={userdetailheight}>
-                        <Typography variant="h6" align={"center"} gutterBottom>
-                          Project List
-                        </Typography>
-                        <Typography variant="body1" gutterBottom>
-                          <div>
-                            {" "}
-                            <strong>Given Name:</strong> {state.user?.givenName}{" "}
-                          </div>
-                          <div>
-                            {" "}
-                            <strong>Family Name:</strong> {state.user?.familyName}{" "}
-                          </div>
-                          <div>
-                            {" "}
-                            <strong>Email Address:</strong> {emailAddress}{" "}
-                          </div>
-                          <div>
-                            {" "}
-                            <strong>User Group:</strong> {state.user?.userGroup}{" "}
-                          </div>
-                          <div>
-                            {" "}
-                            <strong>Projects: </strong>{" "}
-                          </div>
-                        </Typography>
-                        <Container style={{ maxHeight: 200, padding: 0, overflow: "auto" }}>
-                          {state.userDetailStatus === AppStatus.LOADING ? (
-                            <h1>Loading</h1>
-                          ) : isEmpty ? (
-                            <h1>Empty History</h1>
-                          ) : (
-                            <TreeView
-                              className={classes.root}
-                              defaultCollapseIcon={<ExpandMoreIcon />}
-                              defaultExpanded={["root"]}
-                              defaultExpandIcon={<ChevronRightIcon />}
-                            >
-                              {calculate()}
-                            </TreeView>
-                          )}
-                        </Container>
+                        <div className={styles.HeaderContainer0}>
+                          <h1>
+                            Student Project Management Dashboard
+                          </h1>
+                        </div>
+                        <div className={styles.HeaderContainer}>
+                          <h2 >
+                            User Details:
+                          </h2>
+                        </div>
+                        <div className={styles.UserDetails}>
+                          <Typography variant="body1" gutterBottom>
+                            <div>
+                              {" "}
+                              <strong>Given Name:</strong> {state.user?.givenName}{" "}
+                            </div>
+                            <div>
+                              {" "}
+                              <strong>Family Name:</strong> {state.user?.familyName}{" "}
+                            </div>
+                            <div>
+                              {" "}
+                              <strong>Email Address:</strong> {emailAddress}{" "}
+                            </div>
+                            <div>
+                              {" "}
+                              <strong>User Group:</strong> {state.user?.userGroup}{" "}
+                            </div>
+                          </Typography>
+                        </div>
+
+                        <br />
+                        <div className={styles.HeaderContainer2}>
+                          <h2 className={styles.ProjectList}>
+                            User Projects:
+                          </h2>
+
+                          <Container style={{ maxHeight: 200, padding: 0, overflow: "auto" }}>
+                            {state.userDetailStatus === AppStatus.LOADING ? (
+                              <h1>Loading</h1>
+                            ) : isEmpty ? (
+                              <h1>Empty History</h1>
+                            ) : (
+                                  <TreeView
+                                    className={classes.root}
+                                    defaultCollapseIcon={<ExpandMoreIcon />}
+                                    defaultExpanded={["root"]}
+                                    defaultExpandIcon={<ChevronRightIcon />}
+                                  >
+                                    {calculate()}
+                                  </TreeView>
+                                )}
+                          </Container>
+                        </div>
                       </Paper>
                     </Grid>
                   </Grid>
@@ -205,11 +218,11 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
             </div>
           </BarContainer>
         ) : (
-          <h1>something went wrong</h1>
-        )
+            <h1>something went wrong</h1>
+          )
       ) : (
-        <Redirect to="/" />
-      )}
+            <Redirect to="/" />
+          )}
     </div>
   )
 }
