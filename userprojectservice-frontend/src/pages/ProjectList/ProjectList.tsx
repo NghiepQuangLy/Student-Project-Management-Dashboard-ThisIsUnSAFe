@@ -153,12 +153,12 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
                     {/* Project Details */}
                     <Grid item xs={12} md={12} lg={12}>
                       <Paper className={userdetailheight}>
-                        <div className={styles.HeaderContainer0}>
+                        <div className={styles.HeaderContainer}>
                           <h1>
                             Student Project Management Dashboard
                           </h1>
                         </div>
-                        <div className={styles.HeaderContainer}>
+                        <div className={styles.UserDetailsGroup}>
                           <h2 >
                             User Details:
                           </h2>
@@ -185,8 +185,8 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
                         </div>
 
                         <br />
-                        <div className={styles.HeaderContainer2}>
-                          <h2 className={styles.ProjectList}>
+                        <div className={styles.UserProjectsGroup}>
+                          <h2>
                             User Projects:
                           </h2>
 
