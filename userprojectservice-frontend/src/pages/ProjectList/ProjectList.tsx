@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from "react"
+import React, { useState, useLayoutEffect } from "react"
 import { Page } from "../Page"
 import { Redirect, useHistory } from "react-router-dom"
 import * as AppAction from "../../state/AppAction"
@@ -6,6 +6,7 @@ import { AppStatus } from "../../models/AppStatus"
 import clsx from "clsx"
 import Typography from "@material-ui/core/Typography"
 import Container from "@material-ui/core/Container"
+import InputBase from "@material-ui/core/InputBase"
 import { Grid } from "@material-ui/core"
 import Paper from "@material-ui/core/Paper"
 import Box from "@material-ui/core/Box"
@@ -19,6 +20,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
 import ChevronRightIcon from "@material-ui/icons/ChevronRight"
 import TreeItem from "@material-ui/lab/TreeItem"
 import styles from "./ProjectList.module.css"
+import { Project } from "../../state/AppState"
 
 export interface Dictionary<T> {
   [id: string]: T
@@ -36,6 +38,7 @@ export interface ProjectData {
 
 const ProjectList: Page = ({ integration, state, dispatch }) => {
   const history = useHistory()
+  const [projectList, setProjectList] = useState<Project[] | undefined>([])
 
   const isEmpty = state.userDetailStatus === AppStatus.SUCCESS && state.user?.projects.length === 0
 
@@ -49,6 +52,8 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
         dispatch(AppAction.userDetailSuccess(user))
       })
     }
+
+    setProjectList(state.user?.projects)
   }, [dispatch, integration, state.userDetailStatus, state.user, isInitialized, emailAddress])
 
   const handleOnShowProjectDetailsClicked = (projectId: string) => {
@@ -89,7 +94,8 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
   }
 
   const calculate = () => {
-    const projects = state.user?.projects || []
+    //const projects = state.user?.projects || []
+    const projects = projectList || []
     let units: ProjectDictionary = { id: {} }
 
     projects.forEach((singleProject) => {
@@ -130,6 +136,10 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
     return renderTree(units)
   }
 
+  const filterProjects = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setProjectList(state.user?.projects.filter((project) => (project.projectName ? project.projectName.includes(e.target.value) : null)))
+  }
+
   return (
     <div>
       {!isInitialized ? (
@@ -154,14 +164,10 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
                     <Grid item xs={12} md={12} lg={12}>
                       <Paper className={userdetailheight}>
                         <div className={styles.HeaderContainer}>
-                          <h1>
-                            Student Project Management Dashboard
-                          </h1>
+                          <h1>Student Project Management Dashboard</h1>
                         </div>
                         <div className={styles.UserDetailsGroup}>
-                          <h2 >
-                            User Details:
-                          </h2>
+                          <h2>User Details:</h2>
                         </div>
                         <div className={styles.UserDetails}>
                           <Typography variant="body1" gutterBottom>
@@ -186,25 +192,32 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
 
                         <br />
                         <div className={styles.UserProjectsGroup}>
-                          <h2>
-                            User Projects:
-                          </h2>
+                          <h2>User Projects:</h2>
 
-                          <Container style={{ maxHeight: 200, padding: 0, overflow: "auto" }}>
+                          <InputBase
+                            style={{
+                              float: "right"
+                            }}
+                            placeholder="Search Projects"
+                            inputProps={{ "aria-label": "search" }}
+                            onChange={(e) => filterProjects(e)}
+                          />
+
+                          <Container style={{ maxHeight: "100vh", width: "100vh", padding: 0, overflow: "auto" }}>
                             {state.userDetailStatus === AppStatus.LOADING ? (
                               <h1>Loading</h1>
                             ) : isEmpty ? (
                               <h1>Empty History</h1>
                             ) : (
-                                  <TreeView
-                                    className={classes.root}
-                                    defaultCollapseIcon={<ExpandMoreIcon />}
-                                    defaultExpanded={["root"]}
-                                    defaultExpandIcon={<ChevronRightIcon />}
-                                  >
-                                    {calculate()}
-                                  </TreeView>
-                                )}
+                              <TreeView
+                                className={classes.root}
+                                defaultCollapseIcon={<ExpandMoreIcon />}
+                                defaultExpanded={["root"]}
+                                defaultExpandIcon={<ChevronRightIcon />}
+                              >
+                                {calculate()}
+                              </TreeView>
+                            )}
                           </Container>
                         </div>
                       </Paper>
@@ -218,11 +231,11 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
             </div>
           </BarContainer>
         ) : (
-            <h1>something went wrong</h1>
-          )
+          <h1>something went wrong</h1>
+        )
       ) : (
-            <Redirect to="/" />
-          )}
+        <Redirect to="/" />
+      )}
     </div>
   )
 }
