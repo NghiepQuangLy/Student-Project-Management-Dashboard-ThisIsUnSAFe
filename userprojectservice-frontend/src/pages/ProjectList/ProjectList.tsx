@@ -72,18 +72,18 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
       )
     })
 
-  const renderCont = (root: Dictionary<ProjectDictionary>) =>
+  const renderCont = (root: Dictionary<ProjectDictionary>, previousNode: string) =>
     Object.keys(root).map((node) => {
       return (
-        <TreeItem key={node} nodeId={node} label={node}>
-          {renderTree(root[node])}
+        <TreeItem key={previousNode + node} nodeId={previousNode + node} label={node}>
+          {renderTree(root[node], node)}
         </TreeItem>
       )
     })
 
-  const renderTree = (root: ProjectDictionary) => {
+  const renderTree = (root: ProjectDictionary, node: string) => {
     if (!root.data) {
-      return renderCont(root.id)
+      return renderCont(root.id, node)
     } else {
       return renderEnd(root.data)
     }
@@ -128,7 +128,7 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
       })
     })
     console.log(units);
-    return renderTree(units)
+    return renderTree(units, "")
   }
 
   return (
