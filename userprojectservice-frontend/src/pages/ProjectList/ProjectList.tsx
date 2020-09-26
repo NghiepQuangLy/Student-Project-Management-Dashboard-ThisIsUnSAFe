@@ -15,10 +15,10 @@ import { useGoogleAuth } from "../../components/GoogleAuthProvider/GoogleAuthPro
 import { PROJECT_ID_QUERY } from "../../util/useQuery"
 import Loading from "../../components/Loading/Loading"
 import TreeView from "@material-ui/lab/TreeView"
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
-import ChevronRightIcon from "@material-ui/icons/ChevronRight"
 import TreeItem from "@material-ui/lab/TreeItem"
 import styles from "./ProjectList.module.css"
+import FolderIcon from '@material-ui/icons/Folder';
+import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 
 export interface Dictionary<T> {
   [id: string]: T
@@ -66,6 +66,7 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
           key={`projectId-${projectData.projectId}`}
           nodeId={`projectId-${projectData.projectId}`}
           label={projectData.projectName}
+
           onClick={() => handleOnShowProjectDetailsClicked(projectData.projectId)}
         />
       )
@@ -126,7 +127,7 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
         projectName: projectName
       })
     })
-
+    console.log(units);
     return renderTree(units)
   }
 
@@ -198,9 +199,9 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
                             ) : (
                                   <TreeView
                                     className={classes.root}
-                                    defaultCollapseIcon={<ExpandMoreIcon />}
+                                    defaultCollapseIcon={<FolderOpenIcon />}
                                     defaultExpanded={["root"]}
-                                    defaultExpandIcon={<ChevronRightIcon />}
+                                    defaultExpandIcon={<FolderIcon />}
                                   >
                                     {calculate()}
                                   </TreeView>
