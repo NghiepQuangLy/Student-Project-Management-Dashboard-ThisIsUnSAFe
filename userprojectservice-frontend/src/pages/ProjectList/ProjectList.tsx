@@ -28,11 +28,13 @@ export interface Dictionary<T> {
 
 export interface ProjectDictionary {
   id: Dictionary<ProjectDictionary>
+  key: string
   data?: ProjectData[] | undefined
 }
 
 export interface ProjectData {
   projectId: string
+  projectKey: string
   projectName: string
 }
 
@@ -68,8 +70,8 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
     projectDatas.map((projectData) => {
       return (
         <TreeItem
-          key={`projectId-${projectData.projectId}`}
-          nodeId={`projectId-${projectData.projectId}`}
+          key={`${projectData.projectKey}`}
+          nodeId={`${projectData.projectKey}`}
           label={projectData.projectName}
           onClick={() => handleOnShowProjectDetailsClicked(projectData.projectId)}
         />
@@ -77,10 +79,10 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
     })
 
   const renderCont = (root: Dictionary<ProjectDictionary>) =>
-    Object.keys(root).map((node) => {
+    Object.entries(root).map((node) => {
       return (
-        <TreeItem key={node} nodeId={node} label={node}>
-          {renderTree(root[node])}
+        <TreeItem key={node[1].key} nodeId={node[1].key} label={node[0]}>
+          {renderTree(root[node[0]])}
         </TreeItem>
       )
     })
@@ -96,12 +98,13 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
   const calculate = () => {
     //const projects = state.user?.projects || []
     const projects = projectList || []
-    let units: ProjectDictionary = { id: {} }
+    let units: ProjectDictionary = { id: {}, key: "0" }
+    let key = 1
 
     projects.forEach((singleProject) => {
-      let year: ProjectDictionary = { id: {} }
-      let semester: ProjectDictionary = { id: {} }
-      let project: ProjectDictionary = { id: {} }
+      let year: ProjectDictionary = { id: {}, key: "0" }
+      let semester: ProjectDictionary = { id: {}, key: "0" }
+      let project: ProjectDictionary = { id: {}, key: "0" }
 
       let projectUnit = singleProject.projectUnitCode || "unit"
       let projectYear = singleProject.projectYear || "year"
@@ -111,16 +114,22 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
 
       if (!units.id[projectUnit]) {
         units.id[projectUnit] = year
+        units.id[projectUnit].key = key.toString()
+        key += 1
       }
 
       const yearData = units.id[projectUnit]
       if (!yearData.id[projectYear]) {
         yearData.id[projectYear] = semester
+        yearData.id[projectYear].key = key.toString()
+        key += 1
       }
 
       const semesterData = yearData.id[projectYear]
       if (!semesterData.id[projectSemester]) {
         semesterData.id[projectSemester] = project
+        semesterData.id[projectSemester].key = key.toString()
+        key += 1
       }
 
       const projectData = semesterData.id[projectSemester]
@@ -129,8 +138,10 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
       }
       projectData.data.push({
         projectId: projectId,
+        projectKey: key.toString(),
         projectName: projectName
       })
+      key += 1
     })
 
     return renderTree(units)
@@ -212,7 +223,6 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
                               <TreeView
                                 className={classes.root}
                                 defaultCollapseIcon={<ExpandMoreIcon />}
-                                defaultExpanded={["root"]}
                                 defaultExpandIcon={<ChevronRightIcon />}
                               >
                                 {calculate()}
