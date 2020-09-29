@@ -213,7 +213,7 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
                             style={{
                               float: "right"
                             }}
-                            placeholder="Search Projects"
+                            placeholder="🔍 Search Projects"
                             inputProps={{ "aria-label": "search" }}
                             onChange={(e) => filterProjects(e)}
                           />
