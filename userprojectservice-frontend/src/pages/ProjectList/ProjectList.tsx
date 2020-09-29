@@ -208,6 +208,7 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
                                     defaultExpandIcon={<FolderIcon />}
                                     expanded={expandedItems}
                                     onNodeToggle={onNodeToggle}
+                                    style={{display: "block"}}
                                   >
                                     {calculate()}
                                   </TreeView>
