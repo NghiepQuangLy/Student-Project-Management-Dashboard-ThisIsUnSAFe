@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from "react"
+import React, { useLayoutEffect, useState } from "react"
 import { Page } from "../Page"
 import { Redirect, useHistory } from "react-router-dom"
 import * as AppAction from "../../state/AppAction"
@@ -36,6 +36,10 @@ export interface ProjectData {
 
 const ProjectList: Page = ({ integration, state, dispatch }) => {
   const history = useHistory()
+  const [expandedItems, setExpandedItems] = useState([])
+  const onNodeToggle = (event: any, nodeId: any) => {
+    setExpandedItems(nodeId)
+  };
 
   const isEmpty = state.userDetailStatus === AppStatus.SUCCESS && state.user?.projects.length === 0
 
@@ -191,7 +195,7 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
                             User Projects:
                           </h2>
 
-                          <Container style={{ maxHeight: 200, padding: 0, overflow: "auto" }}>
+                          <Container style={{ maxHeight: 200, width: "100vh", padding: 0, overflow: "auto" }}>
                             {state.userDetailStatus === AppStatus.LOADING ? (
                               <h1>Loading</h1>
                             ) : isEmpty ? (
@@ -202,6 +206,8 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
                                     defaultCollapseIcon={<FolderOpenIcon />}
                                     defaultExpanded={["root"]}
                                     defaultExpandIcon={<FolderIcon />}
+                                    expanded={expandedItems}
+                                    onNodeToggle={onNodeToggle}
                                   >
                                     {calculate()}
                                   </TreeView>
