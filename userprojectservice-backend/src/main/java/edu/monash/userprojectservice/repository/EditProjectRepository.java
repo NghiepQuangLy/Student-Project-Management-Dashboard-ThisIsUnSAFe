@@ -8,6 +8,7 @@ package edu.monash.userprojectservice.repository;
 import lombok.extern.slf4j.Slf4j;
 //import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
 //import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -34,7 +35,7 @@ public class EditProjectRepository {
             conn.setAutoCommit(false);
 
             // create the java mysql update preparedstatement
-            String query = "update projects set project_name = ? where project_id = ?";
+            String query = "update PROJECTS set project_name = ? where project_id = ?";
             PreparedStatement preparedStmt = conn.prepareStatement(query);
             preparedStmt.setString   (1, newProjectName);
             preparedStmt.setString(2, projectId);
@@ -46,6 +47,7 @@ public class EditProjectRepository {
             return true;
         } catch (SQLException e) {
             // in case of exception, rollback the transaction
+            log.warn(String.valueOf(e));
             conn.rollback();
             return false;
         }

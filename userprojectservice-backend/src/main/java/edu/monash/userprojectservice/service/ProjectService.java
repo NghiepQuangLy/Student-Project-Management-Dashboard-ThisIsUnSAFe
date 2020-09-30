@@ -6,6 +6,7 @@ import edu.monash.userprojectservice.model.GetProjectResponse;
 import edu.monash.userprojectservice.model.GetTimesheetResponse;
 import edu.monash.userprojectservice.model.SaveTimesheetRequest;
 import edu.monash.userprojectservice.model.EditProjectRequest;
+import edu.monash.userprojectservice.repository.EditProjectRepository;
 import edu.monash.userprojectservice.repository.googleFolder.GoogleFolderEntity;
 import edu.monash.userprojectservice.repository.googleFolder.GoogleFolderRepository;
 import edu.monash.userprojectservice.repository.project.ProjectEntity;
@@ -139,19 +140,19 @@ public class ProjectService {
     public ResponseEntity<GetProjectResponse> editProject(EditProjectRequest editProjectRequest) throws SQLException {
 
         // check if the project is already present in the database
-        if (projectsRepository.findProjectEntityByProjectId(projectId) == null) {
-            log.warn("Project could not be edited!");
+        if (projectsRepository.findProjectEntityByProjectId(editProjectRequest.getProjectId()) == null) {
+            log.warn("Project not found!");
             return new ResponseEntity<>(
                     null, INTERNAL_SERVER_ERROR
             );
         }
 
         // edit in db when project exists
-        Boolean isSuccessful = editProjectRepository.save(projectId, createProjectRequest.getEmailAddress(), createProjectRequest.getProjectName(), createProjectRequest.getProjectUnit(), createProjectRequest.getProjectYear(), createProjectRequest.getProjectSemester());
+        Boolean isSuccessful = editProjectRepository.save(editProjectRequest.getProjectId(), editProjectRequest.getNewProjectName());
         if (isSuccessful) {
             log.info("Project has been edited!");
             return new ResponseEntity<>(
-                    null, CREATED
+                    null, OK
             );
         } else {
             log.warn("Project could not be edited!");
