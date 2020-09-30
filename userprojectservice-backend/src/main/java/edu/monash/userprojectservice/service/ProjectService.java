@@ -5,6 +5,8 @@ import edu.monash.userprojectservice.model.CreateProjectRequest;
 import edu.monash.userprojectservice.model.GetProjectResponse;
 import edu.monash.userprojectservice.model.GetTimesheetResponse;
 import edu.monash.userprojectservice.model.SaveTimesheetRequest;
+import edu.monash.userprojectservice.model.EditProjectRequest;
+import edu.monash.userprojectservice.repository.EditProjectRepository;
 import edu.monash.userprojectservice.repository.googleFolder.GoogleFolderEntity;
 import edu.monash.userprojectservice.repository.googleFolder.GoogleFolderRepository;
 import edu.monash.userprojectservice.repository.project.ProjectEntity;
@@ -39,6 +41,9 @@ public class ProjectService {
 
     @Autowired
     private CreateProjectRepository createProjectRepository;
+
+    @Autowired
+    private EditProjectRepository editProjectRepository;
 
     @Autowired
     private ProjectsRepository projectsRepository;
@@ -123,6 +128,34 @@ public class ProjectService {
             );
         } else {
             log.warn("Project could not be added!");
+            return new ResponseEntity<>(
+                    null, INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    // edit a project
+    // check for the user first, if it doesnt exist new responseEntity and return not found
+    // if he exists then, return OK
+    public ResponseEntity<GetProjectResponse> editProject(EditProjectRequest editProjectRequest) throws SQLException {
+
+        // check if the project is already present in the database
+        if (projectsRepository.findProjectEntityByProjectId(editProjectRequest.getProjectId()) == null) {
+            log.warn("Project not found!");
+            return new ResponseEntity<>(
+                    null, INTERNAL_SERVER_ERROR
+            );
+        }
+
+        // edit in db when project exists
+        Boolean isSuccessful = editProjectRepository.save(editProjectRequest.getProjectId(), editProjectRequest.getNewProjectName());
+        if (isSuccessful) {
+            log.info("Project has been edited!");
+            return new ResponseEntity<>(
+                    null, OK
+            );
+        } else {
+            log.warn("Project could not be edited!");
             return new ResponseEntity<>(
                     null, INTERNAL_SERVER_ERROR
             );

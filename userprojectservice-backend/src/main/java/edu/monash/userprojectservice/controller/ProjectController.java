@@ -40,6 +40,12 @@ public class ProjectController {
         return projectService.createProject(createProjectRequest);
     }
 
+    @ResponseStatus(OK)
+    @PostMapping("/edit-project")
+    public ResponseEntity setProjectName(@RequestBody @Valid EditProjectRequest editProjectRequest) throws SQLException {
+        return projectService.editProject(editProjectRequest);
+    }
+
     @ResponseStatus(CREATED)
     @PostMapping("/save-timesheet")
     public void saveTimesheet(@RequestBody @Valid SaveTimesheetRequest saveTimesheetRequest) {

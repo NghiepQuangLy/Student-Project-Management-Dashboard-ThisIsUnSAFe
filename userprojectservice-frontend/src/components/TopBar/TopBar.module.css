@@ -15,10 +15,9 @@
   background-position: center;
 }
 
-.Logout {
+.Logout, .SAFeAndAgileFeatures, .Projects {
   position: absolute;
   right: 0;
-  padding-right: 5em;
   font-size: 11pt;
   font-weight: bold;
   color: white;
@@ -26,32 +25,18 @@
   background-color: Transparent;
   font-family: "RobotoCondensed";
   border: none;
+}
+
+.Logout {
+  padding-right: 5em;
 }
 
 .SAFeAndAgileFeatures {
-  position: absolute;
-  right: 0;
   padding-right: 17em;
-  font-size: 11pt;
-  font-weight: bold;
-  color: white;
-  cursor: pointer;
-  background-color: Transparent;
-  font-family: "RobotoCondensed";
-  border: none;
 }
 
 .Projects {
-  position: absolute;
-  right: 0;
   padding-right: 11em;
-  font-size: 11pt;
-  font-weight: bold;
-  color: white;
-  cursor: pointer;
-  background-color: Transparent;
-  font-family: "RobotoCondensed";
-  border: none;
 }
 
 .Projects:hover {
