@@ -4,6 +4,7 @@ import edu.monash.userprojectservice.model.GetUserProjectsResponse;
 import edu.monash.userprojectservice.service.UserProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,4 +25,11 @@ public class UserProjectsController {
     public GetUserProjectsResponse getUserProjects(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
         return userProjectService.getUsersByProject(emailAddress, projectId);
     }
+
+    @ResponseStatus(OK)
+    @PostMapping("/add-projectuser")
+    public ResponseEntity addProjectUser(@RequestBody @Valid AddProjectUserRequest addProjectUserRequest) throws SQLException {
+        return userProjectService.addProjectUser(addProjectUserRequest);
+    }
+
 }
