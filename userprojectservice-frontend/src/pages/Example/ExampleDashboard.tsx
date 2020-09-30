@@ -1,7 +1,12 @@
 import React, { FunctionComponent } from "react"
 import styles from "./Example.module.css"
+import {ProjectDetail} from "../../state/AppState";
 
-const ExampleDashboard: FunctionComponent = () => {
+interface ExampleDashboardProps {
+    projectDetails?: ProjectDetail
+}
+
+const ExampleDashboard: FunctionComponent<ExampleDashboardProps> = ({projectDetails}) => {
   return (
     <div className={styles.Example}>
       <div className={styles.ExampleHeader}>Dashboard</div>
@@ -11,7 +16,7 @@ const ExampleDashboard: FunctionComponent = () => {
         <div className={styles.ExmapleChart}>Chart3</div>
       </div>
       <div className={styles.ExmapleContents}>
-        <div className={styles.ExmapleContent}>Timesheet</div>
+        <div className={styles.ExmapleContent}>{projectDetails?.moodleLink}</div>
       </div>
     </div>
   )

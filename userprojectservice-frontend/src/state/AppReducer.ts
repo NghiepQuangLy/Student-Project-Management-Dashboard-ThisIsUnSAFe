@@ -20,6 +20,7 @@ const AppReducer: Reducer<AppState, AppAction<AppActionType, any>> = (prevState,
         currentProject: {
           projectId: projectSuccessAction.payload.projectId,
           projectName: projectSuccessAction.payload.projectName,
+          moodleLink: projectSuccessAction.payload.moodleLink,
           projectGitIntegrations: projectSuccessAction.payload.projectGitIntegration,
           projectGoogleDriveIntegrations: projectSuccessAction.payload.projectGoogleDriveIntegration,
           projectGoogleFolderIds: projectSuccessAction.payload.projectGoogleFolderIds,

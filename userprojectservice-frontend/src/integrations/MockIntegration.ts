@@ -7,6 +7,7 @@ const MockIntegration: Integration = {
         resolve({
           projectId: projectId,
           projectName: "TestProject2",
+          moodleLink: "test.com.au",
           projectGitIntegration: [
             {
               integrationId: "git1",
