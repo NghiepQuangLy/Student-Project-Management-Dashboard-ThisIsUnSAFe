@@ -5,13 +5,9 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
 
 @AllArgsConstructor
 @NoArgsConstructor
 public class UnitsPrimaryKey implements Serializable {
-    private String unitCode;
+    private String unitCode; // primary key of the table
 }

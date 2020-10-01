@@ -1,6 +1,5 @@
 package edu.monash.userprojectservice.repository.units;
 
-import edu.monash.userprojectservice.repository.trello.TrelloPrimaryKey;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +21,7 @@ public class UnitsEntity implements Serializable {
 
     @Id
     @Column(name = "unit_code")
-    private String unitCode;
+    private String unitCode; // primary key of the table
 
     @Column(name = "unit_name")
     private String unitName;

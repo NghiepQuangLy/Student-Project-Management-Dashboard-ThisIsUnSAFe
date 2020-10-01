@@ -17,8 +17,7 @@ public class UnitsService {
     @Autowired
     private UnitsRepository unitsRepository;
 
-
-    // Get from Units table
+    // Get all units from the Units table
     public GetUnitsResponse getUnits() {
         log.info("{\"message\":\"Getting Units \"}");
 
