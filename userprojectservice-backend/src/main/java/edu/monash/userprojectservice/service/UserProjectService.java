@@ -5,7 +5,6 @@ import edu.monash.userprojectservice.HTTPResponseHandler;
 import edu.monash.userprojectservice.model.*;
 import edu.monash.userprojectservice.repository.project.ProjectEntity;
 import edu.monash.userprojectservice.repository.project.ProjectsRepository;
-import edu.monash.userprojectservice.repository.user.UsersRepository;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsEntity;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -53,13 +52,13 @@ public class UserProjectService {
 
             log.info("{\"message\":\"Got projects\", \"user\":\"{}\"", projectId);
 
-            List<GetUserResponse> getUserResponse = usersProjectsEntities.stream()
-                    .map(this::convertToGetUserResponse)
+            List<ProjectUsers> projectUsers = usersProjectsEntities.stream()
+                    .map(this::convertToProjectUsers)
                     .collect(Collectors.toList());
 
-            log.info("{\"message\":\"Got projects\", \"project list\":\"{}\"}", getUserResponse);
+            log.info("{\"message\":\"Got projects\", \"project list\":\"{}\"}", projectUsers);
 
-            getUserProjectsResponse.setUsers(getUserResponse);
+            getUserProjectsResponse.setUsers(projectUsers);
 
             return getUserProjectsResponse;
         } else {
@@ -68,13 +67,12 @@ public class UserProjectService {
         }
     }
 
-    private GetUserResponse convertToGetUserResponse(UsersProjectsEntity projectEntity) {
-        return GetUserResponse.builder()
+    private ProjectUsers convertToProjectUsers(UsersProjectsEntity projectEntity) {
+        return ProjectUsers.builder()
                 .firstName(projectEntity.getUserEntity().getGivenName())
                 .lastName(projectEntity.getUserEntity().getFamilyName())
                 .emailAddress(projectEntity.getUserEntity().getEmailAddress())
                 .userGroup(projectEntity.getUserEntity().getUserGroup())
-                .projects(null)
                 .build();
     }
 }

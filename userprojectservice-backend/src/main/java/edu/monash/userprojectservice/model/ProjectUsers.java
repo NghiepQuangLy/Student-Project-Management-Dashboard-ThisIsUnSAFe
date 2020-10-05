@@ -11,7 +11,9 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetUserProjectsResponse {
-    private List<ProjectUsers> users;
-    private ProjectListResponse projects;
+public class ProjectUsers {
+    private String firstName;
+    private String lastName;
+    private String emailAddress;
+    private String userGroup;
 }
