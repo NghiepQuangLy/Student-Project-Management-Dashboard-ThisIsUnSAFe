@@ -36,7 +36,7 @@ public class CreateProjectRepository {
     String password;
 
     // create new method for insert...
-    public Boolean save(String projectId, List<String> emailAddress, String projectName, String projectUnit, String projectYear, String projectSemester) throws SQLException {
+    public Boolean save(String projectId, List<String> emailAddress, String projectName, String projectUnit, Integer projectYear, String projectSemester) throws SQLException {
         Connection conn = DriverManager.getConnection(url, userName, password);
         try {
             conn.setAutoCommit(false);

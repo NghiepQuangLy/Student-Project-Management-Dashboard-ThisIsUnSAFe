@@ -32,7 +32,7 @@ public class ProjectEntity implements Serializable {
     private String unitCode;
 
     @Column(name = "project_year")
-    private String projectYear;
+    private Integer projectYear;
 
     @Column(name = "project_semester")
     private String projectSemester;
