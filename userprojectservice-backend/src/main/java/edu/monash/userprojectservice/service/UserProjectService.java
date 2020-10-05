@@ -44,6 +44,9 @@ public class UserProjectService {
             ProjectListResponse projectListResponse = ProjectListResponse.builder()
                     .projectId(projectEntity.getProjectId())
                     .projectName(projectEntity.getProjectName())
+                    .projectUnitCode(projectEntity.getUnitCode())
+                    .projectYear(projectEntity.getProjectYear())
+                    .projectSemester(projectEntity.getProjectSemester())
                     .build();
 
             getUserProjectsResponse.setProjects(projectListResponse);
