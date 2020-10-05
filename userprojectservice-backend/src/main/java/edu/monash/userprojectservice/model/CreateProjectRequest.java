@@ -25,7 +25,7 @@ public class CreateProjectRequest {
     private String projectUnit;
 
     @NotBlank
-    private String projectYear;
+    private Integer projectYear;
 
     @NotBlank
     private String projectSemester;

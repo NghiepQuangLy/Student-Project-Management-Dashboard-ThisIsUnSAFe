@@ -15,6 +15,6 @@ public class ProjectListResponse {
     private String projectId;
     private String projectName;
     private String projectUnitCode;
-    private String projectYear;
+    private Integer projectYear;
     private String projectSemester;
 }
