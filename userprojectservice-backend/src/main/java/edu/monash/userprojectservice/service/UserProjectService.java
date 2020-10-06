@@ -94,10 +94,18 @@ public class UserProjectService {
     // check for the user first, if it doesnt exist new responseEntity and return not found
     // if he exists then, return OK
     public ResponseEntity<GetUserProjectsResponse> addProjectUser(AddProjectUserRequest addProjectUserRequest) throws SQLException {
-        System.out.println("Test123");
+
         // check if the project exists in the database
         if (projectsRepository.findProjectEntityByProjectId(addProjectUserRequest.getProjectId()) == null) {
-            log.warn("Project not found!");
+            log.warn( addProjectUserRequest.getProjectId() +"not found!");
+            return new ResponseEntity<>(
+                    null, INTERNAL_SERVER_ERROR
+            );
+        }
+
+        // To handle case when an empty list with no users is passed
+        if (addProjectUserRequest.getEmailAddress().size() == 0) {
+            log.warn( "There are no users to add to Project ID: "+ addProjectUserRequest.getProjectId());
             return new ResponseEntity<>(
                     null, INTERNAL_SERVER_ERROR
             );
@@ -113,20 +121,22 @@ public class UserProjectService {
             }
         }
 
+        //flag to check if all the users in the list have been added
         Boolean hasAddedAllUsers=true;
         for (int i = 0; i < addProjectUserRequest.getEmailAddress().size(); i++) {
-                // edit in db when project and user exist
+            // edit in db when project and user exist
             System.out.println(addProjectUserRequest.getEmailAddress().get(i));
             Boolean isSuccessful = addProjectUserRepository.save(addProjectUserRequest.getProjectId(), addProjectUserRequest.getEmailAddress().get(i));
             if (!(isSuccessful)) {
                 log.info(addProjectUserRequest.getEmailAddress().get(i)+" could not be added!");
-                hasAddedAllUsers=false;
+                hasAddedAllUsers=false; // in the case that a user cannot be added, this will be set to false to indicate a user from the list of users could not be added.
             }
             if (isSuccessful) {
                 log.info(addProjectUserRequest.getEmailAddress().get(i) + " has been added!");
 
             }
         }
+        // if all the users in the list have been added return status 200, else return internal server error
         if (hasAddedAllUsers) {
             return new ResponseEntity<>(
                     null, OK
