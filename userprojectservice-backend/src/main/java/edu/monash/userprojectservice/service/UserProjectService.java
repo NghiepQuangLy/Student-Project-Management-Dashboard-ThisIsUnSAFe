@@ -18,9 +18,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 
 @Slf4j
@@ -96,7 +94,7 @@ public class UserProjectService {
     // check for the user first, if it doesnt exist new responseEntity and return not found
     // if he exists then, return OK
     public ResponseEntity<GetUserProjectsResponse> addProjectUser(AddProjectUserRequest addProjectUserRequest) throws SQLException {
-
+        System.out.println("Test123");
         // check if the project exists in the database
         if (projectsRepository.findProjectEntityByProjectId(addProjectUserRequest.getProjectId()) == null) {
             log.warn("Project not found!");
@@ -105,30 +103,41 @@ public class UserProjectService {
             );
         }
 
-        // check if new member exists in database
-        if (usersRepository.findUserEntityByEmailAddress(addProjectUserRequest.getEmailAddress()) == null){
-            log.warn("User not found!");
-            return new ResponseEntity<>(
-                    null, INTERNAL_SERVER_ERROR
-            );
+        for (int i = 0; i < addProjectUserRequest.getEmailAddress().size(); i++) {
+            // check if new member exists in database
+            if (usersRepository.findUserEntityByEmailAddress(addProjectUserRequest.getEmailAddress().get(i)) == null) {
+                log.warn(addProjectUserRequest.getEmailAddress().get(i)+" not found!");
+                return new ResponseEntity<>(
+                        null, INTERNAL_SERVER_ERROR
+                );
+            }
         }
 
-        // check if member is already in project
+        Boolean hasAddedAllUsers=true;
+        for (int i = 0; i < addProjectUserRequest.getEmailAddress().size(); i++) {
+                // edit in db when project and user exist
+            System.out.println(addProjectUserRequest.getEmailAddress().get(i));
+            Boolean isSuccessful = addProjectUserRepository.save(addProjectUserRequest.getProjectId(), addProjectUserRequest.getEmailAddress().get(i));
+            if (!(isSuccessful)) {
+                log.info(addProjectUserRequest.getEmailAddress().get(i)+" could not be added!");
+                hasAddedAllUsers=false;
+            }
+            if (isSuccessful) {
+                log.info(addProjectUserRequest.getEmailAddress().get(i) + " has been added!");
 
-        // edit in db when project and user exist
-        Boolean isSuccessful = addProjectUserRepository.save(addProjectUserRequest.getProjectId(), addProjectUserRequest.getEmailAddress());
-        if (isSuccessful) {
-            log.info("Project member has been added!");
+            }
+        }
+        if (hasAddedAllUsers) {
             return new ResponseEntity<>(
                     null, OK
             );
         }
-        else {
-            log.warn("Project member could not be added!");
+        else{
             return new ResponseEntity<>(
                     null, INTERNAL_SERVER_ERROR
             );
         }
+
     }
 }
 
