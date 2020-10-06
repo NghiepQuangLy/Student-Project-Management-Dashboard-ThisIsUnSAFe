@@ -1,5 +1,6 @@
 package edu.monash.userprojectservice.controller;
 
+import edu.monash.userprojectservice.model.AddProjectUserRequest;
 import edu.monash.userprojectservice.model.GetUserProjectsResponse;
 import edu.monash.userprojectservice.service.UserProjectService;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.sql.SQLException;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;

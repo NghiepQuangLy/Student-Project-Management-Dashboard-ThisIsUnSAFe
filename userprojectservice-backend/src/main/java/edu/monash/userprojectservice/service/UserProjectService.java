@@ -14,8 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.http.ResponseEntity;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.OK;
 
 @Slf4j
 @Service
@@ -100,7 +106,7 @@ public class UserProjectService {
         }
 
         // check if new member exists in database
-        if (usersRepository.findUserEntityByEmailAddress(addProjectUserRequest.getEmailAddress()) == null)
+        if (usersRepository.findUserEntityByEmailAddress(addProjectUserRequest.getEmailAddress()) == null){
             log.warn("User not found!");
             return new ResponseEntity<>(
                     null, INTERNAL_SERVER_ERROR
@@ -116,7 +122,8 @@ public class UserProjectService {
             return new ResponseEntity<>(
                     null, OK
             );
-        } else {
+        }
+        else {
             log.warn("Project member could not be added!");
             return new ResponseEntity<>(
                     null, INTERNAL_SERVER_ERROR
@@ -124,3 +131,6 @@ public class UserProjectService {
         }
     }
 }
+
+
+
