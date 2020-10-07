@@ -2,6 +2,7 @@ package edu.monash.userprojectservice.controller;
 
 import edu.monash.userprojectservice.model.AddProjectUserRequest;
 import edu.monash.userprojectservice.model.GetUserProjectsResponse;
+import edu.monash.userprojectservice.model.RemoveProjectUserRequest;
 import edu.monash.userprojectservice.service.UserProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,12 @@ public class UserProjectsController {
     @PostMapping("/add-projectuser")
     public ResponseEntity addProjectUser(@RequestBody @Valid AddProjectUserRequest addProjectUserRequest) throws SQLException {
         return userProjectService.addProjectUser(addProjectUserRequest);
+    }
+
+    @ResponseStatus(OK)
+    @PostMapping("/remove-projectuser")
+    public ResponseEntity removeProjectUser(@RequestBody @Valid RemoveProjectUserRequest removeProjectUserRequest) throws SQLException {
+        return userProjectService.removeProjectUser(removeProjectUserRequest);
     }
 
 }
