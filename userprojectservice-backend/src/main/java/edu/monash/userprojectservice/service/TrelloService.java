@@ -3,6 +3,7 @@ package edu.monash.userprojectservice.service;
 import edu.monash.userprojectservice.ValidationHandler;
 import edu.monash.userprojectservice.model.GetTrelloResponse;
 import edu.monash.userprojectservice.model.SaveTrelloRequest;
+import edu.monash.userprojectservice.model.RemoveTrelloRequest;
 import edu.monash.userprojectservice.repository.googleDrive.GoogleDriveEntity;
 import edu.monash.userprojectservice.repository.trello.TrelloEntity;
 import edu.monash.userprojectservice.repository.trello.TrelloRepository;
@@ -47,5 +48,18 @@ public class TrelloService {
         trelloRepository.save(new TrelloEntity(saveTrelloRequest.getTrelloId(), saveTrelloRequest.getProjectId(), saveTrelloRequest.getTrelloName()));
 
         log.info("{\"message\":\"Inserted into Trello\", \"project\":\"{}\"}", saveTrelloRequest);
+    }
+
+    // Delete from Trello table
+    public void removeTrello(RemoveTrelloRequest removeTrelloRequest) {
+        log.info("{\"message\":\"Removing Trello data\", \"project\":\"{}\"}", removeTrelloRequest);
+
+        // Validation Check
+        validationHandler.isValid(removeTrelloRequest.getEmailAddress(), removeTrelloRequest.getProjectId());
+
+        // Delete from database
+        trelloRepository.delete(new TrelloEntity(removeTrelloRequest.getTrelloId(), removeTrelloRequest.getProjectId(), removeTrelloRequest.getTrelloName()));
+
+        log.info("{\"message\":\"Removed from Trello\", \"project\":\"{}\"}", removeTrelloRequest);
     }
 }

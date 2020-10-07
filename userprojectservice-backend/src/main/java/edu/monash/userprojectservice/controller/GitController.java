@@ -2,6 +2,7 @@ package edu.monash.userprojectservice.controller;
 
 import edu.monash.userprojectservice.model.GetGitResponse;
 import edu.monash.userprojectservice.model.SaveGitRequest;
+import edu.monash.userprojectservice.model.RemoveGitRequest;
 import edu.monash.userprojectservice.service.GitService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import static org.springframework.http.HttpStatus.ACCEPTED;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -30,5 +32,11 @@ public class GitController {
     @PostMapping("/save-git")
     public void insertGit(@RequestBody @Valid SaveGitRequest saveGitRequest) {
         gitService.insertGit(saveGitRequest);
+    }
+
+    @ResponseStatus(ACCEPTED)
+    @PostMapping("/remove-git")
+    public void removeGit(@RequestBody @Valid RemoveGitRequest removeGitRequest) {
+        gitService.removeGit(removeGitRequest);
     }
 }

@@ -40,4 +40,8 @@ public class ProjectEntity implements Serializable {
     public void setTimesheet(String timesheet) {
         this.projectTimesheet = timesheet;
     }
+
+    public void removeTimesheet(String timesheet) {
+        this.projectTimesheet = null;
+    }
 }

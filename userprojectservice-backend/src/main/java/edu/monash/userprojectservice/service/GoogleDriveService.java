@@ -4,6 +4,7 @@ import edu.monash.userprojectservice.ValidationHandler;
 import edu.monash.userprojectservice.model.GetGitResponse;
 import edu.monash.userprojectservice.model.GetGoogleDriveResponse;
 import edu.monash.userprojectservice.model.SaveGoogleDriveRequest;
+import edu.monash.userprojectservice.model.RemoveGoogleDriveRequest;
 import edu.monash.userprojectservice.repository.googleDrive.GoogleDriveEntity;
 import edu.monash.userprojectservice.repository.googleDrive.GoogleDriveRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -48,5 +49,17 @@ public class GoogleDriveService {
         googleDriveRepository.save(new GoogleDriveEntity(saveGoogleDriveRequest.getGoogleDriveId(), saveGoogleDriveRequest.getProjectId(), saveGoogleDriveRequest.getGoogleDriveName()));
 
         log.info("{\"message\":\"Inserted into GoogleDrive\", \"project\":\"{}\"}", saveGoogleDriveRequest);
+    }
+
+    public void removeGoogleDrive(RemoveGoogleDriveRequest removeGoogleDriveRequest) {
+        log.info("{\"message\":\"Remove GoogleDrive data\", \"project\":\"{}\"}", removeGoogleDriveRequest);
+
+        // Validation Check
+        validationHandler.isValid(removeGoogleDriveRequest.getEmailAddress(), removeGoogleDriveRequest.getProjectId());
+
+        // Delete from database
+        googleDriveRepository.delete(new GoogleDriveEntity(removeGoogleDriveRequest.getGoogleDriveId(), removeGoogleDriveRequest.getProjectId(), removeGoogleDriveRequest.getGoogleDriveName()));
+
+        log.info("{\"message\":\"Removed from GoogleDrive\", \"project\":\"{}\"}", removeGoogleDriveRequest);
     }
 }
