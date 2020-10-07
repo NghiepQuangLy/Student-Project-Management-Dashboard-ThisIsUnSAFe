@@ -21,13 +21,13 @@ public class RemoveProjectUserRepository {
     @Value("${spring.datasource.password}")
     String password;
 
-    // create new method for delete...
+    // create new method for deleting a record from the DB
     public Boolean delete(String projectId, String emailAddress) throws SQLException {
         Connection conn = DriverManager.getConnection(url, userName, password);
         try {
             conn.setAutoCommit(false);
 
-            // create the java mysql update prepared statement
+            // create the java mysql delete prepared statement when provided with a user email address and project ID
             String query = "DELETE FROM USERS_PROJECTS WHERE (email_address=?) AND (project_id=?) ";
             PreparedStatement preparedStmt = conn.prepareStatement(query);
             preparedStmt.setString   (1, emailAddress);
@@ -39,7 +39,7 @@ public class RemoveProjectUserRepository {
             conn.commit();
             return true;
         } catch (SQLException e) {
-            // in case of exception, rollback the transaction
+            // in the case of an exception, rollback the transaction
 
             log.warn(String.valueOf(e));
             conn.rollback();

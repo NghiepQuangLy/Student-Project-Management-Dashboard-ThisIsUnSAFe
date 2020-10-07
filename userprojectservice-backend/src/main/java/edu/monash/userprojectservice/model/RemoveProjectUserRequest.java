@@ -20,6 +20,6 @@ public class RemoveProjectUserRequest {
     @NotBlank
     private String projectId;
 
-    private List<String> emailAddress;
+    private List<String> emailAddress; // list of user email addresses
 
 }

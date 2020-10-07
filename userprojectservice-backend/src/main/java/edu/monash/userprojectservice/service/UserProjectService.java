@@ -154,6 +154,8 @@ public class UserProjectService {
         }
 
     }
+
+    // method is called to remove a list of users from a project
     public ResponseEntity<GetUserProjectsResponse> removeProjectUser(RemoveProjectUserRequest removeProjectUserRequest) throws SQLException {
 
         // check if the project exists in the database
@@ -166,11 +168,13 @@ public class UserProjectService {
 
         // To handle case when an empty list with no users is passed
         if (removeProjectUserRequest.getEmailAddress().size() == 0) {
+            // log an warning that there are no users in the list
             log.warn( "There are no users to add to Project ID: "+ removeProjectUserRequest.getProjectId());
             return new ResponseEntity<>(
                     null, INTERNAL_SERVER_ERROR
             );
         }
+
 
         for (int i = 0; i < removeProjectUserRequest.getEmailAddress().size(); i++) {
             // check if new member exists in database
@@ -182,21 +186,21 @@ public class UserProjectService {
             }
         }
 
-        //flag to check if all the users in the list have been added
-        Boolean hasAddedAllUsers=true;
+        //flag to check if all the users in the list have been removed
+        Boolean hasRemovedAllUsers=true;
         for (int i = 0; i < removeProjectUserRequest.getEmailAddress().size(); i++) {
             // edit in db when project and user exist
             Boolean isSuccessful = removeProjectUserRepository.delete(removeProjectUserRequest.getProjectId(), removeProjectUserRequest.getEmailAddress().get(i));
             if (!(isSuccessful)) {
-                log.info(removeProjectUserRequest.getEmailAddress().get(i)+" could not be deleted!");
-                hasAddedAllUsers=false; // in the case that a user cannot be added, this will be set to false to indicate a user from the list of users could not be added.
+                log.info(removeProjectUserRequest.getEmailAddress().get(i)+" could not be removed!");
+                hasRemovedAllUsers=false; // in the case that a user cannot be removed, this will be set to false to indicate a user from the list of users could not be removed.
             }
             if (isSuccessful) {
-                log.info(removeProjectUserRequest.getEmailAddress().get(i) + " has been deleted!");
+                log.info(removeProjectUserRequest.getEmailAddress().get(i) + " has been removed!");
             }
         }
-        // if all the users in the list have been added return status 200, else return internal server error
-        if (hasAddedAllUsers) {
+        // if all the users in the list have been removed, return status 200; else return internal server error
+        if (hasRemovedAllUsers) {
             return new ResponseEntity<>(
                     null, OK
             );
