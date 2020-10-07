@@ -11,6 +11,7 @@ import javax.validation.Valid;
 
 import java.sql.SQLException;
 
+import static org.springframework.http.HttpStatus.ACCEPTED;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -50,5 +51,11 @@ public class ProjectController {
     @PostMapping("/save-timesheet")
     public void saveTimesheet(@RequestBody @Valid SaveTimesheetRequest saveTimesheetRequest) {
         projectService.saveTimesheet(saveTimesheetRequest);
+    }
+
+    @ResponseStatus(ACCEPTED)
+    @PostMapping("/remove-timesheet")
+    public void removeTimesheet(@RequestBody @Valid RemoveTimesheetRequest removeTimesheetRequest) {
+        projectService.removeTimesheet(removeTimesheetRequest);
     }
 }

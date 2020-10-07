@@ -2,6 +2,7 @@ package edu.monash.userprojectservice.controller;
 
 import edu.monash.userprojectservice.model.GetGoogleDriveResponse;
 import edu.monash.userprojectservice.model.SaveGoogleDriveRequest;
+import edu.monash.userprojectservice.model.RemoveGoogleDriveRequest;
 import edu.monash.userprojectservice.service.GoogleDriveService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import static org.springframework.http.HttpStatus.ACCEPTED;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -30,5 +32,11 @@ public class GoogleDriveController {
     @PostMapping("/save-googledrive")
     public void saveGoogleDrive(@RequestBody @Valid SaveGoogleDriveRequest saveGoogleDriveRequest) {
         googleDriveService.saveGoogleDrive(saveGoogleDriveRequest);
+    }
+
+    @ResponseStatus(ACCEPTED)
+    @PostMapping("/remove-googledrive")
+    public void removeGoogleDrive(@RequestBody @Valid RemoveGoogleDriveRequest removeGoogleDriveRequest) {
+        googleDriveService.removeGoogleDrive(removeGoogleDriveRequest);
     }
 }

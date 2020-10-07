@@ -5,6 +5,7 @@ import edu.monash.userprojectservice.model.CreateProjectRequest;
 import edu.monash.userprojectservice.model.GetProjectResponse;
 import edu.monash.userprojectservice.model.GetTimesheetResponse;
 import edu.monash.userprojectservice.model.SaveTimesheetRequest;
+import edu.monash.userprojectservice.model.RemoveTimesheetRequest;
 import edu.monash.userprojectservice.model.EditProjectRequest;
 import edu.monash.userprojectservice.repository.EditProjectRepository;
 import edu.monash.userprojectservice.repository.googleFolder.GoogleFolderEntity;
@@ -193,6 +194,20 @@ public class ProjectService {
         projectsRepository.save(projectEntity);
 
         log.info("{\"message\":\"Inserted timesheet\", \"project\":\"{}\"}", saveTimesheetRequest);
+    }
+
+    public void removeTimesheet(RemoveTimesheetRequest removeTimesheetRequest) {
+        log.info("{\"message\":\"Removing timesheet\", \"project\":\"{}\"}", removeTimesheetRequest);
+
+        // Validation Check
+        validationHandler.isValid(removeTimesheetRequest.getEmailAddress(), removeTimesheetRequest.getProjectId());
+
+        ProjectEntity projectEntity = projectsRepository.findProjectEntityByProjectId(removeTimesheetRequest.getProjectId());
+        projectEntity.removeTimesheet(removeTimesheetRequest.getTimesheet());
+
+        // Delete from database
+        projectsRepository.save(projectEntity);
+        log.info("{\"message\":\"Removed timesheet\", \"project\":\"{}\"}", removeTimesheetRequest);
     }
 }
 

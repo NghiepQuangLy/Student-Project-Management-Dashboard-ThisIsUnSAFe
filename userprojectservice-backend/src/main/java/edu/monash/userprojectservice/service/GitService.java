@@ -3,6 +3,7 @@ package edu.monash.userprojectservice.service;
 import edu.monash.userprojectservice.ValidationHandler;
 import edu.monash.userprojectservice.model.GetGitResponse;
 import edu.monash.userprojectservice.model.SaveGitRequest;
+import edu.monash.userprojectservice.model.RemoveGitRequest;
 import edu.monash.userprojectservice.repository.git.GitEntity;
 import edu.monash.userprojectservice.repository.git.GitRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -46,5 +47,17 @@ public class GitService {
         gitRepository.save(new GitEntity(saveGitRequest.getGitId(), saveGitRequest.getProjectId(), saveGitRequest.getGitName()));
 
         log.info("{\"message\":\"Inserted into Git\", \"project\":\"{}\"}", saveGitRequest);
+    }
+
+    public void removeGit(RemoveGitRequest removeGitRequest) {
+        log.info("{\"message\":\"Remove Git data\", \"project\":\"{}\"}", removeGitRequest);
+
+        // Validation Check
+        validationHandler.isValid(removeGitRequest.getEmailAddress(), removeGitRequest.getProjectId());
+
+        // Store into database
+        gitRepository.delete(new GitEntity(removeGitRequest.getGitId(), removeGitRequest.getProjectId(), removeGitRequest.getGitName()));
+
+        log.info("{\"message\":\"Removed from Git\", \"project\":\"{}\"}", removeGitRequest);
     }
 }
