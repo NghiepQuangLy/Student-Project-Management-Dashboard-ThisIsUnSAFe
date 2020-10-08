@@ -24,4 +24,10 @@ public class UserProjectsController {
     public GetUserProjectsResponse getUserProjects(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
         return userProjectService.getUsersByProject(emailAddress, projectId);
     }
+
+    @ResponseStatus(OK)
+    @GetMapping("/remove-projectusers")
+    public void removeUserProjects(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
+        userProjectService.removeUsersByProject(emailAddress, projectId);
+    }
 }

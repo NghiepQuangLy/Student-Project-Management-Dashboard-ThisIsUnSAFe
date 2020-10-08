@@ -7,6 +7,8 @@ import edu.monash.userprojectservice.model.GetTimesheetResponse;
 import edu.monash.userprojectservice.model.SaveTimesheetRequest;
 import edu.monash.userprojectservice.model.RemoveTimesheetRequest;
 import edu.monash.userprojectservice.model.EditProjectRequest;
+import edu.monash.userprojectservice.model.RemoveProjectRequest;
+import edu.monash.userprojectservice.repository.RemoveProjectRepository;
 import edu.monash.userprojectservice.repository.EditProjectRepository;
 import edu.monash.userprojectservice.repository.googleFolder.GoogleFolderEntity;
 import edu.monash.userprojectservice.repository.googleFolder.GoogleFolderRepository;
@@ -45,6 +47,9 @@ public class ProjectService {
 
     @Autowired
     private EditProjectRepository editProjectRepository;
+
+    @Autowired
+    private RemoveProjectRepository removeProjectRepository;
 
     @Autowired
     private ProjectsRepository projectsRepository;
@@ -129,6 +134,54 @@ public class ProjectService {
             );
         } else {
             log.warn("Project could not be added!");
+            return new ResponseEntity<>(
+                    null, INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    // edit a project
+    // check for the user first, if it doesnt exist new responseEntity and return not found
+    // if he exists then, return OK
+    public ResponseEntity<GetProjectResponse> removeProject(RemoveProjectRequest removeProjectRequest) throws SQLException {
+
+        // check if the project is already present in the database
+        if (projectsRepository.findProjectEntityByProjectId(removeProjectRequest.getProjectId()) == null) {
+            log.warn("Project not found!");
+            return new ResponseEntity<>(
+                    null, INTERNAL_SERVER_ERROR
+            );
+        }
+
+        List<UsersProjectsEntity> usersProjectEntities = usersProjectsRepository.findUsersProjectsEntitiesByProjectId(removeProjectRequest.getProjectId());
+        for (UsersProjectsEntity usersprojectEntity : usersProjectEntities) { usersProjectsRepository.delete(usersprojectEntity); }
+        List<GitEntity> gitEntities = gitRepository.findGitEntitiesByProjectId(removeProjectRequest.getProjectId());
+        for (GitEntity gitEntity : gitEntities) { gitRepository.delete(gitEntity); }
+        List<GoogleDriveEntity> googleDriveEntities = googleDriveRepository.findGoogleDriveEntitiesByProjectId(removeProjectRequest.getProjectId());
+        for (GoogleDriveEntity googleDriveEntity : googleDriveEntities) { googleDriveRepository.delete(googleDriveEntity); }
+        List<GoogleFolderEntity> googleFolderEntities = googleFolderRepository.findGoogleFolderEntitiesByProjectId(removeProjectRequest.getProjectId());
+        for (GoogleFolderEntity googleFolderEntity:  googleFolderEntities) { googleFolderRepository.delete(googleFolderEntity); }
+        List<TrelloEntity> trelloEntities = trelloRepository.findTrelloEntitiesByProjectId(removeProjectRequest.getProjectId());
+        for (TrelloEntity trelloEntity : trelloEntities) { trelloRepository.delete(trelloEntity); }
+
+        /*if (usersProjectEntities != null) {
+            for (int i=0; i < usersProjectEntity.size(); i++){
+                usersProjectsRepository.delete(usersProjectEntity.get(i));
+            }
+
+            log.info("{\"message\":\"Removed user project\", \"projectId\":\"{}\"}", removeProjectRequest.getProjectId());
+        }*/
+
+        // edit in db when project exists
+        Boolean isSuccessful = removeProjectRepository.delete(removeProjectRequest.getProjectId());
+
+        if (isSuccessful) {
+            log.info("Project has been edited!");
+            return new ResponseEntity<>(
+                    null, OK
+            );
+        } else {
+            log.warn("Project could not be edited!");
             return new ResponseEntity<>(
                     null, INTERNAL_SERVER_ERROR
             );

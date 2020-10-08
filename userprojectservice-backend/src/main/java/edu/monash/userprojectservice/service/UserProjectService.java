@@ -65,8 +65,28 @@ public class UserProjectService {
 
             return getUserProjectsResponse;
         } else {
-            // show return 404 not found
+            // show return 404 not founduserProjectService
             throw new HTTPResponseHandler.NotFoundException();
+        }
+    }
+
+    public void removeUsersByProject(String emailAddress, String projectId) {
+        log.info("{\"message\":\"Getting projects\", \"user\":\"{}\"}", projectId);
+
+        // Validation Check
+        validationHandler.isValid(emailAddress, projectId);
+
+        List<UsersProjectsEntity> usersProjectEntity = usersProjectsRepository.findUsersProjectsEntitiesByProjectId(projectId);
+
+        if (usersProjectEntity != null) {
+
+            for (int i=0; i < usersProjectEntity.size(); i++){
+                usersProjectsRepository.delete(usersProjectEntity.get(i));
+            }
+
+            log.info("{\"message\":\"Remove user project\", \"projectId\":\"{}\"}", projectId);
+
+            //log.info("{\"message\":\"Got projects\", \"project list\":\"{}\"}", usersProjectEntity);
         }
     }
 

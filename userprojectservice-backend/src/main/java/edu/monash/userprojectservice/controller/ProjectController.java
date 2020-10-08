@@ -42,6 +42,12 @@ public class ProjectController {
     }
 
     @ResponseStatus(OK)
+    @PostMapping("/remove-project")
+    public void removeProject(@RequestBody @Valid RemoveProjectRequest removeProjectRequest) throws SQLException {
+        projectService.removeProject(removeProjectRequest);
+    }
+
+    @ResponseStatus(OK)
     @PostMapping("/edit-project")
     public ResponseEntity setProjectName(@RequestBody @Valid EditProjectRequest editProjectRequest) throws SQLException {
         return projectService.editProject(editProjectRequest);
