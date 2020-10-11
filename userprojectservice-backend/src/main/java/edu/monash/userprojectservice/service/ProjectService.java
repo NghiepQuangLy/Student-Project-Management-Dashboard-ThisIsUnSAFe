@@ -140,7 +140,7 @@ public class ProjectService {
         }
     }
 
-    // edit a project
+    // remove a project
     // check for the user first, if it doesnt exist new responseEntity and return not found
     // if he exists then, return OK
     public ResponseEntity<GetProjectResponse> removeProject(RemoveProjectRequest removeProjectRequest) throws SQLException {
@@ -153,6 +153,7 @@ public class ProjectService {
             );
         }
 
+        // remove foreign keys to the project so entry can be deleted
         List<UsersProjectsEntity> usersProjectEntities = usersProjectsRepository.findUsersProjectsEntitiesByProjectId(removeProjectRequest.getProjectId());
         for (UsersProjectsEntity usersprojectEntity : usersProjectEntities) { usersProjectsRepository.delete(usersprojectEntity); }
         List<GitEntity> gitEntities = gitRepository.findGitEntitiesByProjectId(removeProjectRequest.getProjectId());
@@ -164,15 +165,7 @@ public class ProjectService {
         List<TrelloEntity> trelloEntities = trelloRepository.findTrelloEntitiesByProjectId(removeProjectRequest.getProjectId());
         for (TrelloEntity trelloEntity : trelloEntities) { trelloRepository.delete(trelloEntity); }
 
-        /*if (usersProjectEntities != null) {
-            for (int i=0; i < usersProjectEntity.size(); i++){
-                usersProjectsRepository.delete(usersProjectEntity.get(i));
-            }
-
-            log.info("{\"message\":\"Removed user project\", \"projectId\":\"{}\"}", removeProjectRequest.getProjectId());
-        }*/
-
-        // edit in db when project exists
+        // remove from db when project exists
         Boolean isSuccessful = removeProjectRepository.delete(removeProjectRequest.getProjectId());
 
         if (isSuccessful) {
@@ -234,6 +227,7 @@ public class ProjectService {
         return new GetTimesheetResponse(projectEntity.getProjectTimesheet());
     }
 
+    // Save timesheet to a project
     public void saveTimesheet(SaveTimesheetRequest saveTimesheetRequest) {
         log.info("{\"message\":\"Inserting timesheet\", \"project\":\"{}\"}", saveTimesheetRequest);
 
@@ -249,6 +243,7 @@ public class ProjectService {
         log.info("{\"message\":\"Inserted timesheet\", \"project\":\"{}\"}", saveTimesheetRequest);
     }
 
+    // Remove timesheet from a project
     public void removeTimesheet(RemoveTimesheetRequest removeTimesheetRequest) {
         log.info("{\"message\":\"Removing timesheet\", \"project\":\"{}\"}", removeTimesheetRequest);
 

@@ -20,13 +20,13 @@ public class RemoveProjectRepository {
     @Value("${spring.datasource.password}")
     String password;
 
-    // create new method for insert...
+    // create new method for delete...
     public Boolean delete(String projectId) throws SQLException {
         Connection conn = DriverManager.getConnection(url, userName, password);
         try {
             conn.setAutoCommit(false);
 
-            // create the java mysql update prepared statement
+            // create the java mysql delete prepared statement
             String query = "delete from PROJECTS where project_id = ?";
             PreparedStatement preparedStmt = conn.prepareStatement(query);
             preparedStmt.setString(1, projectId);

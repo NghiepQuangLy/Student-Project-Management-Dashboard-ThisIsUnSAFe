@@ -51,6 +51,7 @@ public class GoogleDriveService {
         log.info("{\"message\":\"Inserted into GoogleDrive\", \"project\":\"{}\"}", saveGoogleDriveRequest);
     }
 
+    // Remove from GoogleDrive table
     public void removeGoogleDrive(RemoveGoogleDriveRequest removeGoogleDriveRequest) {
         log.info("{\"message\":\"Remove GoogleDrive data\", \"project\":\"{}\"}", removeGoogleDriveRequest);
 
