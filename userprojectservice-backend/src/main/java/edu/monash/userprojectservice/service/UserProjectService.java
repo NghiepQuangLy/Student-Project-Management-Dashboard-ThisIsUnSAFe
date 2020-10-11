@@ -100,6 +100,9 @@ public class UserProjectService {
     // if he exists then, return OK
     public ResponseEntity<GetUserProjectsResponse> addProjectUser(AddProjectUserRequest addProjectUserRequest) throws SQLException {
 
+        // Validation Check
+        // validationHandler.isUserAdmin(emailAddress);
+
         // check if the project exists in the database
         if (projectsRepository.findProjectEntityByProjectId(addProjectUserRequest.getProjectId()) == null) {
             log.warn( addProjectUserRequest.getProjectId() +"not found!");
@@ -157,6 +160,9 @@ public class UserProjectService {
 
     // method is called to remove a list of users from a project
     public ResponseEntity<GetUserProjectsResponse> removeProjectUser(RemoveProjectUserRequest removeProjectUserRequest) throws SQLException {
+
+        // Validation Check
+        // validationHandler.isUserAdmin(emailAddress);
 
         // check if the project exists in the database
         if (projectsRepository.findProjectEntityByProjectId(removeProjectUserRequest.getProjectId()) == null) {
