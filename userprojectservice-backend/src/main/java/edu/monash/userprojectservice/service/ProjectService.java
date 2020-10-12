@@ -120,6 +120,9 @@ public class ProjectService {
     public ResponseEntity<GetProjectResponse> createProject(CreateProjectRequest createProjectRequest) throws SQLException {
         //check if the user is present in the system
 
+        // Validation Check
+        // validationHandler.isUserAdmin(createProjectRequest.getEmailAddress());
+
         String projectId = UUID.randomUUID().toString();
         // check if the project is already present in the database
         while (projectsRepository.findProjectEntityByProjectId(projectId) != null) {
@@ -186,6 +189,9 @@ public class ProjectService {
     // check for the user first, if it doesnt exist new responseEntity and return not found
     // if he exists then, return OK
     public ResponseEntity<GetProjectResponse> editProject(EditProjectRequest editProjectRequest) throws SQLException {
+
+        // Validation Check
+        // validationHandler.isUserAdmin(editProjectRequest.getEmailAddress());
 
         // check if the project is already present in the database
         if (projectsRepository.findProjectEntityByProjectId(editProjectRequest.getProjectId()) == null) {
