@@ -19,8 +19,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 @Slf4j
 @Service
@@ -107,7 +106,7 @@ public class UserProjectService {
         if (projectsRepository.findProjectEntityByProjectId(addProjectUserRequest.getProjectId()) == null) {
             log.warn( addProjectUserRequest.getProjectId() +"not found!");
             return new ResponseEntity<>(
-                    null, INTERNAL_SERVER_ERROR
+                    null, NOT_FOUND
             );
         }
 
@@ -115,7 +114,7 @@ public class UserProjectService {
         if (addProjectUserRequest.getEmailAddress().size() == 0) {
             log.warn( "There are no users to add to Project ID: "+ addProjectUserRequest.getProjectId());
             return new ResponseEntity<>(
-                    null, INTERNAL_SERVER_ERROR
+                    null, BAD_REQUEST
             );
         }
 
@@ -124,7 +123,7 @@ public class UserProjectService {
             if (usersRepository.findUserEntityByEmailAddress(addProjectUserRequest.getEmailAddress().get(i)) == null) {
                 log.warn(addProjectUserRequest.getEmailAddress().get(i)+" not found!");
                 return new ResponseEntity<>(
-                        null, INTERNAL_SERVER_ERROR
+                        null, NOT_FOUND
                 );
             }
         }
@@ -168,7 +167,7 @@ public class UserProjectService {
         if (projectsRepository.findProjectEntityByProjectId(removeProjectUserRequest.getProjectId()) == null) {
             log.warn( removeProjectUserRequest.getProjectId() +"not found!");
             return new ResponseEntity<>(
-                    null, INTERNAL_SERVER_ERROR
+                    null, NOT_FOUND
             );
         }
 
@@ -177,7 +176,7 @@ public class UserProjectService {
             // log an warning that there are no users in the list
             log.warn( "There are no users to add to Project ID: "+ removeProjectUserRequest.getProjectId());
             return new ResponseEntity<>(
-                    null, INTERNAL_SERVER_ERROR
+                    null, BAD_REQUEST
             );
         }
 
@@ -187,7 +186,7 @@ public class UserProjectService {
             if (usersRepository.findUserEntityByEmailAddress(removeProjectUserRequest.getEmailAddress().get(i)) == null) {
                 log.warn(removeProjectUserRequest.getEmailAddress().get(i)+" not found!");
                 return new ResponseEntity<>(
-                        null, INTERNAL_SERVER_ERROR
+                        null, NOT_FOUND
                 );
             }
         }
