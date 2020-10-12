@@ -9,6 +9,7 @@ import edu.monash.userprojectservice.repository.project.ProjectsRepository;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsEntity;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsRepository;
 import edu.monash.userprojectservice.repository.AddProjectUserRepository;
+import edu.monash.userprojectservice.repository.user.UsersRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,25 +84,6 @@ public class UserProjectService {
         } else {
             // show return 404 not founduserProjectService
             throw new HTTPResponseHandler.NotFoundException();
-        }
-    }
-
-    // Remove link between user email and project in userproject table
-    // Useful in removing the userproject foreign key from a project
-    public void removeUsersByProject(String emailAddress, String projectId) {
-        log.info("{\"message\":\"Removing user-project\", \"projectId\":\"{}\"}", projectId);
-
-        // Validation Check
-        validationHandler.isValid(emailAddress, projectId);
-
-        List<UsersProjectsEntity> usersProjectEntity = usersProjectsRepository.findUsersProjectsEntitiesByProjectId(projectId);
-
-        if (usersProjectEntity != null) {
-            for (int i=0; i < usersProjectEntity.size(); i++){
-                usersProjectsRepository.delete(usersProjectEntity.get(i));
-            }
-
-            log.info("{\"message\":\"Removed user-project\", \"projectId\":\"{}\"}", projectId);
         }
     }
 
