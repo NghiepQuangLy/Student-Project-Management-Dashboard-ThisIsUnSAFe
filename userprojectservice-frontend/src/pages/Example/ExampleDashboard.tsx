@@ -11,7 +11,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import TableHead from '@material-ui/core/TableHead';
-import WarningIcon from '@material-ui/icons/Warning';
+import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 
 interface ExampleDashboardProps {
     projectDetails?: ProjectDetail
@@ -66,8 +66,8 @@ const StyledTableRow = withStyles((theme) => ({
     },
 }))(TableRow);
 
-function createDataIntegrationTable(email: string, trello: string, git: string, google: string) {
-    return { email, trello, git, google };
+function createDataIntegrationTable(emailAddress: string, trelloId: string, gitId: string, googleId: string) {
+    return { emailAddress: emailAddress, trelloId: trelloId, gitId: gitId, googleId: googleId };
 }
 
 const rowsIntegrationTable = [
@@ -90,7 +90,7 @@ const ExampleDashboard: FunctionComponent<ExampleDashboardProps> = ({projectDeta
                         <TableBody>
                             {rowsReminder.map((row) => (
                                 <TableRow key={row.activity}>
-                                    <TableCell className={classes.icon}><WarningIcon></WarningIcon></TableCell>
+                                    <TableCell className={classes.icon}><NotificationsNoneIcon></NotificationsNoneIcon></TableCell>
                                     <TableCell component="th" scope="row"
                                                className={classes.rows}>
                                         {row.activity}<br></br>{row.unitCode} {row.unitName}
@@ -115,13 +115,13 @@ const ExampleDashboard: FunctionComponent<ExampleDashboardProps> = ({projectDeta
                         </TableHead>
                         <TableBody>
                             {rowsIntegrationTable.map((row) => (
-                                <StyledTableRow key={row.email}>
+                                <StyledTableRow key={row.emailAddress}>
                                     <StyledTableCell component="th" scope="row">
-                                        {row.email}
+                                        {row.emailAddress}
                                     </StyledTableCell>
-                                    <StyledTableCell align="left">{row.trello}</StyledTableCell>
-                                    <StyledTableCell align="left">{row.git}</StyledTableCell>
-                                    <StyledTableCell align="left">{row.google}</StyledTableCell>
+                                    <StyledTableCell align="left">{row.trelloId}</StyledTableCell>
+                                    <StyledTableCell align="left">{row.gitId}</StyledTableCell>
+                                    <StyledTableCell align="left">{row.googleId}</StyledTableCell>
                                 </StyledTableRow>
                             ))}
                         </TableBody>
