@@ -73,7 +73,7 @@ public class UserProjectService {
     // Remove link between user email and project in userproject table
     // Useful in removing the userproject foreign key from a project
     public void removeUsersByProject(String emailAddress, String projectId) {
-        log.info("{\"message\":\"Getting projects\", \"user\":\"{}\"}", projectId);
+        log.info("{\"message\":\"Removing user-project\", \"projectId\":\"{}\"}", projectId);
 
         // Validation Check
         validationHandler.isValid(emailAddress, projectId);
@@ -85,7 +85,7 @@ public class UserProjectService {
                 usersProjectsRepository.delete(usersProjectEntity.get(i));
             }
 
-            log.info("{\"message\":\"Remove user project\", \"projectId\":\"{}\"}", projectId);
+            log.info("{\"message\":\"Removed user-project\", \"projectId\":\"{}\"}", projectId);
         }
     }
 

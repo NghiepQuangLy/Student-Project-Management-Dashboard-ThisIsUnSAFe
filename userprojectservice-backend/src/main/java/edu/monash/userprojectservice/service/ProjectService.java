@@ -153,7 +153,8 @@ public class ProjectService {
             );
         }
 
-        // remove foreign keys to the project so entry can be deleted
+        // remove foreign keys that link to the project so entry can be deleted
+        // Foreign Key list: userProject, git, googleDrive, googleFolder, trello
         List<UsersProjectsEntity> usersProjectEntities = usersProjectsRepository.findUsersProjectsEntitiesByProjectId(removeProjectRequest.getProjectId());
         for (UsersProjectsEntity usersprojectEntity : usersProjectEntities) { usersProjectsRepository.delete(usersprojectEntity); }
         List<GitEntity> gitEntities = gitRepository.findGitEntitiesByProjectId(removeProjectRequest.getProjectId());
@@ -169,12 +170,12 @@ public class ProjectService {
         Boolean isSuccessful = removeProjectRepository.delete(removeProjectRequest.getProjectId());
 
         if (isSuccessful) {
-            log.info("Project has been edited!");
+            log.info("Project has been remove!");
             return new ResponseEntity<>(
                     null, OK
             );
         } else {
-            log.warn("Project could not be edited!");
+            log.warn("Project could not be removed!");
             return new ResponseEntity<>(
                     null, INTERNAL_SERVER_ERROR
             );
