@@ -28,8 +28,7 @@ public class UserProjectsController {
     public GetUserProjectsResponse getUserProjects(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
         return userProjectService.getUsersByProject(emailAddress, projectId);
     }
-
-    @ResponseStatus(OK)
+    
     @PostMapping("/add-projectuser")
     public ResponseEntity addProjectUser(@RequestBody @Valid AddProjectUserRequest addProjectUserRequest) throws SQLException {
         return userProjectService.addProjectUser(addProjectUserRequest);
@@ -40,5 +39,4 @@ public class UserProjectsController {
     public ResponseEntity removeProjectUser(@RequestBody @Valid RemoveProjectUserRequest removeProjectUserRequest) throws SQLException {
         return userProjectService.removeProjectUser(removeProjectUserRequest);
     }
-
 }

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import static org.springframework.http.HttpStatus.ACCEPTED;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -34,7 +33,7 @@ public class GitController {
         gitService.insertGit(saveGitRequest);
     }
 
-    @ResponseStatus(ACCEPTED)
+    @ResponseStatus(OK)
     @PostMapping("/remove-git")
     public void removeGit(@RequestBody @Valid RemoveGitRequest removeGitRequest) {
         gitService.removeGit(removeGitRequest);
