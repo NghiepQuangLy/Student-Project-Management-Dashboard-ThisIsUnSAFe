@@ -11,7 +11,7 @@ import { PROJECT_DETAIL_PATH, PROJECT_ID_QUERY, useQuery } from "../../util/useQ
 import ProjectDetailsIntegration from "../../components/ProjectDetailsIntegration/ProjectDetailsIntegration"
 import Loading from "../../components/Loading/Loading"
 import styles from "./ProjectDetails.module.css"
-import ExampleDashboard from "../Example/ExampleDashboard"
+import Dashboard from "../Dashboard/Dashboard"
 
 const ProjectDetails: Page = ({ integration, state, dispatch }) => {
   const { googleUser, isSignedIn, isInitialized } = useGoogleAuth()
@@ -68,7 +68,7 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
       )}
       {isSucceed && (
         <BarContainer shouldContainSideBar={true} projectDetails={state.currentProject ?? undefined}>
-          {currentPath === PROJECT_DETAIL_PATH ? <ExampleDashboard projectDetails={state.currentProject ?? undefined}/> : <ProjectDetailsIntegration />}
+          {currentPath === PROJECT_DETAIL_PATH ? <Dashboard projectDetails={state.currentProject ?? undefined}/> : <ProjectDetailsIntegration />}
         </BarContainer>
       )}
     </div>
