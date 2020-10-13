@@ -191,7 +191,7 @@ public class ProjectService {
     public ResponseEntity<GetProjectResponse> editProject(EditProjectRequest editProjectRequest) throws SQLException {
 
         // Validation Check
-        // validationHandler.isUserAdmin(editProjectRequest.getEmailAddress());
+        validationHandler.isUserAdmin(editProjectRequest.getRequestorEmail());
 
         // check if the project is already present in the database
         if (projectsRepository.findProjectEntityByProjectId(editProjectRequest.getProjectId()) == null) {
