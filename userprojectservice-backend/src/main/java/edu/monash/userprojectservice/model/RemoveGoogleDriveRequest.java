@@ -20,7 +20,4 @@ public class RemoveGoogleDriveRequest {
 
     @NotNull
     private String projectId;
-
-    @NotNull
-    private String googleDriveName;
 }

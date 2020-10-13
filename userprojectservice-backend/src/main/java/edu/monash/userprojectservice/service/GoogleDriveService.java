@@ -10,9 +10,14 @@ import edu.monash.userprojectservice.repository.googleDrive.GoogleDriveRepositor
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.http.ResponseEntity;
 
-import javax.validation.Validation;
+import java.sql.SQLException;
+
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.OK;
 
 @Slf4j
 @Service
@@ -52,15 +57,36 @@ public class GoogleDriveService {
     }
 
     // Remove from GoogleDrive table
-    public void removeGoogleDrive(RemoveGoogleDriveRequest removeGoogleDriveRequest) {
+    public ResponseEntity<GetGoogleDriveResponse> removeGoogleDrive(RemoveGoogleDriveRequest removeGoogleDriveRequest) throws SQLException {
         log.info("{\"message\":\"Remove GoogleDrive data\", \"project\":\"{}\"}", removeGoogleDriveRequest);
 
         // Validation Check
         validationHandler.isValid(removeGoogleDriveRequest.getEmailAddress(), removeGoogleDriveRequest.getProjectId());
 
-        // Delete from database
-        googleDriveRepository.delete(new GoogleDriveEntity(removeGoogleDriveRequest.getGoogleDriveId(), removeGoogleDriveRequest.getProjectId(), removeGoogleDriveRequest.getGoogleDriveName()));
+        // Get list of google drive integrations for the project
+        List<GoogleDriveEntity> googleDriveEntity = googleDriveRepository.findGoogleDriveEntitiesByProjectId(removeGoogleDriveRequest.getProjectId());
 
-        log.info("{\"message\":\"Removed from GoogleDrive\", \"project\":\"{}\"}", removeGoogleDriveRequest);
+        if (googleDriveEntity.size() > 0) {
+            for (int i = 0; i < googleDriveEntity.size(); i++) {
+                if (removeGoogleDriveRequest.getGoogleDriveId().equals(googleDriveEntity.get(i).getGoogleDriveId())) {
+                    // Delete from database
+                    googleDriveRepository.delete(googleDriveEntity.get(i));
+                    log.info("{\"message\":\"Removed from GoogleDrive\", \"project\":\"{}\"}", removeGoogleDriveRequest.getGoogleDriveId());
+                    return new ResponseEntity<>(
+                            null, OK
+                    );
+                }
+            }
+            log.warn("A GoogleDrive integration with the googleDriveId does not exist: ", removeGoogleDriveRequest.getGoogleDriveId());
+            return new ResponseEntity<>(
+                    null, BAD_REQUEST
+            );
+        }
+        else {
+            log.warn("Project has no googleDrive integrations: ", removeGoogleDriveRequest.getGoogleDriveId());
+            return new ResponseEntity<>(
+                    null, BAD_REQUEST
+            );
+        }
     }
 }

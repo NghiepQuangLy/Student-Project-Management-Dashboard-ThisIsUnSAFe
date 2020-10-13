@@ -7,7 +7,9 @@ import edu.monash.userprojectservice.service.TrelloService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
+import java.sql.SQLException;
 import javax.validation.Valid;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -35,7 +37,7 @@ public class TrelloController {
 
     @ResponseStatus(OK)
     @PostMapping("/remove-trello")
-    public void removeTrello(@RequestBody @Valid RemoveTrelloRequest removeTrelloRequest) {
-        trelloService.removeTrello(removeTrelloRequest);
+    public ResponseEntity removeTrello(@RequestBody @Valid RemoveTrelloRequest removeTrelloRequest) throws SQLException {
+        return trelloService.removeTrello(removeTrelloRequest);
     }
 }

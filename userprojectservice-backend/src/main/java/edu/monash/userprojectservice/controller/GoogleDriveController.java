@@ -7,7 +7,9 @@ import edu.monash.userprojectservice.service.GoogleDriveService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
+import java.sql.SQLException;
 import javax.validation.Valid;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -35,7 +37,7 @@ public class GoogleDriveController {
 
     @ResponseStatus(OK)
     @PostMapping("/remove-googledrive")
-    public void removeGoogleDrive(@RequestBody @Valid RemoveGoogleDriveRequest removeGoogleDriveRequest) {
-        googleDriveService.removeGoogleDrive(removeGoogleDriveRequest);
+    public ResponseEntity removeGoogleDrive(@RequestBody @Valid RemoveGoogleDriveRequest removeGoogleDriveRequest) throws SQLException {
+        return googleDriveService.removeGoogleDrive(removeGoogleDriveRequest);
     }
 }

@@ -60,7 +60,7 @@ public class ProjectController {
 
     @ResponseStatus(OK)
     @PostMapping("/remove-timesheet")
-    public void removeTimesheet(@RequestBody @Valid RemoveTimesheetRequest removeTimesheetRequest) {
-        projectService.removeTimesheet(removeTimesheetRequest);
+    public ResponseEntity removeTimesheet(@RequestBody @Valid RemoveTimesheetRequest removeTimesheetRequest) throws SQLException {
+        return projectService.removeTimesheet(removeTimesheetRequest);
     }
 }

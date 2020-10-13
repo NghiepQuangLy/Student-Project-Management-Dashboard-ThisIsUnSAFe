@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -148,13 +149,8 @@ public class ProjectService {
     // if he exists then, return OK
     public ResponseEntity<GetProjectResponse> removeProject(RemoveProjectRequest removeProjectRequest) throws SQLException {
 
-        // check if the project is already present in the database
-        if (projectsRepository.findProjectEntityByProjectId(removeProjectRequest.getProjectId()) == null) {
-            log.warn("Project not found!");
-            return new ResponseEntity<>(
-                    null, INTERNAL_SERVER_ERROR
-            );
-        }
+        // Validation Check
+        validationHandler.isValid(removeProjectRequest.getEmailAddress(), removeProjectRequest.getProjectId());
 
         // remove foreign keys that link to the project so entry can be deleted
         // Foreign Key list: userProject, git, googleDrive, googleFolder, trello
@@ -251,18 +247,32 @@ public class ProjectService {
     }
 
     // Remove timesheet from a project
-    public void removeTimesheet(RemoveTimesheetRequest removeTimesheetRequest) {
+    public ResponseEntity<GetProjectResponse> removeTimesheet(RemoveTimesheetRequest removeTimesheetRequest) throws SQLException {
         log.info("{\"message\":\"Removing timesheet\", \"project\":\"{}\"}", removeTimesheetRequest);
 
         // Validation Check
         validationHandler.isValid(removeTimesheetRequest.getEmailAddress(), removeTimesheetRequest.getProjectId());
 
         ProjectEntity projectEntity = projectsRepository.findProjectEntityByProjectId(removeTimesheetRequest.getProjectId());
-        projectEntity.removeTimesheet(removeTimesheetRequest.getTimesheet());
 
-        // Delete from database
-        projectsRepository.save(projectEntity);
-        log.info("{\"message\":\"Removed timesheet\", \"project\":\"{}\"}", removeTimesheetRequest);
+        // To handle case timesheet is already empty
+        if (projectEntity.isTimesheetValid()) {
+            // remove in db when timesheet exists
+            projectEntity.removeTimesheet();
+            // Save the changes to the database
+            projectsRepository.save(projectEntity);
+            log.info("{\"message\":\"Removed timesheet\", \"project\":\"{}\"}", removeTimesheetRequest.getProjectId());
+            return new ResponseEntity<>(
+                    null, OK
+            );
+        }
+        else {
+            // log an warning that there the timesheet is already empty
+            log.warn( "Project Timesheet is already empty: ", removeTimesheetRequest.getProjectId());
+            return new ResponseEntity<>(
+                    null, BAD_REQUEST
+            );
+        }
     }
 }
 
