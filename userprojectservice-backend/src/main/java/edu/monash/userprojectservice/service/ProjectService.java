@@ -2,38 +2,44 @@ package edu.monash.userprojectservice.service;
 
 import edu.monash.userprojectservice.ValidationHandler;
 import edu.monash.userprojectservice.model.CreateProjectRequest;
+import edu.monash.userprojectservice.model.EditProjectRequest;
 import edu.monash.userprojectservice.model.GetProjectResponse;
 import edu.monash.userprojectservice.model.GetTimesheetResponse;
-import edu.monash.userprojectservice.model.SaveTimesheetRequest;
+import edu.monash.userprojectservice.model.IntegrationObjectResponse;
+import edu.monash.userprojectservice.model.IntegrationTableObjectResponse;
 import edu.monash.userprojectservice.model.RemoveTimesheetRequest;
-import edu.monash.userprojectservice.model.EditProjectRequest;
-import edu.monash.userprojectservice.repository.EditProjectRepository;
-import edu.monash.userprojectservice.repository.googleFolder.GoogleFolderEntity;
-import edu.monash.userprojectservice.repository.googleFolder.GoogleFolderRepository;
-import edu.monash.userprojectservice.repository.project.ProjectEntity;
-import edu.monash.userprojectservice.repository.project.ProjectsRepository;
+import edu.monash.userprojectservice.model.SaveTimesheetRequest;
 import edu.monash.userprojectservice.repository.CreateProjectRepository;
+import edu.monash.userprojectservice.repository.EditProjectRepository;
 import edu.monash.userprojectservice.repository.git.GitEntity;
 import edu.monash.userprojectservice.repository.git.GitRepository;
 import edu.monash.userprojectservice.repository.googleDrive.GoogleDriveEntity;
 import edu.monash.userprojectservice.repository.googleDrive.GoogleDriveRepository;
+import edu.monash.userprojectservice.repository.googleFolder.GoogleFolderEntity;
+import edu.monash.userprojectservice.repository.googleFolder.GoogleFolderRepository;
+import edu.monash.userprojectservice.repository.project.ProjectEntity;
+import edu.monash.userprojectservice.repository.project.ProjectsRepository;
 import edu.monash.userprojectservice.repository.trello.TrelloEntity;
 import edu.monash.userprojectservice.repository.trello.TrelloRepository;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsEntity;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsRepository;
+import edu.monash.userprojectservice.serviceclient.GitIntegrationTableServiceClient;
+import edu.monash.userprojectservice.serviceclient.IntegrationTableResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static java.time.temporal.ChronoUnit.DAYS;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 
 @Slf4j
@@ -67,6 +73,9 @@ public class ProjectService {
     @Autowired
     private ValidationHandler validationHandler;
 
+    @Autowired
+    private GitIntegrationTableServiceClient gitIntegrationTableServiceClient;
+
     public ResponseEntity<GetProjectResponse> getProject(String emailAddress, String projectId) {
         log.info("{\"message\":\"Getting project\", \"project\":\"{}\"}", projectId);
 
@@ -89,11 +98,24 @@ public class ProjectService {
         List<GoogleFolderEntity> googleFolderEntities = googleFolderRepository.findGoogleFolderEntitiesByProjectId(projectId);
         List<TrelloEntity> trelloEntities = trelloRepository.findTrelloEntitiesByProjectId(projectId);
 
+        // get all the users of the project
+        List<UsersProjectsEntity> usersProjectsEntities = usersProjectsRepository.findUsersProjectsEntitiesByProjectId(projectId);
+
+        // get list of emails that user group is belong to student
+        List<String> emails = usersProjectsEntities.stream()
+                .filter(usersProjectsEntity -> usersProjectsEntity.getUserEntity().getUserGroup().equals("STUDENT"))
+                .map(UsersProjectsEntity::getEmailAddress).collect(Collectors.toList());
+
+        // get git activity tracker table data
+        List<IntegrationTableResponse> gitIntegrationTableData = gitIntegrationTableServiceClient.getGitIntegrationTable(
+                emails,
+                gitEntities.stream().map(GitEntity::getGitId).collect(Collectors.toList())
+        );
 
 
         log.info("{\"message\":\"Got project\", \"project\":\"{}\"}", projectId);
 
-        return new ResponseEntity<GetProjectResponse>(
+        return new ResponseEntity(
                 new GetProjectResponse(
                         String.valueOf(projectEntity.getProjectId()),
                         projectEntity.getProjectName(),
@@ -101,12 +123,58 @@ public class ProjectService {
                         projectEntity.getProjectYear(),
                         projectEntity.getProjectSemester(),
                         projectEntity.getProjectTimesheet(),
-                        gitEntities.stream().map(gitEntity -> new IntegrationObjectResponse(gitEntity.getGitId(),gitEntity.getGitName())).collect(Collectors.toList()),
-                        googleDriveEntities.stream().map(googleDriveEntity -> new IntegrationObjectResponse(googleDriveEntity.getGoogleDriveId(),googleDriveEntity.getGoogleDriveName())).collect(Collectors.toList()),
-                        googleFolderEntities.stream().map(GoogleFolderEntity::getGoogleFolderId).collect(Collectors.toList()),
-                        trelloEntities.stream().map(trelloEntity -> new IntegrationObjectResponse(trelloEntity.getTrelloId(),trelloEntity.getTrelloName())).collect(Collectors.toList())
+                        gitEntities.stream()
+                                .map(gitEntity -> new IntegrationObjectResponse(gitEntity.getGitId(), gitEntity.getGitName()))
+                                .collect(Collectors.toList()),
+                        googleDriveEntities.stream()
+                                .map(googleDriveEntity -> new IntegrationObjectResponse(googleDriveEntity.getGoogleDriveId(), googleDriveEntity.getGoogleDriveName()))
+                                .collect(Collectors.toList()),
+                        googleFolderEntities.stream()
+                                .map(GoogleFolderEntity::getGoogleFolderId)
+                                .collect(Collectors.toList()),
+                        trelloEntities.stream()
+                                .map(trelloEntity -> new IntegrationObjectResponse(trelloEntity.getTrelloId(), trelloEntity.getTrelloName()))
+                                .collect(Collectors.toList()),
+                        emails.stream()
+                                .map(email -> createIntegrationTableObjectResponse(email, gitIntegrationTableData, null, null))
+                                .collect(Collectors.toList())
                 ), OK
         );
+    }
+
+    private IntegrationTableObjectResponse createIntegrationTableObjectResponse(
+            String email,
+            List<IntegrationTableResponse> gitIntegrationTableData,
+            List<IntegrationTableResponse> googleDriveIntegrationTableData,
+            List<IntegrationTableResponse> trelloIntegrationTableData
+    ) {
+        return IntegrationTableObjectResponse.builder()
+                .emailAddress(email)
+                .gitIntegrationLastModified(getIntegrationLastModifiedString(email, gitIntegrationTableData))
+                .googleDriveIntegrationLastModified(getIntegrationLastModifiedString(email, googleDriveIntegrationTableData))
+                .trelloIntegrationLastModified(getIntegrationLastModifiedString(email, trelloIntegrationTableData))
+                .build();
+    }
+
+    private String getIntegrationLastModifiedString(String email, List<IntegrationTableResponse> integrationTableData) {
+        if (integrationTableData == null) {
+            return "N/A";
+        }
+        LocalDateTime lastModifiedDate = integrationTableData.stream()
+                .filter(data -> data.getEmailAddress().equals(email))
+                .map(IntegrationTableResponse::getLastModified)
+                .findFirst()
+                .orElse(null);
+        if (lastModifiedDate == null) {
+            return "Unavailable";
+        }
+
+        LocalDateTime today = LocalDateTime.now();
+        long diff = DAYS.between(lastModifiedDate, today);
+
+        String diffDaysString = diff > 1 ? " days ago" : " day ago";
+
+        return diff + diffDaysString;
     }
 
     // create a method
