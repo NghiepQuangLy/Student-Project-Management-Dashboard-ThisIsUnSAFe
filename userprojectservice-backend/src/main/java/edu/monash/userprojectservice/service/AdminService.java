@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Slf4j
 @Service
@@ -23,9 +24,11 @@ public class AdminService {
     @Autowired
     private ValidationHandler validationHandler;
 
-    public CheckAdminResponse checkAdminByEmail(String emailAddress) {
+    public ResponseEntity<CheckAdminResponse> checkAdminByEmail(String emailAddress) {
         if (emailAddress.equals("")) {
-            return new CheckAdminResponse(false);
+            return new ResponseEntity<>(
+                    null, BAD_REQUEST
+            );
         }
 
         log.info("{\"message\":\"Checking admin\", \"admin\":\"{}\"}", emailAddress);
@@ -34,10 +37,14 @@ public class AdminService {
 
         if (adminEntity != null) {
             log.info("{\"message\":\"Got admin\", \"admin\":\"{}\"}", emailAddress);
-            return new CheckAdminResponse(true);
+            return new ResponseEntity<CheckAdminResponse>(
+                    new CheckAdminResponse(true), OK
+            );
         }
 
         log.info("{\"message\":\"Got no admin\", \"admin\":\"{}\"}", emailAddress);
-        return new CheckAdminResponse(false);
+        return new ResponseEntity<CheckAdminResponse>(
+                new CheckAdminResponse(false), OK
+        );
     }
 }
