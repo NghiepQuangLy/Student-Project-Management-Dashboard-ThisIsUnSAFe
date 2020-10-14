@@ -15,16 +15,14 @@ import edu.monash.userprojectservice.repository.git.GitEntity;
 import edu.monash.userprojectservice.repository.git.GitRepository;
 import edu.monash.userprojectservice.repository.googleDrive.GoogleDriveEntity;
 import edu.monash.userprojectservice.repository.googleDrive.GoogleDriveRepository;
-import edu.monash.userprojectservice.repository.googleFolder.GoogleFolderEntity;
-import edu.monash.userprojectservice.repository.googleFolder.GoogleFolderRepository;
 import edu.monash.userprojectservice.repository.project.ProjectEntity;
 import edu.monash.userprojectservice.repository.project.ProjectsRepository;
 import edu.monash.userprojectservice.repository.trello.TrelloEntity;
 import edu.monash.userprojectservice.repository.trello.TrelloRepository;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsEntity;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsRepository;
-import edu.monash.userprojectservice.serviceclient.GoogleDriveIntegrationTableServiceClient;
 import edu.monash.userprojectservice.serviceclient.GitIntegrationTableServiceClient;
+import edu.monash.userprojectservice.serviceclient.GoogleDriveIntegrationTableServiceClient;
 import edu.monash.userprojectservice.serviceclient.IntegrationTableResponse;
 import edu.monash.userprojectservice.serviceclient.TrelloIntegrationTableServiceClient;
 import lombok.extern.slf4j.Slf4j;
@@ -63,9 +61,6 @@ public class ProjectService {
     private GoogleDriveRepository googleDriveRepository;
 
     @Autowired
-    private GoogleFolderRepository googleFolderRepository;
-
-    @Autowired
     private TrelloRepository trelloRepository;
 
     @Autowired
@@ -102,7 +97,6 @@ public class ProjectService {
         // get integration ids from database
         List<GitEntity> gitEntities = gitRepository.findGitEntitiesByProjectId(projectId);
         List<GoogleDriveEntity> googleDriveEntities = googleDriveRepository.findGoogleDriveEntitiesByProjectId(projectId);
-        List<GoogleFolderEntity> googleFolderEntities = googleFolderRepository.findGoogleFolderEntitiesByProjectId(projectId);
         List<TrelloEntity> trelloEntities = trelloRepository.findTrelloEntitiesByProjectId(projectId);
 
         // get all the users of the project
@@ -166,9 +160,6 @@ public class ProjectService {
                         projectEntity.getProjectTimesheet(),
                         projectGitIntegration,
                         projectGoogleDriveIntegration,
-                        googleFolderEntities.stream()
-                                .map(GoogleFolderEntity::getGoogleFolderId)
-                                .collect(Collectors.toList()),
                         projectTrelloIntegration,
                         projectIntegrationTableData
                 ), OK

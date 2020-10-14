@@ -20,7 +20,6 @@ public class GetProjectResponse {
     private String projectTimesheet;
     private List<IntegrationObjectResponse> projectGitIntegration;
     private List<IntegrationObjectResponse> projectGoogleDriveIntegration;
-    private List<String> projectGoogleFolderIds;
     private List<IntegrationObjectResponse> projectTrelloIntegration;
     private List<IntegrationTableObjectResponse> projectIntegrationTable;
 }
