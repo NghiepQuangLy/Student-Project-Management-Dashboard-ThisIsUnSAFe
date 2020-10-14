@@ -63,7 +63,27 @@ const MockIntegration: Integration = {
               integrationName: "trelloname4"
             }
           ],
-          projectTimesheet: "Timesheet"
+          projectTimesheet: "Timesheet",
+          projectIntegrationTable: [
+            {
+              emailAddress: "gtru2@student.monash.edu",
+              gitIntegrationLastModified: "22 days ago",
+              googleDriveIntegrationLastModified: "Unavailable",
+              trelloIntegrationLastModified: "NA"
+            },
+            {
+              emailAddress: "zwuu0008@student.monash.edu",
+              gitIntegrationLastModified: "13 days ago",
+              googleDriveIntegrationLastModified: "Unavailable",
+              trelloIntegrationLastModified: "NA"
+            },
+            {
+              emailAddress: "svis0004@student.monash.edu",
+              gitIntegrationLastModified: "23 days ago",
+              googleDriveIntegrationLastModified: "Unavailable",
+              trelloIntegrationLastModified: "NA"
+            }
+          ]
         })
       }, 1000)
     }),

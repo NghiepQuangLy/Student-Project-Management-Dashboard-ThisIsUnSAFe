@@ -1,9 +1,9 @@
 import React, {FunctionComponent} from "react"
-import styles from "./Example.module.css"
+import styles from "./Dashboard.module.css"
 import {ProjectDetail} from "../../state/AppState";
 
 
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+import { withStyles} from '@material-ui/core/styles';
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -13,26 +13,9 @@ import Paper from "@material-ui/core/Paper";
 import TableHead from '@material-ui/core/TableHead';
 import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 
-interface ExampleDashboardProps {
+interface DashboardProps {
     projectDetails?: ProjectDetail
 }
-
-
-// Reminder
-const useStyles = makeStyles({
-    table: {
-        minWidth: 650,
-    },
-    rows: {
-        display: 'flex',
-        alignItems: 'center',
-        paddingLeft: '0px'
-    },
-    icon: {
-        alignItems: 'center',
-        paddingRight: '0px'
-    }
-});
 
 function createDataReminder(activity: string, unitCode: string, unitName: string, date: string, time: string) {
     return {activity, unitCode, unitName, date, time};
@@ -66,33 +49,25 @@ const StyledTableRow = withStyles((theme) => ({
     },
 }))(TableRow);
 
-function createDataIntegrationTable(emailAddress: string, trelloId: string, gitId: string, googleId: string) {
-    return { emailAddress: emailAddress, trelloId: trelloId, gitId: gitId, googleId: googleId };
-}
+const Dashboard: FunctionComponent<DashboardProps> = ({projectDetails}) => {
 
-const rowsIntegrationTable = [
-    createDataIntegrationTable('John@student.monash.edu', '12 Oct 2020', '9 Dec 2020', '5 Dec 2020'),
-    createDataIntegrationTable('Adam@student.monash.edu', '1 Dec 2020', '7 Oct 2020', '31 Dec 2020'),
-    createDataIntegrationTable('Sarah@student.monash.edu', '12 Nov 2020', '3 Dec 2020', '23 Oct 2020'),
-    createDataIntegrationTable('Lily@student.monash.edu', '6 Oct 2020', '10 Dec 2020', '31 Dec 2020'),
-    createDataIntegrationTable('Mike@student.monash.edu', '12 Nov 2020', '23 Oct 2020', '1 Nov 2020'),
-];
+    console.log({projectDetails});
 
-const ExampleDashboard: FunctionComponent<ExampleDashboardProps> = ({projectDetails}) => {
-    const classes = useStyles();
     return (
-        <div className={styles.Example}>
-            <div className={styles.ExampleHeader}>Dashboard</div>
-            <div className={styles.ExampleCharts}>
-
-                <TableContainer component={Paper}>
-                    <Table className={classes.table} aria-label="Reminders">
+        <div className={styles.Dashboard}>
+            <div className={styles.Header}>Dashboard</div>
+            <div className={styles.Frame}>
+                <div className={styles.Header2}>
+                    <h2>Reminders:</h2>
+                </div>
+                <TableContainer component={Paper} className={styles.Container}>
+                    <Table className={styles.Table} aria-label="Reminders">
                         <TableBody>
                             {rowsReminder.map((row) => (
                                 <TableRow key={row.activity}>
-                                    <TableCell className={classes.icon}><NotificationsNoneIcon></NotificationsNoneIcon></TableCell>
+                                    <TableCell className={styles.Icon}><NotificationsNoneIcon></NotificationsNoneIcon></TableCell>
                                     <TableCell component="th" scope="row"
-                                               className={classes.rows}>
+                                               className={styles.Rows}>
                                         {row.activity}<br></br>{row.unitCode} {row.unitName}
                                     </TableCell>
                                     <TableCell align="right">{row.date}</TableCell>
@@ -102,40 +77,41 @@ const ExampleDashboard: FunctionComponent<ExampleDashboardProps> = ({projectDeta
                         </TableBody>
                     </Table>
                 </TableContainer>
-
-                <TableContainer component={Paper}>
-                    <Table className={classes.table} aria-label="customized table">
+                <span>&nbsp;&nbsp;</span>
+                <div className={styles.Header2}>
+                    <h2>Integration History:</h2>
+                </div>
+                <TableContainer component={Paper} className={styles.Container}>
+                    <Table className={styles.Table} aria-label="customized table">
                         <TableHead>
                             <TableRow>
                                 <StyledTableCell>Email Address</StyledTableCell>
-                                <StyledTableCell align="left">Trello</StyledTableCell>
                                 <StyledTableCell align="left">Git</StyledTableCell>
                                 <StyledTableCell align="left">Google Drive</StyledTableCell>
+                                <StyledTableCell align="left">Trello</StyledTableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {rowsIntegrationTable.map((row) => (
-                                <StyledTableRow key={row.emailAddress}>
+
+                            {projectDetails?.projectIntegrationTable.map((data) => (
+                                <StyledTableRow key={data.emailAddress}>
                                     <StyledTableCell component="th" scope="row">
-                                        {row.emailAddress}
+                                        {data.emailAddress}
                                     </StyledTableCell>
-                                    <StyledTableCell align="left">{row.trelloId}</StyledTableCell>
-                                    <StyledTableCell align="left">{row.gitId}</StyledTableCell>
-                                    <StyledTableCell align="left">{row.googleId}</StyledTableCell>
+                                    <StyledTableCell align="left">{data.gitIntegrationLastModified}</StyledTableCell>
+                                    <StyledTableCell align="left">{data.googleDriveIntegrationLastModified}</StyledTableCell>
+                                    <StyledTableCell align="left">{data.trelloIntegrationLastModified}</StyledTableCell>
                                 </StyledTableRow>
                             ))}
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <div className={styles.ExmapleChart}>Chart1</div>
-                <div className={styles.ExmapleChart}>Chart2</div>
-                <div className={styles.ExmapleChart}>Chart3</div>
             </div>
-            <div className={styles.ExmapleContents}>
+            <div>
                 <div className={styles.ExmapleContent}>{projectDetails?.moodleLink}</div>
             </div>
         </div>
     )
 }
 
-export default ExampleDashboard
+export default Dashboard

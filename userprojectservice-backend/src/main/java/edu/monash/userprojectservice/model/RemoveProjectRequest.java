@@ -14,14 +14,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RemoveProjectRequest {
-
-    @NotNull
-    private String emailAddress;
-
     @NotBlank
     private String requestorEmail;
 
     @NotBlank
     private String projectId;
-
 }
