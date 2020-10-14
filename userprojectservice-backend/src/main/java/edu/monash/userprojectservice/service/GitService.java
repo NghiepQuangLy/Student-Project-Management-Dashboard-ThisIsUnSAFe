@@ -9,8 +9,14 @@ import edu.monash.userprojectservice.repository.git.GitRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.http.ResponseEntity;
+
+import java.sql.SQLException;
 
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.OK;
 
 @Slf4j
 @Service
@@ -50,15 +56,36 @@ public class GitService {
     }
 
     // Remove from Git table
-    public void removeGit(RemoveGitRequest removeGitRequest) {
+    public ResponseEntity<GetGitResponse> removeGit(RemoveGitRequest removeGitRequest) throws SQLException {
         log.info("{\"message\":\"Remove Git data\", \"project\":\"{}\"}", removeGitRequest);
 
         // Validation Check
         validationHandler.isValid(removeGitRequest.getEmailAddress(), removeGitRequest.getProjectId());
 
-        // Delete from database
-        gitRepository.delete(new GitEntity(removeGitRequest.getGitId(), removeGitRequest.getProjectId(), removeGitRequest.getGitName()));
+        // Get list of git integrations for the project
+        List<GitEntity> gitEntity = gitRepository.findGitEntitiesByProjectId(removeGitRequest.getProjectId());
 
-        log.info("{\"message\":\"Removed from Git\", \"project\":\"{}\"}", removeGitRequest);
+        if (gitEntity.size() > 0) {
+            for (int i = 0; i < gitEntity.size(); i++) {
+                if (removeGitRequest.getGitId().equals(gitEntity.get(i).getGitId())) {
+                    // Delete from database
+                    gitRepository.delete(gitEntity.get(i));
+                    log.info("{\"message\":\"Removed from Git\", \"project\":\"{}\"}", removeGitRequest.getGitId());
+                    return new ResponseEntity<>(
+                            null, OK
+                    );
+                }
+            }
+            log.warn("A Git integration with the gitId does not exist: ", removeGitRequest.getGitId());
+            return new ResponseEntity<>(
+                    null, BAD_REQUEST
+            );
+        }
+        else {
+            log.warn("Project has no git integrations: ", removeGitRequest.getGitId());
+            return new ResponseEntity<>(
+                    null, BAD_REQUEST
+            );
+        }
     }
 }
