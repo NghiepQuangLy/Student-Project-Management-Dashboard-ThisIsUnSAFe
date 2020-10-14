@@ -49,13 +49,14 @@ public class GitService {
         log.info("{\"message\":\"Inserted into Git\", \"project\":\"{}\"}", saveGitRequest);
     }
 
+    // Remove from Git table
     public void removeGit(RemoveGitRequest removeGitRequest) {
         log.info("{\"message\":\"Remove Git data\", \"project\":\"{}\"}", removeGitRequest);
 
         // Validation Check
         validationHandler.isValid(removeGitRequest.getEmailAddress(), removeGitRequest.getProjectId());
 
-        // Store into database
+        // Delete from database
         gitRepository.delete(new GitEntity(removeGitRequest.getGitId(), removeGitRequest.getProjectId(), removeGitRequest.getGitName()));
 
         log.info("{\"message\":\"Removed from Git\", \"project\":\"{}\"}", removeGitRequest);

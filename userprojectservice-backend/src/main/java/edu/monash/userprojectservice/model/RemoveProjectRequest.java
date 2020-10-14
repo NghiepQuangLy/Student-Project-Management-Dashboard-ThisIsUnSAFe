@@ -13,21 +13,10 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateProjectRequest {
-
-    @NotNull
-    private List<String> emailAddress;
+public class RemoveProjectRequest {
 
     @NotBlank
-    private String projectName;
+    private String projectId;
 
-    @NotBlank
-    private String projectUnit;
-
-    @NotNull
-    private Integer projectYear;
-
-    @NotBlank
-    private String projectSemester;
 
 }
