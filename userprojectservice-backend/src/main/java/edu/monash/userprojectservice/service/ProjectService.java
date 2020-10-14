@@ -242,7 +242,6 @@ public class ProjectService {
     public ResponseEntity<GetProjectResponse> removeProject(RemoveProjectRequest removeProjectRequest) throws SQLException {
 
         // Validation Check
-        validationHandler.isValid(removeProjectRequest.getEmailAddress(), removeProjectRequest.getProjectId());
         validationHandler.isUserAdmin(removeProjectRequest.getRequestorEmail());
 
         // check if the project is already present in the database
