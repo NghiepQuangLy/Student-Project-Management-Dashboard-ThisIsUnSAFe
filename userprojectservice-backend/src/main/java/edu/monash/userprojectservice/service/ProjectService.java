@@ -122,7 +122,7 @@ public class ProjectService {
         //check if the user is present in the system
 
         // Validation Check
-        // validationHandler.isUserAdmin(createProjectRequest.getEmailAddress());
+        validationHandler.isUserAdmin(createProjectRequest.getRequestorEmail());
 
         String projectId = UUID.randomUUID().toString();
         // check if the project is already present in the database
@@ -151,6 +151,15 @@ public class ProjectService {
 
         // Validation Check
         validationHandler.isValid(removeProjectRequest.getEmailAddress(), removeProjectRequest.getProjectId());
+        validationHandler.isUserAdmin(removeProjectRequest.getRequestorEmail());
+
+        // check if the project is already present in the database
+        if (projectsRepository.findProjectEntityByProjectId(removeProjectRequest.getProjectId()) == null) {
+            log.warn("Project not found!");
+            return new ResponseEntity<>(
+                    null, INTERNAL_SERVER_ERROR
+            );
+        }
 
         // remove foreign keys that link to the project so entry can be deleted
         // Foreign Key list: userProject, git, googleDrive, googleFolder, trello
@@ -185,7 +194,7 @@ public class ProjectService {
     public ResponseEntity<GetProjectResponse> editProject(EditProjectRequest editProjectRequest) throws SQLException {
 
         // Validation Check
-        // validationHandler.isUserAdmin(editProjectRequest.getEmailAddress());
+        validationHandler.isUserAdmin(editProjectRequest.getRequestorEmail());
 
         // check if the project is already present in the database
         if (projectsRepository.findProjectEntityByProjectId(editProjectRequest.getProjectId()) == null) {
