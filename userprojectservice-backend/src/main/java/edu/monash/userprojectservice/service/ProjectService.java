@@ -6,13 +6,13 @@ import edu.monash.userprojectservice.model.EditProjectRequest;
 import edu.monash.userprojectservice.model.GetProjectResponse;
 import edu.monash.userprojectservice.model.GetTimesheetResponse;
 import edu.monash.userprojectservice.model.IntegrationObjectResponse;
+import edu.monash.userprojectservice.model.IntegrationTableObjectResponse;
+import edu.monash.userprojectservice.model.RemoveProjectRequest;
 import edu.monash.userprojectservice.model.RemoveTimesheetRequest;
 import edu.monash.userprojectservice.model.SaveTimesheetRequest;
-import edu.monash.userprojectservice.repository.EditProjectRepository;
-import edu.monash.userprojectservice.repository.project.ProjectEntity;
-import edu.monash.userprojectservice.repository.project.ProjectsRepository;
 import edu.monash.userprojectservice.repository.CreateProjectRepository;
 import edu.monash.userprojectservice.repository.EditProjectRepository;
+import edu.monash.userprojectservice.repository.RemoveProjectRepository;
 import edu.monash.userprojectservice.repository.git.GitEntity;
 import edu.monash.userprojectservice.repository.git.GitRepository;
 import edu.monash.userprojectservice.repository.googleDrive.GoogleDriveEntity;
@@ -256,8 +256,6 @@ public class ProjectService {
         for (GitEntity gitEntity : gitEntities) { gitRepository.delete(gitEntity); }
         List<GoogleDriveEntity> googleDriveEntities = googleDriveRepository.findGoogleDriveEntitiesByProjectId(removeProjectRequest.getProjectId());
         for (GoogleDriveEntity googleDriveEntity : googleDriveEntities) { googleDriveRepository.delete(googleDriveEntity); }
-        List<GoogleFolderEntity> googleFolderEntities = googleFolderRepository.findGoogleFolderEntitiesByProjectId(removeProjectRequest.getProjectId());
-        for (GoogleFolderEntity googleFolderEntity:  googleFolderEntities) { googleFolderRepository.delete(googleFolderEntity); }
         List<TrelloEntity> trelloEntities = trelloRepository.findTrelloEntitiesByProjectId(removeProjectRequest.getProjectId());
         for (TrelloEntity trelloEntity : trelloEntities) { trelloRepository.delete(trelloEntity); }
 
