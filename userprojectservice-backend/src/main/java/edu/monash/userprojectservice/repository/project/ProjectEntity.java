@@ -41,7 +41,11 @@ public class ProjectEntity implements Serializable {
         this.projectTimesheet = timesheet;
     }
 
-    public void removeTimesheet(String timesheet) {
+    public Boolean isTimesheetValid() {
+        return (this.projectTimesheet != null);
+    }
+
+    public void removeTimesheet() {
         this.projectTimesheet = null;
     }
 }

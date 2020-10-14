@@ -20,7 +20,4 @@ public class RemoveGitRequest {
 
     @NotNull
     private String projectId;
-
-    @NotNull
-    private String gitName;
 }

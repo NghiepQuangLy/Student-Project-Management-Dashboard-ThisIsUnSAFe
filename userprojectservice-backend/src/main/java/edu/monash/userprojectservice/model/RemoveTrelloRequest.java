@@ -20,7 +20,4 @@ public class RemoveTrelloRequest {
 
     @NotNull
     private String projectId;
-
-    @NotNull
-    private String trelloName;
 }

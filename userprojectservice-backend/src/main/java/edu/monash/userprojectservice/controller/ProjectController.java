@@ -42,8 +42,8 @@ public class ProjectController {
 
     @ResponseStatus(OK)
     @PostMapping("/remove-project")
-    public void removeProject(@RequestBody @Valid RemoveProjectRequest removeProjectRequest) throws SQLException {
-        projectService.removeProject(removeProjectRequest);
+    public ResponseEntity removeProject(@RequestBody @Valid RemoveProjectRequest removeProjectRequest) throws SQLException {
+        return projectService.removeProject(removeProjectRequest);
     }
 
     @ResponseStatus(OK)
@@ -60,7 +60,7 @@ public class ProjectController {
 
     @ResponseStatus(OK)
     @PostMapping("/remove-timesheet")
-    public void removeTimesheet(@RequestBody @Valid RemoveTimesheetRequest removeTimesheetRequest) {
-        projectService.removeTimesheet(removeTimesheetRequest);
+    public ResponseEntity removeTimesheet(@RequestBody @Valid RemoveTimesheetRequest removeTimesheetRequest) throws SQLException {
+        return projectService.removeTimesheet(removeTimesheetRequest);
     }
 }

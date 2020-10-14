@@ -17,8 +17,5 @@ public class RemoveTimesheetRequest {
     private String emailAddress;
 
     @NotNull
-    private String timesheet;
-
-    @NotNull
     private String projectId;
 }
