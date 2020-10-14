@@ -160,8 +160,6 @@ public class ProjectService {
         for (GitEntity gitEntity : gitEntities) { gitRepository.delete(gitEntity); }
         List<GoogleDriveEntity> googleDriveEntities = googleDriveRepository.findGoogleDriveEntitiesByProjectId(removeProjectRequest.getProjectId());
         for (GoogleDriveEntity googleDriveEntity : googleDriveEntities) { googleDriveRepository.delete(googleDriveEntity); }
-        List<GoogleFolderEntity> googleFolderEntities = googleFolderRepository.findGoogleFolderEntitiesByProjectId(removeProjectRequest.getProjectId());
-        for (GoogleFolderEntity googleFolderEntity:  googleFolderEntities) { googleFolderRepository.delete(googleFolderEntity); }
         List<TrelloEntity> trelloEntities = trelloRepository.findTrelloEntitiesByProjectId(removeProjectRequest.getProjectId());
         for (TrelloEntity trelloEntity : trelloEntities) { trelloRepository.delete(trelloEntity); }
 
