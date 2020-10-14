@@ -49,19 +49,10 @@ const StyledTableRow = withStyles((theme) => ({
     },
 }))(TableRow);
 
-function createDataIntegrationTable(emailAddress: string, trelloId: string, gitId: string, googleId: string) {
-    return { emailAddress: emailAddress, trelloId: trelloId, gitId: gitId, googleId: googleId };
-}
-
-const rowsIntegrationTable = [
-    createDataIntegrationTable('John@student.monash.edu', '12 Oct 2020', '9 Dec 2020', '5 Dec 2020'),
-    createDataIntegrationTable('Adam@student.monash.edu', '1 Dec 2020', '7 Oct 2020', '31 Dec 2020'),
-    createDataIntegrationTable('Sarah@student.monash.edu', '12 Nov 2020', '3 Dec 2020', '23 Oct 2020'),
-    createDataIntegrationTable('Lily@student.monash.edu', '6 Oct 2020', '10 Dec 2020', '31 Dec 2020'),
-    createDataIntegrationTable('Mike@student.monash.edu', '12 Nov 2020', '23 Oct 2020', '1 Nov 2020'),
-];
-
 const Dashboard: FunctionComponent<DashboardProps> = ({projectDetails}) => {
+
+    console.log({projectDetails});
+
     return (
         <div className={styles.Dashboard}>
             <div className={styles.Header}>Dashboard</div>
@@ -95,20 +86,21 @@ const Dashboard: FunctionComponent<DashboardProps> = ({projectDetails}) => {
                         <TableHead>
                             <TableRow>
                                 <StyledTableCell>Email Address</StyledTableCell>
-                                <StyledTableCell align="left">Trello</StyledTableCell>
                                 <StyledTableCell align="left">Git</StyledTableCell>
                                 <StyledTableCell align="left">Google Drive</StyledTableCell>
+                                <StyledTableCell align="left">Trello</StyledTableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {rowsIntegrationTable.map((row) => (
-                                <StyledTableRow key={row.emailAddress}>
+
+                            {projectDetails?.projectIntegrationTable.map((data) => (
+                                <StyledTableRow key={data.emailAddress}>
                                     <StyledTableCell component="th" scope="row">
-                                        {row.emailAddress}
+                                        {data.emailAddress}
                                     </StyledTableCell>
-                                    <StyledTableCell align="left">{row.trelloId}</StyledTableCell>
-                                    <StyledTableCell align="left">{row.gitId}</StyledTableCell>
-                                    <StyledTableCell align="left">{row.googleId}</StyledTableCell>
+                                    <StyledTableCell align="left">{data.gitIntegrationLastModified}</StyledTableCell>
+                                    <StyledTableCell align="left">{data.googleDriveIntegrationLastModified}</StyledTableCell>
+                                    <StyledTableCell align="left">{data.trelloIntegrationLastModified}</StyledTableCell>
                                 </StyledTableRow>
                             ))}
                         </TableBody>

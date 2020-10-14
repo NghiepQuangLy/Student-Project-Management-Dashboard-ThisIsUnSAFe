@@ -8,11 +8,19 @@ export interface ProjectDetail {
   projectGoogleDriveIntegrations: ProjectIntegration[]
   projectGoogleFolderIds: string[]
   projectTrelloIntegrations: ProjectIntegration[]
+  projectIntegrationTable: IntegrationTable[]
 }
 
 export interface ProjectIntegration {
   integrationId: string
   integrationName: string
+}
+
+export interface IntegrationTable {
+  emailAddress: string
+  gitIntegrationLastModified: string
+  googleDriveIntegrationLastModified: string
+  trelloIntegrationLastModified: string
 }
 
 export interface Project {
