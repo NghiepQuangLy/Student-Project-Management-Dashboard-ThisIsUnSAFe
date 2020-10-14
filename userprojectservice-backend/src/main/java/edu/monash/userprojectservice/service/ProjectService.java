@@ -42,6 +42,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static java.time.temporal.ChronoUnit.DAYS;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 
 @Slf4j
@@ -97,7 +98,7 @@ public class ProjectService {
 
             System.out.println("Project does not exist.");
             return new ResponseEntity<>(
-                    null, OK
+                    null, NOT_FOUND
             );
         }
         // get integration ids from database
@@ -248,7 +249,7 @@ public class ProjectService {
         if (projectsRepository.findProjectEntityByProjectId(removeProjectRequest.getProjectId()) == null) {
             log.warn("Project not found!");
             return new ResponseEntity<>(
-                    null, INTERNAL_SERVER_ERROR
+                    null, NOT_FOUND
             );
         }
 
