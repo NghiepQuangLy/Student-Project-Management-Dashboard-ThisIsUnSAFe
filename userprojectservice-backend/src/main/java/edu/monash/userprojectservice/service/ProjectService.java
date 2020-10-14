@@ -7,10 +7,12 @@ import edu.monash.userprojectservice.model.GetProjectResponse;
 import edu.monash.userprojectservice.model.GetTimesheetResponse;
 import edu.monash.userprojectservice.model.IntegrationObjectResponse;
 import edu.monash.userprojectservice.model.IntegrationTableObjectResponse;
+import edu.monash.userprojectservice.model.RemoveProjectRequest;
 import edu.monash.userprojectservice.model.RemoveTimesheetRequest;
 import edu.monash.userprojectservice.model.SaveTimesheetRequest;
 import edu.monash.userprojectservice.repository.CreateProjectRepository;
 import edu.monash.userprojectservice.repository.EditProjectRepository;
+import edu.monash.userprojectservice.repository.RemoveProjectRepository;
 import edu.monash.userprojectservice.repository.git.GitEntity;
 import edu.monash.userprojectservice.repository.git.GitRepository;
 import edu.monash.userprojectservice.repository.googleDrive.GoogleDriveEntity;
@@ -36,6 +38,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static java.time.temporal.ChronoUnit.DAYS;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
@@ -50,6 +53,9 @@ public class ProjectService {
 
     @Autowired
     private EditProjectRepository editProjectRepository;
+
+    @Autowired
+    private RemoveProjectRepository removeProjectRepository;
 
     @Autowired
     private ProjectsRepository projectsRepository;
@@ -207,6 +213,9 @@ public class ProjectService {
     public ResponseEntity<GetProjectResponse> createProject(CreateProjectRequest createProjectRequest) throws SQLException {
         //check if the user is present in the system
 
+        // Validation Check
+        validationHandler.isUserAdmin(createProjectRequest.getRequestorEmail());
+
         String projectId = UUID.randomUUID().toString();
         // check if the project is already present in the database
         while (projectsRepository.findProjectEntityByProjectId(projectId) != null) {
@@ -227,10 +236,57 @@ public class ProjectService {
         }
     }
 
+    // remove a project
+    // check for the user first, if it doesnt exist new responseEntity and return not found
+    // if he exists then, return OK
+    public ResponseEntity<GetProjectResponse> removeProject(RemoveProjectRequest removeProjectRequest) throws SQLException {
+
+        // Validation Check
+        validationHandler.isValid(removeProjectRequest.getEmailAddress(), removeProjectRequest.getProjectId());
+        validationHandler.isUserAdmin(removeProjectRequest.getRequestorEmail());
+
+        // check if the project is already present in the database
+        if (projectsRepository.findProjectEntityByProjectId(removeProjectRequest.getProjectId()) == null) {
+            log.warn("Project not found!");
+            return new ResponseEntity<>(
+                    null, INTERNAL_SERVER_ERROR
+            );
+        }
+
+        // remove foreign keys that link to the project so entry can be deleted
+        // Foreign Key list: userProject, git, googleDrive, googleFolder, trello
+        List<UsersProjectsEntity> usersProjectEntities = usersProjectsRepository.findUsersProjectsEntitiesByProjectId(removeProjectRequest.getProjectId());
+        for (UsersProjectsEntity usersprojectEntity : usersProjectEntities) { usersProjectsRepository.delete(usersprojectEntity); }
+        List<GitEntity> gitEntities = gitRepository.findGitEntitiesByProjectId(removeProjectRequest.getProjectId());
+        for (GitEntity gitEntity : gitEntities) { gitRepository.delete(gitEntity); }
+        List<GoogleDriveEntity> googleDriveEntities = googleDriveRepository.findGoogleDriveEntitiesByProjectId(removeProjectRequest.getProjectId());
+        for (GoogleDriveEntity googleDriveEntity : googleDriveEntities) { googleDriveRepository.delete(googleDriveEntity); }
+        List<TrelloEntity> trelloEntities = trelloRepository.findTrelloEntitiesByProjectId(removeProjectRequest.getProjectId());
+        for (TrelloEntity trelloEntity : trelloEntities) { trelloRepository.delete(trelloEntity); }
+
+        // remove from db when project exists
+        Boolean isSuccessful = removeProjectRepository.delete(removeProjectRequest.getProjectId());
+
+        if (isSuccessful) {
+            log.info("Project has been remove!");
+            return new ResponseEntity<>(
+                    null, OK
+            );
+        } else {
+            log.warn("Project could not be removed!");
+            return new ResponseEntity<>(
+                    null, INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
     // edit a project
     // check for the user first, if it doesnt exist new responseEntity and return not found
     // if he exists then, return OK
     public ResponseEntity<GetProjectResponse> editProject(EditProjectRequest editProjectRequest) throws SQLException {
+
+        // Validation Check
+        validationHandler.isUserAdmin(editProjectRequest.getRequestorEmail());
 
         // check if the project is already present in the database
         if (projectsRepository.findProjectEntityByProjectId(editProjectRequest.getProjectId()) == null) {
@@ -273,6 +329,7 @@ public class ProjectService {
         return new GetTimesheetResponse(projectEntity.getProjectTimesheet());
     }
 
+    // Save timesheet to a project
     public void saveTimesheet(SaveTimesheetRequest saveTimesheetRequest) {
         log.info("{\"message\":\"Inserting timesheet\", \"project\":\"{}\"}", saveTimesheetRequest);
 
@@ -288,18 +345,33 @@ public class ProjectService {
         log.info("{\"message\":\"Inserted timesheet\", \"project\":\"{}\"}", saveTimesheetRequest);
     }
 
-    public void removeTimesheet(RemoveTimesheetRequest removeTimesheetRequest) {
+    // Remove timesheet from a project
+    public ResponseEntity<GetProjectResponse> removeTimesheet(RemoveTimesheetRequest removeTimesheetRequest) throws SQLException {
         log.info("{\"message\":\"Removing timesheet\", \"project\":\"{}\"}", removeTimesheetRequest);
 
         // Validation Check
         validationHandler.isValid(removeTimesheetRequest.getEmailAddress(), removeTimesheetRequest.getProjectId());
 
         ProjectEntity projectEntity = projectsRepository.findProjectEntityByProjectId(removeTimesheetRequest.getProjectId());
-        projectEntity.removeTimesheet(removeTimesheetRequest.getTimesheet());
 
-        // Delete from database
-        projectsRepository.save(projectEntity);
-        log.info("{\"message\":\"Removed timesheet\", \"project\":\"{}\"}", removeTimesheetRequest);
+        // To handle case timesheet is already empty
+        if (projectEntity.isTimesheetValid()) {
+            // remove in db when timesheet exists
+            projectEntity.removeTimesheet();
+            // Save the changes to the database
+            projectsRepository.save(projectEntity);
+            log.info("{\"message\":\"Removed timesheet\", \"project\":\"{}\"}", removeTimesheetRequest.getProjectId());
+            return new ResponseEntity<>(
+                    null, OK
+            );
+        }
+        else {
+            // log an warning that there the timesheet is already empty
+            log.warn( "Project Timesheet is already empty: ", removeTimesheetRequest.getProjectId());
+            return new ResponseEntity<>(
+                    null, BAD_REQUEST
+            );
+        }
     }
 }
 

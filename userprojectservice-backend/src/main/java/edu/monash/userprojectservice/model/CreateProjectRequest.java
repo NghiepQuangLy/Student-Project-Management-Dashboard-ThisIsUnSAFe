@@ -15,6 +15,9 @@ import java.util.List;
 @NoArgsConstructor
 public class CreateProjectRequest {
 
+    @NotBlank
+    private String requestorEmail;
+
     @NotNull
     private List<String> emailAddress;
 
@@ -24,7 +27,7 @@ public class CreateProjectRequest {
     @NotBlank
     private String projectUnit;
 
-    @NotBlank
+    @NotNull
     private Integer projectYear;
 
     @NotBlank

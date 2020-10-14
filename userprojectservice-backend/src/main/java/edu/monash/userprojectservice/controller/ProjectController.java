@@ -11,7 +11,6 @@ import javax.validation.Valid;
 
 import java.sql.SQLException;
 
-import static org.springframework.http.HttpStatus.ACCEPTED;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -42,6 +41,12 @@ public class ProjectController {
     }
 
     @ResponseStatus(OK)
+    @PostMapping("/remove-project")
+    public ResponseEntity removeProject(@RequestBody @Valid RemoveProjectRequest removeProjectRequest) throws SQLException {
+        return projectService.removeProject(removeProjectRequest);
+    }
+
+    @ResponseStatus(OK)
     @PostMapping("/edit-project")
     public ResponseEntity setProjectName(@RequestBody @Valid EditProjectRequest editProjectRequest) throws SQLException {
         return projectService.editProject(editProjectRequest);
@@ -53,9 +58,9 @@ public class ProjectController {
         projectService.saveTimesheet(saveTimesheetRequest);
     }
 
-    @ResponseStatus(ACCEPTED)
+    @ResponseStatus(OK)
     @PostMapping("/remove-timesheet")
-    public void removeTimesheet(@RequestBody @Valid RemoveTimesheetRequest removeTimesheetRequest) {
-        projectService.removeTimesheet(removeTimesheetRequest);
+    public ResponseEntity removeTimesheet(@RequestBody @Valid RemoveTimesheetRequest removeTimesheetRequest) throws SQLException {
+        return projectService.removeTimesheet(removeTimesheetRequest);
     }
 }

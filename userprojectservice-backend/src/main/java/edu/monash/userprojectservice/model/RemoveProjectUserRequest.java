@@ -5,15 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
+
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class EditProjectRequest {
+
+
+public class RemoveProjectUserRequest {
 
     @NotBlank
     private String requestorEmail;
@@ -21,7 +23,6 @@ public class EditProjectRequest {
     @NotBlank
     private String projectId;
 
-    @NotBlank
-    private String newProjectName;
+    private List<String> emailAddress; // list of user email addresses
 
 }

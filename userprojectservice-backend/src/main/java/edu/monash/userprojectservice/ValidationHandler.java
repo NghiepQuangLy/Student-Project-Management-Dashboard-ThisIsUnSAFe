@@ -2,6 +2,8 @@ package edu.monash.userprojectservice;
 
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsEntity;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsRepository;
+import edu.monash.userprojectservice.repository.admin.AdminsRepository;
+import edu.monash.userprojectservice.repository.admin.AdminEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,9 @@ public class ValidationHandler {
 
     @Autowired
     private UsersProjectsRepository usersProjectsRepository;
+
+    @Autowired
+    private AdminsRepository adminsRepository;
 
     public Boolean isValid(String emailAddress, String projectId) {
 
@@ -48,4 +53,21 @@ public class ValidationHandler {
         }
         return true;
     }
+
+    public Boolean isUserAdmin(String emailAddress) {
+
+        if (emailAddress.equals("")) {
+            throw new HTTPResponseHandler.BadRequestException();
+        }
+
+        AdminEntity adminEntity = adminsRepository.findAdminEntityByEmailAddress(emailAddress);
+
+        if (adminEntity != null) {
+            return true;
+        }
+
+        System.out.println("User is not admin.");
+        throw new HTTPResponseHandler.ForbiddenException();
+    }
+
 }

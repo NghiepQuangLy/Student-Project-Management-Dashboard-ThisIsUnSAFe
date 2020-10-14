@@ -6,16 +6,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RemoveTimesheetRequest {
+public class RemoveProjectRequest {
 
     @NotNull
     private String emailAddress;
 
-    @NotNull
+    @NotBlank
+    private String requestorEmail;
+
+    @NotBlank
     private String projectId;
+
 }

@@ -7,10 +7,11 @@ import edu.monash.userprojectservice.service.GitService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
+import java.sql.SQLException;
 import javax.validation.Valid;
 
-import static org.springframework.http.HttpStatus.ACCEPTED;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -34,9 +35,9 @@ public class GitController {
         gitService.insertGit(saveGitRequest);
     }
 
-    @ResponseStatus(ACCEPTED)
+    @ResponseStatus(OK)
     @PostMapping("/remove-git")
-    public void removeGit(@RequestBody @Valid RemoveGitRequest removeGitRequest) {
-        gitService.removeGit(removeGitRequest);
+    public ResponseEntity removeGit(@RequestBody @Valid RemoveGitRequest removeGitRequest) throws SQLException {
+        return gitService.removeGit(removeGitRequest);
     }
 }
