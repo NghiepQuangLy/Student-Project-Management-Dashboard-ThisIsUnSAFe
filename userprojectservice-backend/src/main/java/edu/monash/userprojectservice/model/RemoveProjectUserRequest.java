@@ -18,6 +18,9 @@ import java.util.List;
 public class RemoveProjectUserRequest {
 
     @NotBlank
+    private String requestorEmail;
+
+    @NotBlank
     private String projectId;
 
     private List<String> emailAddress; // list of user email addresses

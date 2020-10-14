@@ -121,7 +121,7 @@ public class ProjectService {
         //check if the user is present in the system
 
         // Validation Check
-        // validationHandler.isUserAdmin(createProjectRequest.getEmailAddress());
+        validationHandler.isUserAdmin(createProjectRequest.getRequestorEmail());
 
         String projectId = UUID.randomUUID().toString();
         // check if the project is already present in the database
@@ -147,6 +147,9 @@ public class ProjectService {
     // check for the user first, if it doesnt exist new responseEntity and return not found
     // if he exists then, return OK
     public ResponseEntity<GetProjectResponse> removeProject(RemoveProjectRequest removeProjectRequest) throws SQLException {
+
+        // Validation Check
+        validationHandler.isUserAdmin(removeProjectRequest.getRequestorEmail());
 
         // check if the project is already present in the database
         if (projectsRepository.findProjectEntityByProjectId(removeProjectRequest.getProjectId()) == null) {
@@ -191,7 +194,7 @@ public class ProjectService {
     public ResponseEntity<GetProjectResponse> editProject(EditProjectRequest editProjectRequest) throws SQLException {
 
         // Validation Check
-        // validationHandler.isUserAdmin(editProjectRequest.getEmailAddress());
+        validationHandler.isUserAdmin(editProjectRequest.getRequestorEmail());
 
         // check if the project is already present in the database
         if (projectsRepository.findProjectEntityByProjectId(editProjectRequest.getProjectId()) == null) {

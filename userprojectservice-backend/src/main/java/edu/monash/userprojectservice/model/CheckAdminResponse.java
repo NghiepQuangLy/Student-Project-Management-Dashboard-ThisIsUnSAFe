@@ -14,6 +14,6 @@ import lombok.NoArgsConstructor;
 
 public class CheckAdminResponse {
 
-    private Boolean status;
+    private Boolean isAdmin;
 
 }

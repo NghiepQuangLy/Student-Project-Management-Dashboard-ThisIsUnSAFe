@@ -16,6 +16,9 @@ import java.util.List;
 public class EditProjectRequest {
 
     @NotBlank
+    private String requestorEmail;
+
+    @NotBlank
     private String projectId;
 
     @NotBlank

@@ -16,6 +16,9 @@ import java.util.List;
 public class RemoveProjectRequest {
 
     @NotBlank
+    private String requestorEmail;
+
+    @NotBlank
     private String projectId;
 
 

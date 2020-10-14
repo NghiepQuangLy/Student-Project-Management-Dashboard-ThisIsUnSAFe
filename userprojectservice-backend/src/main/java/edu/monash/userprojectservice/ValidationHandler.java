@@ -54,7 +54,7 @@ public class ValidationHandler {
         return true;
     }
 
-    private Boolean isUserAdmin(String emailAddress) {
+    public Boolean isUserAdmin(String emailAddress) {
 
         if (emailAddress.equals("")) {
             throw new HTTPResponseHandler.BadRequestException();

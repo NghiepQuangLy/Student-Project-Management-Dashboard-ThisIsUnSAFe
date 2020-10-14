@@ -102,7 +102,7 @@ public class UserProjectService {
     public ResponseEntity<GetUserProjectsResponse> addProjectUser(AddProjectUserRequest addProjectUserRequest) throws SQLException {
 
         // Validation Check
-        // validationHandler.isUserAdmin(emailAddress);
+        validationHandler.isUserAdmin(addProjectUserRequest.getRequestorEmail());
 
         // check if the project exists in the database
         if (projectsRepository.findProjectEntityByProjectId(addProjectUserRequest.getProjectId()) == null) {
@@ -163,7 +163,7 @@ public class UserProjectService {
     public ResponseEntity<GetUserProjectsResponse> removeProjectUser(RemoveProjectUserRequest removeProjectUserRequest) throws SQLException {
 
         // Validation Check
-        // validationHandler.isUserAdmin(emailAddress);
+        validationHandler.isUserAdmin(removeProjectUserRequest.getRequestorEmail());
 
         // check if the project exists in the database
         if (projectsRepository.findProjectEntityByProjectId(removeProjectUserRequest.getProjectId()) == null) {
