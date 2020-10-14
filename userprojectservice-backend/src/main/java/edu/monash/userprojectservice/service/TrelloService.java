@@ -18,6 +18,7 @@ import java.util.List;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Slf4j
 @Service
@@ -79,7 +80,7 @@ public class TrelloService {
             }
             log.warn("A Trello integration with the trelloId does not exist: ", removeTrelloRequest.getTrelloId());
             return new ResponseEntity<>(
-                    null, BAD_REQUEST
+                    null, NOT_FOUND
             );
         }
         else {
