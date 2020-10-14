@@ -23,8 +23,10 @@ import edu.monash.userprojectservice.repository.trello.TrelloEntity;
 import edu.monash.userprojectservice.repository.trello.TrelloRepository;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsEntity;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsRepository;
+import edu.monash.userprojectservice.serviceclient.GoogleDriveIntegrationTableServiceClient;
 import edu.monash.userprojectservice.serviceclient.GitIntegrationTableServiceClient;
 import edu.monash.userprojectservice.serviceclient.IntegrationTableResponse;
+import edu.monash.userprojectservice.serviceclient.TrelloIntegrationTableServiceClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +34,6 @@ import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -76,13 +77,19 @@ public class ProjectService {
     @Autowired
     private GitIntegrationTableServiceClient gitIntegrationTableServiceClient;
 
+    @Autowired
+    private TrelloIntegrationTableServiceClient trelloIntegrationTableServiceClient;
+
+    @Autowired
+    private GoogleDriveIntegrationTableServiceClient googleDriveIntegrationTableServiceClient;
+
     public ResponseEntity<GetProjectResponse> getProject(String emailAddress, String projectId) {
         log.info("{\"message\":\"Getting project\", \"project\":\"{}\"}", projectId);
 
         // Validation Check
         validationHandler.isValid(emailAddress, projectId);
 
-        // get from database
+        // get project from database
         ProjectEntity projectEntity = projectsRepository.findProjectEntityByProjectId(projectId);
 
         if (projectEntity == null) {
@@ -92,7 +99,7 @@ public class ProjectService {
                     null, OK
             );
         }
-
+        // get integration ids from database
         List<GitEntity> gitEntities = gitRepository.findGitEntitiesByProjectId(projectId);
         List<GoogleDriveEntity> googleDriveEntities = googleDriveRepository.findGoogleDriveEntitiesByProjectId(projectId);
         List<GoogleFolderEntity> googleFolderEntities = googleFolderRepository.findGoogleFolderEntitiesByProjectId(projectId);
@@ -112,8 +119,42 @@ public class ProjectService {
                 gitEntities.stream().map(GitEntity::getGitId).collect(Collectors.toList())
         );
 
+        // get trello activity tracker table data
+        List<IntegrationTableResponse> trelloIntegrationTableData = trelloIntegrationTableServiceClient.getTrelloIntegrationTable(
+                emails,
+                trelloEntities.stream().map(TrelloEntity::getTrelloId).collect(Collectors.toList())
+        );
+
+        // get google drive activity tracker table data
+        List<IntegrationTableResponse> googleDriveIntegrationTableData = googleDriveIntegrationTableServiceClient.getGoogleDriveIntegrationTable(
+                emails,
+                googleDriveEntities.stream().map(GoogleDriveEntity::getGoogleDriveId).collect(Collectors.toList())
+        );
 
         log.info("{\"message\":\"Got project\", \"project\":\"{}\"}", projectId);
+
+        List<IntegrationObjectResponse> projectGitIntegration = gitEntities.stream()
+                .map(gitEntity -> new IntegrationObjectResponse(gitEntity.getGitId(), gitEntity.getGitName()))
+                .collect(Collectors.toList());
+
+        List<IntegrationObjectResponse> projectGoogleDriveIntegration = googleDriveEntities.stream()
+                .map(googleDriveEntity -> new IntegrationObjectResponse(
+                        googleDriveEntity.getGoogleDriveId(), googleDriveEntity.getGoogleDriveName()
+                ))
+                .collect(Collectors.toList());
+
+        List<IntegrationObjectResponse> projectTrelloIntegration = trelloEntities.stream()
+                .map(trelloEntity -> new IntegrationObjectResponse(trelloEntity.getTrelloId(), trelloEntity.getTrelloName()))
+                .collect(Collectors.toList());
+
+        List<IntegrationTableObjectResponse> projectIntegrationTableData = emails.stream()
+                .map(email -> createIntegrationTableObjectResponse(
+                        email,
+                        gitIntegrationTableData,
+                        googleDriveIntegrationTableData,
+                        trelloIntegrationTableData)
+                )
+                .collect(Collectors.toList());
 
         return new ResponseEntity(
                 new GetProjectResponse(
@@ -123,21 +164,13 @@ public class ProjectService {
                         projectEntity.getProjectYear(),
                         projectEntity.getProjectSemester(),
                         projectEntity.getProjectTimesheet(),
-                        gitEntities.stream()
-                                .map(gitEntity -> new IntegrationObjectResponse(gitEntity.getGitId(), gitEntity.getGitName()))
-                                .collect(Collectors.toList()),
-                        googleDriveEntities.stream()
-                                .map(googleDriveEntity -> new IntegrationObjectResponse(googleDriveEntity.getGoogleDriveId(), googleDriveEntity.getGoogleDriveName()))
-                                .collect(Collectors.toList()),
+                        projectGitIntegration,
+                        projectGoogleDriveIntegration,
                         googleFolderEntities.stream()
                                 .map(GoogleFolderEntity::getGoogleFolderId)
                                 .collect(Collectors.toList()),
-                        trelloEntities.stream()
-                                .map(trelloEntity -> new IntegrationObjectResponse(trelloEntity.getTrelloId(), trelloEntity.getTrelloName()))
-                                .collect(Collectors.toList()),
-                        emails.stream()
-                                .map(email -> createIntegrationTableObjectResponse(email, gitIntegrationTableData, null, null))
-                                .collect(Collectors.toList())
+                        projectTrelloIntegration,
+                        projectIntegrationTableData
                 ), OK
         );
     }
