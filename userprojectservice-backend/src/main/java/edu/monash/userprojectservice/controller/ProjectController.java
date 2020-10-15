@@ -29,9 +29,9 @@ public class ProjectController {
     }
 
     @ResponseStatus(OK)
-    @GetMapping("/get-allprojects")
-    public GetAllProjectsResponse getAllProjects() {
-        return projectService.getAllProjects();
+    @GetMapping("/get-all-projects")
+    public GetAllProjectsResponse getAllProjects(@RequestParam("requestorEmail") String emailAddress) {
+        return projectService.getAllProjects(emailAddress);
     }
 
     @ResponseStatus(OK)

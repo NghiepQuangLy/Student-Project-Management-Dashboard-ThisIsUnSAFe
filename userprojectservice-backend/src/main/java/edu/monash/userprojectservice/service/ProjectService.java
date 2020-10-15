@@ -367,7 +367,10 @@ public class ProjectService {
     }
 
     // get all projects
-    public GetAllProjectsResponse getAllProjects() {
+    public GetAllProjectsResponse getAllProjects(String emailAddress) {
+
+        validationHandler.isUserAdmin(emailAddress);
+
         log.info("{\"message\":\"Getting all projects \"}");
 
         // get from database

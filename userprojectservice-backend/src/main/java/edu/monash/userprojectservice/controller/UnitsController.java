@@ -19,7 +19,7 @@ public class UnitsController {
 
     @ResponseStatus(OK)
     @GetMapping("/get-units")
-    public GetUnitsResponse getUnits() {
-        return unitsService.getUnits();
+    public GetUnitsResponse getUnits(@RequestParam("requestorEmail") String emailAddress) {
+        return unitsService.getUnits(emailAddress);
     }
 }
