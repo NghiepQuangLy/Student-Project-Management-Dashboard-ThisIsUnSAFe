@@ -19,7 +19,7 @@ public class UnitsController {
 
     @ResponseStatus(OK)
     @GetMapping("/get-units")
-    public GetUnitsResponse getUser() {
+    public GetUnitsResponse getUnits() {
         return unitsService.getUnits();
     }
 }

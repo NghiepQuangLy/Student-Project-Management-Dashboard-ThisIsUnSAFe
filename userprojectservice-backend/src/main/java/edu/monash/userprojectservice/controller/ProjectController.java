@@ -29,6 +29,12 @@ public class ProjectController {
     }
 
     @ResponseStatus(OK)
+    @GetMapping("/get-allprojects")
+    public GetAllProjectsResponse getAllProjects() {
+        return projectService.getAllProjects();
+    }
+
+    @ResponseStatus(OK)
     @GetMapping("/get-timesheet")
     public GetTimesheetResponse getTimesheet(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
         return projectService.getTimesheet(emailAddress, projectId);
