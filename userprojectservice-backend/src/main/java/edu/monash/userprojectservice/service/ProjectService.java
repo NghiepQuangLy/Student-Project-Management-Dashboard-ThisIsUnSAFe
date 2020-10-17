@@ -1,15 +1,7 @@
 package edu.monash.userprojectservice.service;
 
 import edu.monash.userprojectservice.ValidationHandler;
-import edu.monash.userprojectservice.model.CreateProjectRequest;
-import edu.monash.userprojectservice.model.EditProjectRequest;
-import edu.monash.userprojectservice.model.GetProjectResponse;
-import edu.monash.userprojectservice.model.GetTimesheetResponse;
-import edu.monash.userprojectservice.model.IntegrationObjectResponse;
-import edu.monash.userprojectservice.model.IntegrationTableObjectResponse;
-import edu.monash.userprojectservice.model.RemoveProjectRequest;
-import edu.monash.userprojectservice.model.RemoveTimesheetRequest;
-import edu.monash.userprojectservice.model.SaveTimesheetRequest;
+import edu.monash.userprojectservice.model.*;
 import edu.monash.userprojectservice.repository.CreateProjectRepository;
 import edu.monash.userprojectservice.repository.EditProjectRepository;
 import edu.monash.userprojectservice.repository.RemoveProjectRepository;
@@ -373,6 +365,21 @@ public class ProjectService {
             );
         }
     }
+
+    // get all projects
+    public GetAllProjectsResponse getAllProjects(String emailAddress) {
+
+        validationHandler.isUserAdmin(emailAddress);
+
+        log.info("{\"message\":\"Getting all projects \"}");
+
+        // get from database
+        List<ProjectEntity> projectEntities = projectsRepository.findAll();
+
+        log.info("{\"message\":\"Got all Projects \"}");
+        return new GetAllProjectsResponse(projectEntities);
+    }
+
 }
 
 

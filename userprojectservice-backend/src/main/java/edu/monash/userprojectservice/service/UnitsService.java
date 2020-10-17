@@ -1,6 +1,7 @@
 package edu.monash.userprojectservice.service;
 
 
+import edu.monash.userprojectservice.ValidationHandler;
 import edu.monash.userprojectservice.model.GetUnitsResponse;
 import edu.monash.userprojectservice.repository.units.UnitsEntity;
 import edu.monash.userprojectservice.repository.units.UnitsRepository;
@@ -17,10 +18,15 @@ public class UnitsService {
     @Autowired
     private UnitsRepository unitsRepository;
 
-    // Get all units from the Units table
-    public GetUnitsResponse getUnits() {
-        log.info("{\"message\":\"Getting Units \"}");
+    @Autowired
+    private ValidationHandler validationHandler;
 
+    // Get all units from the Units table
+    public GetUnitsResponse getUnits(String emailAddress) {
+
+        validationHandler.isUserAdmin(emailAddress);
+
+        log.info("{\"message\":\"Getting Units \"}");
         // get from database
         List<UnitsEntity> unitsEntities = unitsRepository.findAll();
 
