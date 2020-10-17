@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -209,13 +210,30 @@ public class ProjectService {
         // Validation Check
         validationHandler.isUserAdmin(createProjectRequest.getRequestorEmail());
 
+        // check that project year is reasonable
+        if(createProjectRequest.getProjectYear() < 1900 || createProjectRequest.getProjectYear() > 3000){
+            log.warn("Project year out of range!");
+            return new ResponseEntity<>(
+                    null, BAD_REQUEST
+            );
+        }
+
+        // check that project semester is within the acceptable list of values
+        List<String> projectSemesters = Arrays.asList("SEM 2", "SEM 1", "FULL YEAR", "WINTER", "SUMMER");
+        if (!projectSemesters.contains(createProjectRequest.getProjectSemester())) {
+            log.warn("Project semester invalid!");
+            return new ResponseEntity<>(
+                    null, BAD_REQUEST
+            );
+        }
+
         String projectId = UUID.randomUUID().toString();
         // check if the project is already present in the database
         while (projectsRepository.findProjectEntityByProjectId(projectId) != null) {
             projectId = UUID.randomUUID().toString();
         }
         // insert into db when project doesnt exist in the db
-        Boolean isSuccessful = createProjectRepository.save(projectId, createProjectRequest.getEmailAddress(), createProjectRequest.getProjectName(), createProjectRequest.getProjectUnit(), createProjectRequest.getProjectYear(), createProjectRequest.getProjectSemester());
+        Boolean isSuccessful = createProjectRepository.save(projectId, createProjectRequest.getEmailAddress(), createProjectRequest.getProjectName(), createProjectRequest.getProjectUnitCode(), createProjectRequest.getProjectYear(), createProjectRequest.getProjectSemester());
         if (isSuccessful) {
             log.info("Project has been added!");
             return new ResponseEntity<>(
