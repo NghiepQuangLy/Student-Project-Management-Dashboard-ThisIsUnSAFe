@@ -1,9 +1,6 @@
 import React, {FunctionComponent} from "react"
 import styles from "./Dashboard.module.css"
 import {ProjectDetail} from "../../state/AppState";
-
-
-import { withStyles} from '@material-ui/core/styles';
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -17,32 +14,13 @@ interface DashboardProps {
     projectDetails?: ProjectDetail
 }
 
-// Integration Table
-const StyledTableCell = withStyles((theme) => ({
-    head: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
-    },
-    body: {
-        fontSize: 14,
-    },
-}))(TableCell);
-
-const StyledTableRow = withStyles((theme) => ({
-    root: {
-        '&:nth-of-type(odd)': {
-            backgroundColor: theme.palette.action.hover,
-        },
-    },
-}))(TableRow);
-
 const Dashboard: FunctionComponent<DashboardProps> = ({projectDetails}) => {
     return (
         <div className={styles.Dashboard}>
             <div className={styles.Header}>Dashboard</div>
             <div className={styles.Frame}>
-                <div className={styles.Header2}>
-                    <h2>Reminders:</h2>
+                <div className={styles.ReminderHeader}>
+                    <h2>&ensp;&ensp;Reminders:</h2>
                 </div>
                 <TableContainer component={Paper} className={styles.Container}>
                     <Table className={styles.Table} aria-label="Reminders">
@@ -62,29 +40,29 @@ const Dashboard: FunctionComponent<DashboardProps> = ({projectDetails}) => {
                     </Table>
                 </TableContainer>
                 <span>&nbsp;&nbsp;</span>
-                <div className={styles.Header2}>
+                <div className={styles.IntegrationHeader}>
                     <h2>Integration History:</h2>
                 </div>
                 <TableContainer component={Paper} className={styles.Container}>
                     <Table className={styles.Table} aria-label="customized table">
                         <TableHead>
                             <TableRow>
-                                <StyledTableCell>Email Address</StyledTableCell>
-                                <StyledTableCell align="left">Git</StyledTableCell>
-                                <StyledTableCell align="left">Google Drive</StyledTableCell>
-                                <StyledTableCell align="left">Trello</StyledTableCell>
+                                <TableCell className={styles.StyledTableCellHead}>Email Address</TableCell>
+                                <TableCell className={styles.StyledTableCellHead} align="left">Git</TableCell>
+                                <TableCell className={styles.StyledTableCellHead} align="left">Google Drive</TableCell>
+                                <TableCell className={styles.StyledTableCellHead} align="left">Trello</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {projectDetails?.projectIntegrationTable.map((data) => (
-                                <StyledTableRow key={data.emailAddress}>
-                                    <StyledTableCell component="th" scope="row">
+                                <TableRow className={styles.StyledTableRow} key={data.emailAddress}>
+                                    <TableCell component="th" scope="row">
                                         {data.emailAddress}
-                                    </StyledTableCell>
-                                    <StyledTableCell align="left">{data.gitIntegrationLastModified}</StyledTableCell>
-                                    <StyledTableCell align="left">{data.googleDriveIntegrationLastModified}</StyledTableCell>
-                                    <StyledTableCell align="left">{data.trelloIntegrationLastModified}</StyledTableCell>
-                                </StyledTableRow>
+                                    </TableCell>
+                                    <TableCell align="left">{data.gitIntegrationLastModified}</TableCell>
+                                    <TableCell align="left">{data.googleDriveIntegrationLastModified}</TableCell>
+                                    <TableCell align="left">{data.trelloIntegrationLastModified}</TableCell>
+                                </TableRow>
                             ))}
                         </TableBody>
                     </Table>

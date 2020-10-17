@@ -82,6 +82,18 @@ const MockIntegration: Integration = {
               gitIntegrationLastModified: "23 days ago",
               googleDriveIntegrationLastModified: "Unavailable",
               trelloIntegrationLastModified: "NA"
+            },
+            {
+              emailAddress: "rhow0003@student.monash.edu",
+              gitIntegrationLastModified: "29 days ago",
+              googleDriveIntegrationLastModified: "Unavailable",
+              trelloIntegrationLastModified: "NA"
+            },
+            {
+              emailAddress: "qlyy0001@student.monash.edu",
+              gitIntegrationLastModified: "18 days ago",
+              googleDriveIntegrationLastModified: "Unavailable",
+              trelloIntegrationLastModified: "NA"
             }
           ],
           projectReminderTable: [
