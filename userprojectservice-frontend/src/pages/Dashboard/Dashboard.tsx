@@ -17,19 +17,6 @@ interface DashboardProps {
     projectDetails?: ProjectDetail
 }
 
-function createDataReminder(activity: string, unitCode: string, unitName: string, date: string, time: string) {
-    return {activity, unitCode, unitName, date, time};
-}
-
-const rowsReminder = [
-    createDataReminder('Frozen yoghurt', 'FIT3170', 'Software Engineering Practice', 'Jan 1st', '12:30 PM'),
-    createDataReminder('Ice cream sandwich','FIT3170', 'Software Engineering Practice',  'Jan 12t', '6:20 PM'),
-    createDataReminder('Eclair','FIT3171', 'Databases',  'Feb 1st', '3:40 PM'),
-    createDataReminder('Cupcake', 'FIT3170', 'Software Engineering Practice', 'Dec 1st', '2:30 PM'),
-    createDataReminder('Gingerbread','FIT3171', 'Databases',  'Nov 1st', '1:30 PM'),
-];
-
-
 // Integration Table
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -50,9 +37,6 @@ const StyledTableRow = withStyles((theme) => ({
 }))(TableRow);
 
 const Dashboard: FunctionComponent<DashboardProps> = ({projectDetails}) => {
-
-    console.log({projectDetails});
-
     return (
         <div className={styles.Dashboard}>
             <div className={styles.Header}>Dashboard</div>
@@ -63,15 +47,15 @@ const Dashboard: FunctionComponent<DashboardProps> = ({projectDetails}) => {
                 <TableContainer component={Paper} className={styles.Container}>
                     <Table className={styles.Table} aria-label="Reminders">
                         <TableBody>
-                            {rowsReminder.map((row) => (
-                                <TableRow key={row.activity}>
+                            {projectDetails?.projectReminderTable.map((data) => (
+                                <TableRow key={data.reminderActivity}>
                                     <TableCell className={styles.Icon}><NotificationsNoneIcon></NotificationsNoneIcon></TableCell>
                                     <TableCell component="th" scope="row"
                                                className={styles.Rows}>
-                                        {row.activity}<br></br>{row.unitCode} {row.unitName}
+                                        {data.reminderActivity}<br></br>{data.reminderUnitCode} {data.reminderUnitName}
                                     </TableCell>
-                                    <TableCell align="right">{row.date}</TableCell>
-                                    <TableCell align="right">{row.time}</TableCell>
+                                    <TableCell align="right">{data.reminderDate}</TableCell>
+                                    <TableCell align="right">{data.reminderTime}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -92,7 +76,6 @@ const Dashboard: FunctionComponent<DashboardProps> = ({projectDetails}) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-
                             {projectDetails?.projectIntegrationTable.map((data) => (
                                 <StyledTableRow key={data.emailAddress}>
                                     <StyledTableCell component="th" scope="row">
@@ -108,7 +91,7 @@ const Dashboard: FunctionComponent<DashboardProps> = ({projectDetails}) => {
                 </TableContainer>
             </div>
             <div>
-                <div className={styles.ExmapleContent}>{projectDetails?.moodleLink}</div>
+                <div>{projectDetails?.moodleLink}</div>
             </div>
         </div>
     )

@@ -81,22 +81,6 @@
   text-align: center;
 }
 
-.ExmapleContent {
-  /*display: flex;*/
-
-  /*margin: 20px;*/
-  /*display: flex;*/
-  /*border-width: 2px;*/
-  /*border-color: black;*/
-  /*flex-direction: row;*/
-  justify-content: center;
-  align-items: center;
-  /*text-align: center;*/
-  height: 50px;
-  width: 800px;
-  border: 1px dotted grey;
-}
-
 .Table {
   width: 500px;
 }

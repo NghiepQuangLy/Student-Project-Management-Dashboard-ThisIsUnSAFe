@@ -83,6 +83,29 @@ const MockIntegration: Integration = {
               googleDriveIntegrationLastModified: "Unavailable",
               trelloIntegrationLastModified: "NA"
             }
+          ],
+          projectReminderTable: [
+            {
+              reminderActivity: "test1",
+              reminderUnitCode: "FIT3170",
+              reminderUnitName: "Software Engineering Practices",
+              reminderDate: "11/10/2020",
+              reminderTime: "11:30PM"
+            },
+            {
+              reminderActivity: "test2",
+              reminderUnitCode: "FIT3170",
+              reminderUnitName: "Software Engineering Practices",
+              reminderDate: "25/10/2020",
+              reminderTime: "3:30PM"
+            },
+            {
+              reminderActivity: "test3",
+              reminderUnitCode: "FIT3170",
+              reminderUnitName: "Software Engineering Practices",
+              reminderDate: "11/10/2020",
+              reminderTime: "7:30AM"
+            }
           ]
         })
       }, 1000)

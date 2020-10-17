@@ -9,6 +9,7 @@ export interface ProjectDetail {
   projectGoogleFolderIds: string[]
   projectTrelloIntegrations: ProjectIntegration[]
   projectIntegrationTable: IntegrationTable[]
+  projectReminderTable: ReminderTable[]
 }
 
 export interface ProjectIntegration {
@@ -21,6 +22,14 @@ export interface IntegrationTable {
   gitIntegrationLastModified: string
   googleDriveIntegrationLastModified: string
   trelloIntegrationLastModified: string
+}
+
+export interface ReminderTable {
+  reminderActivity: string
+  reminderUnitCode: string
+  reminderUnitName: string
+  reminderDate: string
+  reminderTime: string
 }
 
 export interface Project {

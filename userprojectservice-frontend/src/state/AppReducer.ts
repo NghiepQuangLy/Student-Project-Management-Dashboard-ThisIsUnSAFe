@@ -25,7 +25,8 @@ const AppReducer: Reducer<AppState, AppAction<AppActionType, any>> = (prevState,
           projectGoogleDriveIntegrations: projectSuccessAction.payload.projectGoogleDriveIntegration,
           projectGoogleFolderIds: projectSuccessAction.payload.projectGoogleFolderIds,
           projectTrelloIntegrations: projectSuccessAction.payload.projectTrelloIntegration,
-          projectIntegrationTable: projectSuccessAction.payload.projectIntegrationTable
+          projectIntegrationTable: projectSuccessAction.payload.projectIntegrationTable,
+          projectReminderTable: projectSuccessAction.payload.projectReminderTable
         },
         projectDetailStatus: AppStatus.SUCCESS
       }
