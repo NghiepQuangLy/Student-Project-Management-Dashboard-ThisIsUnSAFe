@@ -25,7 +25,7 @@ public class TrelloController {
 
     @ResponseStatus(OK)
     @GetMapping("/get-trello")
-    public GetTrelloResponse getTrello(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
+    public GetTrelloResponse getTrello(@RequestParam("requestorEmail") String emailAddress, @RequestParam("projectId") String projectId) {
         return trelloService.getTrello(emailAddress, projectId);
     }
 

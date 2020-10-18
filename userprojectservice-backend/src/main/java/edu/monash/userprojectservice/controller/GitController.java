@@ -25,7 +25,7 @@ public class GitController {
 
     @ResponseStatus(OK)
     @GetMapping("/get-git")
-    public GetGitResponse getGit(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
+    public GetGitResponse getGit(@RequestParam("requestorEmail") String emailAddress, @RequestParam("projectId") String projectId) {
         return gitService.getGit(emailAddress, projectId);
     }
 

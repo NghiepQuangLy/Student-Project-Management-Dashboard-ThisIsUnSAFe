@@ -149,7 +149,7 @@ public class UserControllerTest {
         @Test
         public void shouldSuccessfullyGetUser() throws Exception {
             RequestBuilder requestBuilder = MockMvcRequestBuilders
-                    .get(GET_USER_URL+ "?email={email}", "email@test.com");
+                    .get(GET_USER_URL+ "?requestorEmail={email}", "email@test.com");
             mockServer.perform(requestBuilder)
                     .andDo(print())
                     .andExpect(status().isOk());
