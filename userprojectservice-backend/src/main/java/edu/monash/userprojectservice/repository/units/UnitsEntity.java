@@ -26,4 +26,6 @@ public class UnitsEntity implements Serializable {
     @Column(name = "unit_name")
     private String unitName;
 
+    @Column(name = "unit_moodle")
+    private String unitMoodle;
 }
