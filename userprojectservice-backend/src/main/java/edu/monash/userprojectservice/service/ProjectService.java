@@ -1,15 +1,7 @@
 package edu.monash.userprojectservice.service;
 
 import edu.monash.userprojectservice.ValidationHandler;
-import edu.monash.userprojectservice.model.CreateProjectRequest;
-import edu.monash.userprojectservice.model.EditProjectRequest;
-import edu.monash.userprojectservice.model.GetProjectResponse;
-import edu.monash.userprojectservice.model.GetTimesheetResponse;
-import edu.monash.userprojectservice.model.IntegrationObjectResponse;
-import edu.monash.userprojectservice.model.IntegrationTableObjectResponse;
-import edu.monash.userprojectservice.model.RemoveProjectRequest;
-import edu.monash.userprojectservice.model.RemoveTimesheetRequest;
-import edu.monash.userprojectservice.model.SaveTimesheetRequest;
+import edu.monash.userprojectservice.model.*;
 import edu.monash.userprojectservice.repository.CreateProjectRepository;
 import edu.monash.userprojectservice.repository.EditProjectRepository;
 import edu.monash.userprojectservice.repository.RemoveProjectRepository;
@@ -23,10 +15,7 @@ import edu.monash.userprojectservice.repository.trello.TrelloEntity;
 import edu.monash.userprojectservice.repository.trello.TrelloRepository;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsEntity;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsRepository;
-import edu.monash.userprojectservice.serviceclient.GitIntegrationTableServiceClient;
-import edu.monash.userprojectservice.serviceclient.GoogleDriveIntegrationTableServiceClient;
-import edu.monash.userprojectservice.serviceclient.IntegrationTableResponse;
-import edu.monash.userprojectservice.serviceclient.TrelloIntegrationTableServiceClient;
+import edu.monash.userprojectservice.serviceclient.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -85,6 +74,9 @@ public class ProjectService {
     @Autowired
     private GoogleDriveIntegrationTableServiceClient googleDriveIntegrationTableServiceClient;
 
+    @Autowired
+    private ReminderTableServiceClient reminderTableServiceClient;
+
     public ResponseEntity<GetProjectResponse> getProject(String emailAddress, String projectId) {
         log.info("{\"message\":\"Getting project\", \"project\":\"{}\"}", projectId);
 
@@ -132,6 +124,11 @@ public class ProjectService {
                 googleDriveEntities.stream().map(GoogleDriveEntity::getGoogleDriveId).collect(Collectors.toList())
         );
 
+        // get reminder table data
+        List<ReminderTableResponse> reminderTableData = reminderTableServiceClient.getReminderTable(
+                projectId
+        );
+
         log.info("{\"message\":\"Got project\", \"project\":\"{}\"}", projectId);
 
         List<IntegrationObjectResponse> projectGitIntegration = gitEntities.stream()
@@ -157,6 +154,10 @@ public class ProjectService {
                 )
                 .collect(Collectors.toList());
 
+        List<ReminderTableObjectResponse> projectReminderTable = reminderTableData.stream()
+                .map(data -> new ReminderTableObjectResponse(data.getReminderActivity(),data.getReminderUnitCode(),data.getReminderUnitName(),data.getReminderDate(),data.getReminderTime()))
+                .collect(Collectors.toList());
+
         return new ResponseEntity(
                 new GetProjectResponse(
                         String.valueOf(projectEntity.getProjectId()),
@@ -168,7 +169,8 @@ public class ProjectService {
                         projectGitIntegration,
                         projectGoogleDriveIntegration,
                         projectTrelloIntegration,
-                        projectIntegrationTableData
+                        projectIntegrationTableData,
+                        projectReminderTable
                 ), OK
         );
     }
