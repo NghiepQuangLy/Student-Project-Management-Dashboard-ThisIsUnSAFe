@@ -13,6 +13,8 @@ import edu.monash.userprojectservice.repository.project.ProjectEntity;
 import edu.monash.userprojectservice.repository.project.ProjectsRepository;
 import edu.monash.userprojectservice.repository.trello.TrelloEntity;
 import edu.monash.userprojectservice.repository.trello.TrelloRepository;
+import edu.monash.userprojectservice.repository.units.UnitsEntity;
+import edu.monash.userprojectservice.repository.units.UnitsRepository;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsEntity;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsRepository;
 import edu.monash.userprojectservice.serviceclient.GitIntegrationTableServiceClient;
@@ -64,6 +66,9 @@ public class ProjectService {
     private TrelloRepository trelloRepository;
 
     @Autowired
+    private UnitsRepository unitsRepository;
+
+    @Autowired
     private UsersProjectsRepository usersProjectsRepository;
 
     @Autowired
@@ -94,6 +99,13 @@ public class ProjectService {
                     null, NOT_FOUND
             );
         }
+
+        List<UnitsEntity> unitsEntities = unitsRepository.findAll();
+        UnitsEntity unitEntity = unitsEntities.stream()
+                .filter(unitsEntity -> unitsEntity.getUnitCode().equals(projectEntity.getUnitCode()))
+                .findFirst()
+                .get();
+
         // get integration ids from database
         List<GitEntity> gitEntities = gitRepository.findGitEntitiesByProjectId(projectId);
         List<GoogleDriveEntity> googleDriveEntities = googleDriveRepository.findGoogleDriveEntitiesByProjectId(projectId);
@@ -158,6 +170,7 @@ public class ProjectService {
                         projectEntity.getProjectYear(),
                         projectEntity.getProjectSemester(),
                         projectEntity.getProjectTimesheet(),
+                        unitEntity.getUnitMoodle(),
                         projectGitIntegration,
                         projectGoogleDriveIntegration,
                         projectTrelloIntegration,
