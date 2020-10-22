@@ -67,9 +67,10 @@ const Dashboard: FunctionComponent<DashboardProps> = ({projectDetails}) => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-            </div>
-            <div>
-                <div>{projectDetails?.moodleLink}</div>
+                <div className={styles.IntegrationHeader}>
+                    <h2>Moodle Link: </h2>
+                        <a className={styles.Logo} href={`${projectDetails?.moodleLink}`}></a>
+                </div>
             </div>
         </div>
     )
