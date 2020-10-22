@@ -25,9 +25,9 @@ const TopBar: FunctionComponent<TopBarProps> = () => {
   return (
     <Header className={styles.TopBar}>
       <div className={styles.Logo} />
-        <button onClick={redirect1} className={styles.SAFeAndAgileFeatures}>
-            SAFe & Agile Features
-        </button>
+      <button onClick={redirect1} className={styles.SAFeAndAgileFeatures}>
+        SAFe & Agile Features
+      </button>
       <button onClick={redirect} className={styles.Projects}>
         Projects
       </button>

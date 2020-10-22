@@ -15,7 +15,9 @@
   background-position: center;
 }
 
-.Logout, .SAFeAndAgileFeatures, .Projects {
+.Logout,
+.SAFeAndAgileFeatures,
+.Projects {
   position: absolute;
   right: 0;
   font-size: 11pt;

@@ -18,8 +18,8 @@ import Loading from "../../components/Loading/Loading"
 import TreeView from "@material-ui/lab/TreeView"
 import TreeItem from "@material-ui/lab/TreeItem"
 import styles from "./ProjectList.module.css"
-import FolderIcon from '@material-ui/icons/Folder';
-import FolderOpenIcon from '@material-ui/icons/FolderOpen';
+import FolderIcon from "@material-ui/icons/Folder"
+import FolderOpenIcon from "@material-ui/icons/FolderOpen"
 import { Project } from "../../state/AppState"
 
 export interface Dictionary<T> {
@@ -43,7 +43,7 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
   const [expandedItems, setExpandedItems] = useState([])
   const onNodeToggle = (event: any, nodeId: any) => {
     setExpandedItems(nodeId)
-  };
+  }
   const [projectList, setProjectList] = useState<Project[] | undefined>([])
 
   const isEmpty = state.userDetailStatus === AppStatus.SUCCESS && state.user?.projects.length === 0
@@ -224,18 +224,18 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
                             ) : isEmpty ? (
                               <h1>Empty History</h1>
                             ) : (
-                                  <TreeView
-                                    className={classes.root}
-                                    defaultCollapseIcon={<FolderOpenIcon />}
-                                    defaultExpanded={["root"]}
-                                    defaultExpandIcon={<FolderIcon />}
-                                    expanded={expandedItems}
-                                    onNodeToggle={onNodeToggle}
-                                    style={{display: "block"}}
-                                  >
-                                    {calculate()}
-                                  </TreeView>
-                                )}
+                              <TreeView
+                                className={classes.root}
+                                defaultCollapseIcon={<FolderOpenIcon />}
+                                defaultExpanded={["root"]}
+                                defaultExpandIcon={<FolderIcon />}
+                                expanded={expandedItems}
+                                onNodeToggle={onNodeToggle}
+                                style={{ display: "block" }}
+                              >
+                                {calculate()}
+                              </TreeView>
+                            )}
                           </Container>
                         </div>
                       </Paper>
