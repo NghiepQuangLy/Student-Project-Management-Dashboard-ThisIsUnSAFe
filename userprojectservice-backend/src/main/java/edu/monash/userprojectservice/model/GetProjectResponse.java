@@ -23,4 +23,5 @@ public class GetProjectResponse {
     private List<IntegrationObjectResponse> projectGoogleDriveIntegration;
     private List<IntegrationObjectResponse> projectTrelloIntegration;
     private List<IntegrationTableObjectResponse> projectIntegrationTable;
+    private List<ReminderTableObjectResponse> projectReminderTable;
 }

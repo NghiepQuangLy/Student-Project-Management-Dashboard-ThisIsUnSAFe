@@ -8,6 +8,7 @@ export interface ProjectResponse {
   projectTrelloIntegration: Integration[]
   projectTimesheet: string
   projectIntegrationTable: IntegrationTable[]
+  projectReminderTable: ReminderTable[]
 }
 
 export interface Integration {
@@ -20,4 +21,12 @@ export interface IntegrationTable {
   gitIntegrationLastModified: string
   googleDriveIntegrationLastModified: string
   trelloIntegrationLastModified: string
+}
+
+export interface ReminderTable {
+  reminderActivity: string
+  reminderUnitCode: string
+  reminderUnitName: string
+  reminderDate: string
+  reminderTime: string
 }

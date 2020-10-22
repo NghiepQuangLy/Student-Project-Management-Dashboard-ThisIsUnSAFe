@@ -7,7 +7,7 @@ const MockIntegration: Integration = {
         resolve({
           projectId: projectId,
           projectName: "TestProject2",
-          moodleLink: "test.com.au",
+          moodleLink: "https://test.com.au",
           projectGitIntegration: [
             {
               integrationId: "git1",
@@ -82,6 +82,41 @@ const MockIntegration: Integration = {
               gitIntegrationLastModified: "23 days ago",
               googleDriveIntegrationLastModified: "Unavailable",
               trelloIntegrationLastModified: "NA"
+            },
+            {
+              emailAddress: "rhow0003@student.monash.edu",
+              gitIntegrationLastModified: "29 days ago",
+              googleDriveIntegrationLastModified: "Unavailable",
+              trelloIntegrationLastModified: "NA"
+            },
+            {
+              emailAddress: "qlyy0001@student.monash.edu",
+              gitIntegrationLastModified: "18 days ago",
+              googleDriveIntegrationLastModified: "Unavailable",
+              trelloIntegrationLastModified: "NA"
+            }
+          ],
+          projectReminderTable: [
+            {
+              reminderActivity: "test1",
+              reminderUnitCode: "FIT3170",
+              reminderUnitName: "Software Engineering Practices",
+              reminderDate: "11/10/2020",
+              reminderTime: "11:30PM"
+            },
+            {
+              reminderActivity: "test2",
+              reminderUnitCode: "FIT3170",
+              reminderUnitName: "Software Engineering Practices",
+              reminderDate: "25/10/2020",
+              reminderTime: "3:30PM"
+            },
+            {
+              reminderActivity: "test3",
+              reminderUnitCode: "FIT3170",
+              reminderUnitName: "Software Engineering Practices",
+              reminderDate: "11/10/2020",
+              reminderTime: "7:30AM"
             }
           ]
         })
