@@ -91,14 +91,14 @@
 
 .Rows {
   display: flex;
-  alignItems: center;
-  paddingLeft: 0px;
+  alignitems: center;
+  paddingleft: 0px;
 }
 
 .Icon {
-  alignItems: center;
+  alignitems: center;
   width: 10px;
-  paddingRight: 0px;
+  paddingright: 0px;
 }
 
 .ReminderHeader {

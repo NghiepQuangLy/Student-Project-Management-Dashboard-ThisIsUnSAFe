@@ -13,6 +13,8 @@ import edu.monash.userprojectservice.repository.project.ProjectEntity;
 import edu.monash.userprojectservice.repository.project.ProjectsRepository;
 import edu.monash.userprojectservice.repository.trello.TrelloEntity;
 import edu.monash.userprojectservice.repository.trello.TrelloRepository;
+import edu.monash.userprojectservice.repository.units.UnitsEntity;
+import edu.monash.userprojectservice.repository.units.UnitsRepository;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsEntity;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsRepository;
 import edu.monash.userprojectservice.serviceclient.*;
@@ -21,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -60,6 +63,9 @@ public class ProjectService {
     private TrelloRepository trelloRepository;
 
     @Autowired
+    private UnitsRepository unitsRepository;
+
+    @Autowired
     private UsersProjectsRepository usersProjectsRepository;
 
     @Autowired
@@ -93,6 +99,13 @@ public class ProjectService {
                     null, NOT_FOUND
             );
         }
+
+        List<UnitsEntity> unitsEntities = unitsRepository.findAll();
+        UnitsEntity unitEntity = unitsEntities.stream()
+                .filter(unitsEntity -> unitsEntity.getUnitCode().equals(projectEntity.getUnitCode()))
+                .findFirst()
+                .get();
+
         // get integration ids from database
         List<GitEntity> gitEntities = gitRepository.findGitEntitiesByProjectId(projectId);
         List<GoogleDriveEntity> googleDriveEntities = googleDriveRepository.findGoogleDriveEntitiesByProjectId(projectId);
@@ -166,6 +179,7 @@ public class ProjectService {
                         projectEntity.getProjectYear(),
                         projectEntity.getProjectSemester(),
                         projectEntity.getProjectTimesheet(),
+                        unitEntity.getUnitMoodle(),
                         projectGitIntegration,
                         projectGoogleDriveIntegration,
                         projectTrelloIntegration,
@@ -219,13 +233,30 @@ public class ProjectService {
         // Validation Check
         validationHandler.isUserAdmin(createProjectRequest.getRequestorEmail());
 
+        // check that project year is reasonable
+        if(createProjectRequest.getProjectYear() < 1900 || createProjectRequest.getProjectYear() > 3000){
+            log.warn("Project year out of range!");
+            return new ResponseEntity<>(
+                    null, BAD_REQUEST
+            );
+        }
+
+        // check that project semester is within the acceptable list of values
+        List<String> projectSemesters = Arrays.asList("SEM 2", "SEM 1", "FULL YEAR", "WINTER", "SUMMER");
+        if (!projectSemesters.contains(createProjectRequest.getProjectSemester())) {
+            log.warn("Project semester invalid!");
+            return new ResponseEntity<>(
+                    null, BAD_REQUEST
+            );
+        }
+
         String projectId = UUID.randomUUID().toString();
         // check if the project is already present in the database
         while (projectsRepository.findProjectEntityByProjectId(projectId) != null) {
             projectId = UUID.randomUUID().toString();
         }
         // insert into db when project doesnt exist in the db
-        Boolean isSuccessful = createProjectRepository.save(projectId, createProjectRequest.getEmailAddress(), createProjectRequest.getProjectName(), createProjectRequest.getProjectUnit(), createProjectRequest.getProjectYear(), createProjectRequest.getProjectSemester());
+        Boolean isSuccessful = createProjectRepository.save(projectId, createProjectRequest.getEmailAddress(), createProjectRequest.getProjectName(), createProjectRequest.getProjectUnitCode(), createProjectRequest.getProjectYear(), createProjectRequest.getProjectSemester());
         if (isSuccessful) {
             log.info("Project has been added!");
             return new ResponseEntity<>(
@@ -375,6 +406,21 @@ public class ProjectService {
             );
         }
     }
+
+    // get all projects
+    public GetAllProjectsResponse getAllProjects(String emailAddress) {
+
+        validationHandler.isUserAdmin(emailAddress);
+
+        log.info("{\"message\":\"Getting all projects \"}");
+
+        // get from database
+        List<ProjectEntity> projectEntities = projectsRepository.findAll();
+
+        log.info("{\"message\":\"Got all Projects \"}");
+        return new GetAllProjectsResponse(projectEntities);
+    }
+
 }
 
 

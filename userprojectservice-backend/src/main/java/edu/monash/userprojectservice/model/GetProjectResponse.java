@@ -18,6 +18,7 @@ public class GetProjectResponse {
     private Integer projectYear;
     private String projectSemester;
     private String projectTimesheet;
+    private String projectUnitMoodle;
     private List<IntegrationObjectResponse> projectGitIntegration;
     private List<IntegrationObjectResponse> projectGoogleDriveIntegration;
     private List<IntegrationObjectResponse> projectTrelloIntegration;

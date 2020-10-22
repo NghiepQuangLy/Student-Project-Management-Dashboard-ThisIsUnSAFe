@@ -2,6 +2,7 @@ package edu.monash.userprojectservice.repository;
 
 import edu.monash.userprojectservice.repository.project.ProjectEntity;
 import edu.monash.userprojectservice.repository.project.ProjectsRepository;
+import edu.monash.userprojectservice.repository.user.UserEntity;
 import edu.monash.userprojectservice.repository.user.UsersRepository;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsEntity;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsRepository;
@@ -42,9 +43,17 @@ public class CreateProjectRepository {
             conn.setAutoCommit(false);
             projectsRepository.save(new ProjectEntity(projectId, projectName, null, projectUnit, projectYear, projectSemester));
             for(int i = 0; i < emailAddress.size(); i++) {
-                if (usersRepository.findUserEntityByEmailAddress(emailAddress.get(i)) != null) {
-                    usersProjectsRepository.save(new UsersProjectsEntity(emailAddress.get(i), projectId, new ProjectEntity(projectId, projectName, null, projectUnit, projectYear, projectSemester), null));
+                if (usersRepository.findUserEntityByEmailAddress(emailAddress.get(i)) == null) {
+                    usersRepository.save(new UserEntity(
+                            emailAddress.get(i),
+                            "",
+                            "",
+                            ""
+                    ));
+                    // Created 201
+                    log.info("{\"message\":\"Created new user while adding new project\"}");
                 }
+                usersProjectsRepository.save(new UsersProjectsEntity(emailAddress.get(i), projectId, new ProjectEntity(projectId, projectName, null, projectUnit, projectYear, projectSemester), null));
             }
 
             conn.commit();
