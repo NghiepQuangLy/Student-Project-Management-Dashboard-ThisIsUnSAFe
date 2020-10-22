@@ -9,6 +9,7 @@ import edu.monash.userprojectservice.repository.user.UserEntity;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsEntity;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsRepository;
 import edu.monash.userprojectservice.repository.user.UsersRepository;
+import edu.monash.userprojectservice.service.usergroup.UserGroupHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,8 +30,13 @@ public class UserService {
     @Autowired
     private ValidationHandler validationHandler;
 
+    @Autowired
+    private UserGroupHelper userGroupHelper;
+
     public void createUser(CreateUserRequest createUserRequest) {
         log.info("{\"message\":\"Creating user\", \"user\":\"{}\"}", createUserRequest);
+
+        String userGroup = userGroupHelper.getUserGroupByEmail(createUserRequest.getEmailAddress()).name();
 
         // save to database
         UserEntity userEntity = usersRepository.findUserEntityByEmailAddress(createUserRequest.getEmailAddress());
@@ -39,7 +45,7 @@ public class UserService {
                     createUserRequest.getEmailAddress(),
                     createUserRequest.getFamilyName(),
                     createUserRequest.getGivenName(),
-                    createUserRequest.getUserGroup()
+                    userGroup
             ));
             // Created 201
             log.info("{\"message\":\"Saved user\"}");

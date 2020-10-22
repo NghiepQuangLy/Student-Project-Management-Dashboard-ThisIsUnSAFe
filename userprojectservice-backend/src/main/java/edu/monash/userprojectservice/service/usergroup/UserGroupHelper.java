@@ -1,15 +1,8 @@
-package edu.monash.userprojectservice.service;
+package edu.monash.userprojectservice.service.usergroup;
 
 import edu.monash.userprojectservice.HTTPResponseHandler;
-import edu.monash.userprojectservice.repository.admin.AdminEntity;
-import edu.monash.userprojectservice.repository.admin.AdminsRepository;
-import edu.monash.userprojectservice.repository.userproject.UsersProjectsEntity;
-import edu.monash.userprojectservice.repository.userproject.UsersProjectsRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Slf4j
 @Service
@@ -22,6 +15,7 @@ public class UserGroupHelper {
         } else if (emailAddress.endsWith("@monash.edu")){
             return UserGroupEnum.TUTOR;
         }
+        log.warn("{\"message\":\"Must provide monash email.\"}");
         throw new HTTPResponseHandler.BadRequestException("Must provide monash email.");
     }
 }

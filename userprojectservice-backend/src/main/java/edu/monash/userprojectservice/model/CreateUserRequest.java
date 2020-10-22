@@ -21,7 +21,4 @@ public class CreateUserRequest {
 
     @NotBlank
     private String emailAddress;
-
-    @NotBlank
-    private String userGroup;
 }
