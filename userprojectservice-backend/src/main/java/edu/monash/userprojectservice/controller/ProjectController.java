@@ -30,7 +30,7 @@ public class ProjectController {
 
     @ResponseStatus(OK)
     @GetMapping("/get-project")
-    public ResponseEntity<GetProjectResponse> getProject(@RequestParam("requestorEmail") String emailAddress, @RequestParam("projectId") String projectId) {
+    public ResponseEntity<GetProjectResponse> getProject(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
         return projectService.getProject(emailAddress, projectId);
     }
 
@@ -42,7 +42,7 @@ public class ProjectController {
 
     @ResponseStatus(OK)
     @GetMapping("/get-timesheet")
-    public GetTimesheetResponse getTimesheet(@RequestParam("requestorEmail") String emailAddress, @RequestParam("projectId") String projectId) {
+    public GetTimesheetResponse getTimesheet(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
         return projectService.getTimesheet(emailAddress, projectId);
     }
 

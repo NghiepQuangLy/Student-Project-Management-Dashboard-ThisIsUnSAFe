@@ -34,7 +34,7 @@ public class UserController {
 
     @ResponseStatus(OK)
     @GetMapping("/get-user")
-    public GetUserResponse getUser(@RequestParam("requestorEmail") String emailAddress) {
+    public GetUserResponse getUser(@RequestParam("email") String emailAddress) {
         return userService.getUserByEmail(emailAddress);
     }
 }

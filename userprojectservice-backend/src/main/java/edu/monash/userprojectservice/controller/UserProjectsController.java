@@ -31,7 +31,7 @@ public class UserProjectsController {
 
     @ResponseStatus(OK)
     @GetMapping("/get-projectusers")
-    public GetUserProjectsResponse getUserProjects(@RequestParam("requestorEmail") String emailAddress, @RequestParam("projectId") String projectId) {
+    public GetUserProjectsResponse getUserProjects(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
         return userProjectService.getUsersByProject(emailAddress, projectId);
     }
 
