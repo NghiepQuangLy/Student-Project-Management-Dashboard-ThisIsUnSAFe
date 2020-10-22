@@ -49,8 +49,11 @@ public class UserProjectService {
         log.info("{\"message\":\"Getting projects\", \"user\":\"{}\"}", projectId);
 
         // Validation Check
-        validationHandler.isValid(emailAddress, projectId);
-
+        try {
+            validationHandler.isUserAdmin(emailAddress);
+        } catch (HTTPResponseHandler.ForbiddenException e){
+            validationHandler.isValid(emailAddress, projectId);
+        }
 
         ProjectEntity projectEntity = projectsRepository.findProjectEntityByProjectId(projectId);
 

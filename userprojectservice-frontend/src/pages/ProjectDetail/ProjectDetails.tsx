@@ -68,7 +68,11 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
       )}
       {isSucceed && (
         <BarContainer shouldContainSideBar={true} projectDetails={state.currentProject ?? undefined}>
-          {currentPath === PROJECT_DETAIL_PATH ? <Dashboard projectDetails={state.currentProject ?? undefined}/> : <ProjectDetailsIntegration />}
+          {currentPath === PROJECT_DETAIL_PATH ? (
+            <Dashboard projectDetails={state.currentProject ?? undefined} />
+          ) : (
+            <ProjectDetailsIntegration />
+          )}
         </BarContainer>
       )}
     </div>
