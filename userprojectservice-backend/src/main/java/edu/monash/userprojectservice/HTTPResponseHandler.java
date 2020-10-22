@@ -20,5 +20,8 @@ public class HTTPResponseHandler {
 
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     public static class NotFoundException extends RuntimeException {
+        public NotFoundException(String message) {
+            super(message);
+        }
     }
 }

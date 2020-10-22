@@ -2,6 +2,7 @@ package edu.monash.userprojectservice.controller;
 
 import edu.monash.userprojectservice.model.CreateUserRequest;
 import edu.monash.userprojectservice.model.GetUserResponse;
+import edu.monash.userprojectservice.model.UpdateUserRequest;
 import edu.monash.userprojectservice.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,12 @@ public class UserController {
     @PostMapping("/create-user")
     public void createUser(@RequestBody @Valid CreateUserRequest createUserRequest) {
         userService.createUser(createUserRequest);
+    }
+
+    @ResponseStatus(OK)
+    @PostMapping("/update-user")
+    public void updateUser(@RequestBody @Valid UpdateUserRequest updateUserRequest) {
+        userService.updateUser(updateUserRequest);
     }
 
     @ResponseStatus(OK)

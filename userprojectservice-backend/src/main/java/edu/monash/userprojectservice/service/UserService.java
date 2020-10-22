@@ -5,6 +5,7 @@ import edu.monash.userprojectservice.ValidationHandler;
 import edu.monash.userprojectservice.model.CreateUserRequest;
 import edu.monash.userprojectservice.model.GetUserResponse;
 import edu.monash.userprojectservice.model.ProjectListResponse;
+import edu.monash.userprojectservice.model.UpdateUserRequest;
 import edu.monash.userprojectservice.repository.user.UserEntity;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsEntity;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsRepository;
@@ -56,6 +57,33 @@ public class UserService {
         }
     }
 
+    public void updateUser(UpdateUserRequest updateUserRequest) {
+        log.info("{\"message\":\"Updating user\", \"user\":\"{}\"}", updateUserRequest);
+
+        // save to database
+        UserEntity userEntity = usersRepository.findUserEntityByEmailAddress(updateUserRequest.getEmailAddress());
+
+        if (userEntity == null) {
+            log.warn("{\"message\":\"Saved user\"}");
+            throw new HTTPResponseHandler.NotFoundException("User not found.");
+        } else {
+            boolean hasSameFamilyName = userEntity.getFamilyName().equals(updateUserRequest.getFamilyName());
+            boolean hasSameGivenName = userEntity.getGivenName().equals(updateUserRequest.getGivenName());
+            if (!hasSameFamilyName || !hasSameGivenName){
+                UserEntity newUserEntity = new UserEntity(
+                        userEntity.getEmailAddress(),
+                        updateUserRequest.getFamilyName(),
+                        updateUserRequest.getGivenName(),
+                        userEntity.getUserGroup()
+                );
+                usersRepository.save(newUserEntity);
+                log.info("{\"message\":\"User updated\"}");
+            } else {
+                log.info("{\"message\":\"Same user information, no user updated\"}");
+            }
+        }
+    }
+
     public GetUserResponse getUserByEmail(String emailAddress) {
         if (emailAddress.equals("")) {
             return null;
@@ -88,7 +116,7 @@ public class UserService {
             return getUserResponse;
         } else {
             // show return 404 not found
-            throw new HTTPResponseHandler.NotFoundException();
+            throw new HTTPResponseHandler.NotFoundException("User Not Found");
         }
     }
 
