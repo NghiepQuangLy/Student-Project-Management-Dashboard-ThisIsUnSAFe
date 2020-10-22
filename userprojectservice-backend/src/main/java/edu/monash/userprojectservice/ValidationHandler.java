@@ -46,10 +46,10 @@ public class ValidationHandler {
 
     private Boolean isNotBlank(String emailAddress, String projectId) {
         if (projectId.equals("")) {
-            throw new HTTPResponseHandler.BadRequestException();
+            throw new HTTPResponseHandler.BadRequestException("Project id can not be empty");
         }
         if (emailAddress.equals("")) {
-            throw new HTTPResponseHandler.BadRequestException();
+            throw new HTTPResponseHandler.BadRequestException("Email address can not be empty");
         }
         return true;
     }
@@ -57,7 +57,7 @@ public class ValidationHandler {
     public Boolean isUserAdmin(String emailAddress) {
 
         if (emailAddress.equals("")) {
-            throw new HTTPResponseHandler.BadRequestException();
+            throw new HTTPResponseHandler.BadRequestException("Email address can not be empty");
         }
 
         AdminEntity adminEntity = adminsRepository.findAdminEntityByEmailAddress(emailAddress);

@@ -34,7 +34,7 @@ public class UserService {
 
         // save to database
         UserEntity userEntity = usersRepository.findUserEntityByEmailAddress(createUserRequest.getEmailAddress());
-        if (userEntity == null){
+        if (userEntity == null) {
             usersRepository.save(new UserEntity(
                     createUserRequest.getEmailAddress(),
                     createUserRequest.getFamilyName(),
@@ -46,7 +46,7 @@ public class UserService {
         } else {
             // Bad Request 400
             log.warn("{\"message\":\"User already exist\"}");
-            throw new HTTPResponseHandler.BadRequestException();
+            throw new HTTPResponseHandler.BadRequestException("User already exist");
         }
     }
 
