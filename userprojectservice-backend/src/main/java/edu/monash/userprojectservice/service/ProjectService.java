@@ -171,16 +171,6 @@ public class ProjectService {
                 .map(data -> new ReminderTableObjectResponse(data.getReminderActivity(),data.getReminderUnitCode(),data.getReminderUnitName(),data.getReminderDate(),data.getReminderTime()))
                 .collect(Collectors.toList());
 
-        if (projectReminderTable.isEmpty()) {
-            projectReminderTable.add(ReminderTableObjectResponse.builder()
-                                    .reminderActivity("Unavailable")
-                                    .reminderDate("Unavailable")
-                                    .reminderTime("Unavailable")
-                                    .reminderUnitCode("Unavailable")
-                                    .reminderUnitName("Unavailable")
-                                    .build());
-        }
-
         return new ResponseEntity(
                 new GetProjectResponse(
                         String.valueOf(projectEntity.getProjectId()),
