@@ -1,37 +1,7 @@
-@font-face {
-  font-family: Robo;
-  src: url(../../resources/fonts/RobotoSlab-Bold.ttf);
-  font-weight: 800;
-}
-
-h1 {
-  font-family: "Robo";
-  text-align: "center";
-  font-size: 1.7em;
-}
-
-h2 {
-  font-family: "Robo";
-  text-align: "center";
-  font-size: 1.35em;
-}
-
-.HeaderContainer {
-  margin: 0 auto;
-  padding-top: 20px;
-}
-
-.UserDetailsGroup {
-  width: 20%;
-  padding-left: 40px;
-  padding-top: 15px;
-}
-
-.UserDetails {
-  margin-left: 60px;
-}
-
-.UserProjectsGroup {
-  width: 20%;
-  padding-left: 40px;
+.Loading {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

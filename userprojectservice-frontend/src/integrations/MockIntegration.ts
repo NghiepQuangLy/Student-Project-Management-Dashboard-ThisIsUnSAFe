@@ -163,6 +163,26 @@ const MockIntegration: Integration = {
           ]
         })
       }, 1000)
+    }),
+
+  createUser: async () =>
+    new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          firstName: "Mike",
+          lastName: "Ly",
+          emailAddress: "mike@gmail.com",
+          userGroup: "tstuserG",
+          projects: []
+        })
+      }, 1000)
+    }),
+
+  updateUser: async () =>
+    new Promise((resolve) => {
+      setTimeout(() => {
+        resolve()
+      }, 1000)
     })
 }
 

@@ -9,6 +9,9 @@ public class HTTPResponseHandler {
 
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public static class BadRequestException extends RuntimeException {
+        public BadRequestException(String message) {
+            super(message);
+        }
     }
 
     @ResponseStatus(code = HttpStatus.FORBIDDEN)
@@ -17,6 +20,8 @@ public class HTTPResponseHandler {
 
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     public static class NotFoundException extends RuntimeException {
+        public NotFoundException(String message) {
+            super(message);
+        }
     }
-
 }

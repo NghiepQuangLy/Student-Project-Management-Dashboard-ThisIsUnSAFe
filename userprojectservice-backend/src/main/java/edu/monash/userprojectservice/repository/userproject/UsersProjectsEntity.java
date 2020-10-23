@@ -38,9 +38,5 @@ public class UsersProjectsEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "email_address", updatable = false, insertable = false)
     private UserEntity userEntity;
-
-    public String getProjectId() {
-        return projectEntity.getProjectId();
-    }
 }
 

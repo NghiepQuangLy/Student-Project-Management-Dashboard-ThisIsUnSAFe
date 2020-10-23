@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateUserRequest {
+public class UpdateUserRequest {
 
     @NotBlank
     private String givenName;

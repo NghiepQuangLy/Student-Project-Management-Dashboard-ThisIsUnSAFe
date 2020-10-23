@@ -120,15 +120,14 @@
 .StyledTableCellHead {
   background-color: #001529;
   color: white !important;
-  }
+}
 
 .StyledTableCellBody {
   font-size: 14px !important;
-  }
+}
 
 .StyledTableRow {
   font-size: 16px !important;
-
 }
 
 .StyledTableRow:nth-of-type(even) {

@@ -86,7 +86,7 @@ public class UserProjectService {
             return getUserProjectsResponse;
         } else {
             // show return 404 not founduserProjectService
-            throw new HTTPResponseHandler.NotFoundException();
+            throw new HTTPResponseHandler.NotFoundException("User not found.");
         }
     }
 
