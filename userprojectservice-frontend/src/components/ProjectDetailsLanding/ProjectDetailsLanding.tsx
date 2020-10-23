@@ -1,5 +1,4 @@
 import React, { FunctionComponent } from "react"
-// import styles from "./ProjectDetailsLanding.module.css"
 import Container from "@material-ui/core/Container"
 import { Divider, Grid, List, ListItem, Tab, Tabs } from "@material-ui/core"
 import Paper from "@material-ui/core/Paper"
