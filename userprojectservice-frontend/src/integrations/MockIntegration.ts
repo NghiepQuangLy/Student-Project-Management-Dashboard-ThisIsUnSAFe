@@ -176,6 +176,13 @@ const MockIntegration: Integration = {
           projects: []
         })
       }, 1000)
+    }),
+
+  updateUser: async () =>
+    new Promise((resolve) => {
+      setTimeout(() => {
+        resolve()
+      }, 1000)
     })
 }
 

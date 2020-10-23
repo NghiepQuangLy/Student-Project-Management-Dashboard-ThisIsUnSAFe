@@ -27,6 +27,7 @@ export interface ProjectData {
 
 const ProjectList: Page = ({ integration, state, dispatch }) => {
   const { googleUser, isInitialized, isSignedIn } = useGoogleAuth()
+
   const emailAddress = googleUser?.getBasicProfile()?.getEmail()
   const givenName = googleUser?.getBasicProfile()?.getGivenName()
   const familyName = googleUser?.getBasicProfile()?.getFamilyName()
@@ -38,6 +39,15 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
       integration
         .getUser(emailAddress)
         .then((user) => {
+          if (user.firstName !== givenName || user.lastName !== familyName) {
+            givenName &&
+              familyName &&
+              integration.updateUser(emailAddress, givenName, familyName).then(() => {
+                user.firstName = givenName
+                user.lastName = familyName
+                dispatch(AppAction.userDetailSuccess(user))
+              })
+          }
           dispatch(AppAction.userDetailSuccess(user))
         })
         .catch((e) => {
