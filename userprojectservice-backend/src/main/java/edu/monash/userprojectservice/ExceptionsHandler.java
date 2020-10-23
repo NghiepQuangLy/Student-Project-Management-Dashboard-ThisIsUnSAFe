@@ -22,8 +22,6 @@ public class ExceptionsHandler {
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public List<String> handle(MethodArgumentNotValidException exception) {
-        //do your stuff here
-        System.out.println(exception.getBindingResult().getFieldErrors());
         return exception.getBindingResult().getFieldErrors()
                 .stream()
                 .map(fieldError ->  fieldError.getField() + ": " + fieldError.getDefaultMessage())

@@ -37,6 +37,8 @@ public class UserService {
     public void createUser(CreateUserRequest createUserRequest) {
         log.info("{\"message\":\"Creating user\", \"user\":\"{}\"}", createUserRequest);
 
+        validationHandler.isMonashEmail(createUserRequest.getEmailAddress());
+
         String userGroup = userGroupHelper.getUserGroupByEmail(createUserRequest.getEmailAddress()).name();
 
         // save to database
@@ -85,9 +87,10 @@ public class UserService {
     }
 
     public GetUserResponse getUserByEmail(String emailAddress) {
-        if (emailAddress.equals("")) {
-            return null;
-        }
+
+        validationHandler.isEmailNotBlank(emailAddress);
+        validationHandler.isMonashEmail(emailAddress);
+
         log.info("{\"message\":\"Getting user\", \"user\":\"{}\"}", emailAddress);
 
         UserEntity userEntity = usersRepository.findUserEntityByEmailAddress(emailAddress);
