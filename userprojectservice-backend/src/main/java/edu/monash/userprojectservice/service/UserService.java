@@ -7,14 +7,15 @@ import edu.monash.userprojectservice.model.GetUserResponse;
 import edu.monash.userprojectservice.model.ProjectListResponse;
 import edu.monash.userprojectservice.model.UpdateUserRequest;
 import edu.monash.userprojectservice.repository.user.UserEntity;
+import edu.monash.userprojectservice.repository.user.UsersRepository;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsEntity;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsRepository;
-import edu.monash.userprojectservice.repository.user.UsersRepository;
 import edu.monash.userprojectservice.service.usergroup.UserGroupHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +35,7 @@ public class UserService {
     @Autowired
     private UserGroupHelper userGroupHelper;
 
-    public void createUser(CreateUserRequest createUserRequest) {
+    public GetUserResponse createUser(CreateUserRequest createUserRequest) {
         log.info("{\"message\":\"Creating user\", \"user\":\"{}\"}", createUserRequest);
 
         validationHandler.isMonashEmail(createUserRequest.getEmailAddress());
@@ -52,6 +53,14 @@ public class UserService {
             ));
             // Created 201
             log.info("{\"message\":\"Saved user\"}");
+
+            return GetUserResponse.builder()
+                    .emailAddress(createUserRequest.getEmailAddress())
+                    .firstName(createUserRequest.getGivenName())
+                    .lastName(createUserRequest.getFamilyName())
+                    .userGroup(userGroup)
+                    .projects(new ArrayList())
+                    .build();
         } else {
             // Bad Request 400
             log.warn("{\"message\":\"User already exist\"}");
@@ -71,7 +80,7 @@ public class UserService {
         } else {
             boolean hasSameFamilyName = userEntity.getFamilyName().equals(updateUserRequest.getFamilyName());
             boolean hasSameGivenName = userEntity.getGivenName().equals(updateUserRequest.getGivenName());
-            if (!hasSameFamilyName || !hasSameGivenName){
+            if (!hasSameFamilyName || !hasSameGivenName) {
                 UserEntity newUserEntity = new UserEntity(
                         userEntity.getEmailAddress(),
                         updateUserRequest.getFamilyName(),

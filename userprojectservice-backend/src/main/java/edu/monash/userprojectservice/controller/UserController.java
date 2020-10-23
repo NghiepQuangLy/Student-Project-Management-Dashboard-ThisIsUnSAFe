@@ -36,8 +36,8 @@ public class UserController {
 
     @ResponseStatus(CREATED)
     @PostMapping("/create-user")
-    public void createUser(@RequestBody @Valid CreateUserRequest createUserRequest) {
-        userService.createUser(createUserRequest);
+    public GetUserResponse createUser(@RequestBody @Valid CreateUserRequest createUserRequest) {
+        return userService.createUser(createUserRequest);
     }
 
     @ResponseStatus(OK)
