@@ -83,7 +83,7 @@ public class ProjectService {
     @Autowired
     private ReminderTableServiceClient reminderTableServiceClient;
 
-    public ResponseEntity<GetProjectResponse> getProject(String emailAddress, String projectId) {
+    public ResponseEntity<GetProjectDetailsResponse> getProject(String emailAddress, String projectId) {
         log.info("{\"message\":\"Getting project\", \"project\":\"{}\"}", projectId);
 
         // Validation Check
@@ -168,21 +168,21 @@ public class ProjectService {
                 .collect(Collectors.toList());
 
         List<ReminderTableObjectResponse> projectReminderTable = reminderTableData.stream()
-                .map(data -> new ReminderTableObjectResponse(data.getReminderActivity(),data.getReminderUnitCode(),data.getReminderUnitName(),data.getReminderDate(),data.getReminderTime()))
+                .map(data -> new ReminderTableObjectResponse(data.getReminderActivity(), data.getReminderUnitCode(), data.getReminderUnitName(), data.getReminderDate(), data.getReminderTime()))
                 .collect(Collectors.toList());
 
         if (projectReminderTable.isEmpty()) {
             projectReminderTable.add(ReminderTableObjectResponse.builder()
-                                    .reminderActivity("Unavailable")
-                                    .reminderDate("Unavailable")
-                                    .reminderTime("Unavailable")
-                                    .reminderUnitCode("Unavailable")
-                                    .reminderUnitName("Unavailable")
-                                    .build());
+                    .reminderActivity("Unavailable")
+                    .reminderDate("Unavailable")
+                    .reminderTime("Unavailable")
+                    .reminderUnitCode("Unavailable")
+                    .reminderUnitName("Unavailable")
+                    .build());
         }
 
         return new ResponseEntity(
-                new GetProjectResponse(
+                new GetProjectDetailsResponse(
                         String.valueOf(projectEntity.getProjectId()),
                         projectEntity.getProjectName(),
                         projectEntity.getUnitCode(),
@@ -237,14 +237,14 @@ public class ProjectService {
     // create a method
     // check for the user first, if it doesnt exist new responseEntity and return not found
     // if he exists then, return OK
-    public ResponseEntity<GetProjectResponse> createProject(CreateProjectRequest createProjectRequest) throws SQLException {
+    public ResponseEntity<GetProjectDetailsResponse> createProject(CreateProjectRequest createProjectRequest) throws SQLException {
         //check if the user is present in the system
 
         // Validation Check
         validationHandler.isUserAdmin(createProjectRequest.getRequestorEmail());
 
         // check that project year is reasonable
-        if(createProjectRequest.getProjectYear() < 1900 || createProjectRequest.getProjectYear() > 3000){
+        if (createProjectRequest.getProjectYear() < 1900 || createProjectRequest.getProjectYear() > 3000) {
             log.warn("Project year out of range!");
             return new ResponseEntity<>(
                     null, BAD_REQUEST
@@ -283,7 +283,7 @@ public class ProjectService {
     // remove a project
     // check for the user first, if it doesnt exist new responseEntity and return not found
     // if he exists then, return OK
-    public ResponseEntity<GetProjectResponse> removeProject(RemoveProjectRequest removeProjectRequest) throws SQLException {
+    public ResponseEntity<GetProjectDetailsResponse> removeProject(RemoveProjectRequest removeProjectRequest) throws SQLException {
 
         // Validation Check
         validationHandler.isUserAdmin(removeProjectRequest.getRequestorEmail());
@@ -299,13 +299,21 @@ public class ProjectService {
         // remove foreign keys that link to the project so entry can be deleted
         // Foreign Key list: userProject, git, googleDrive, googleFolder, trello
         List<UsersProjectsEntity> usersProjectEntities = usersProjectsRepository.findUsersProjectsEntitiesByProjectId(removeProjectRequest.getProjectId());
-        for (UsersProjectsEntity usersprojectEntity : usersProjectEntities) { usersProjectsRepository.delete(usersprojectEntity); }
+        for (UsersProjectsEntity usersprojectEntity : usersProjectEntities) {
+            usersProjectsRepository.delete(usersprojectEntity);
+        }
         List<GitEntity> gitEntities = gitRepository.findGitEntitiesByProjectId(removeProjectRequest.getProjectId());
-        for (GitEntity gitEntity : gitEntities) { gitRepository.delete(gitEntity); }
+        for (GitEntity gitEntity : gitEntities) {
+            gitRepository.delete(gitEntity);
+        }
         List<GoogleDriveEntity> googleDriveEntities = googleDriveRepository.findGoogleDriveEntitiesByProjectId(removeProjectRequest.getProjectId());
-        for (GoogleDriveEntity googleDriveEntity : googleDriveEntities) { googleDriveRepository.delete(googleDriveEntity); }
+        for (GoogleDriveEntity googleDriveEntity : googleDriveEntities) {
+            googleDriveRepository.delete(googleDriveEntity);
+        }
         List<TrelloEntity> trelloEntities = trelloRepository.findTrelloEntitiesByProjectId(removeProjectRequest.getProjectId());
-        for (TrelloEntity trelloEntity : trelloEntities) { trelloRepository.delete(trelloEntity); }
+        for (TrelloEntity trelloEntity : trelloEntities) {
+            trelloRepository.delete(trelloEntity);
+        }
 
         // remove from db when project exists
         Boolean isSuccessful = removeProjectRepository.delete(removeProjectRequest.getProjectId());
@@ -326,7 +334,7 @@ public class ProjectService {
     // edit a project
     // check for the user first, if it doesnt exist new responseEntity and return not found
     // if he exists then, return OK
-    public ResponseEntity<GetProjectResponse> editProject(EditProjectRequest editProjectRequest) throws SQLException {
+    public ResponseEntity<GetProjectDetailsResponse> editProject(EditProjectRequest editProjectRequest) throws SQLException {
 
         // Validation Check
         validationHandler.isUserAdmin(editProjectRequest.getRequestorEmail());
@@ -389,7 +397,7 @@ public class ProjectService {
     }
 
     // Remove timesheet from a project
-    public ResponseEntity<GetProjectResponse> removeTimesheet(RemoveTimesheetRequest removeTimesheetRequest) throws SQLException {
+    public ResponseEntity<GetProjectDetailsResponse> removeTimesheet(RemoveTimesheetRequest removeTimesheetRequest) throws SQLException {
         log.info("{\"message\":\"Removing timesheet\", \"project\":\"{}\"}", removeTimesheetRequest);
 
         // Validation Check
@@ -407,10 +415,9 @@ public class ProjectService {
             return new ResponseEntity<>(
                     null, OK
             );
-        }
-        else {
+        } else {
             // log an warning that there the timesheet is already empty
-            log.warn( "Project Timesheet is already empty: ", removeTimesheetRequest.getProjectId());
+            log.warn("Project Timesheet is already empty: ", removeTimesheetRequest.getProjectId());
             return new ResponseEntity<>(
                     null, BAD_REQUEST
             );
@@ -427,8 +434,19 @@ public class ProjectService {
         // get from database
         List<ProjectEntity> projectEntities = projectsRepository.findAll();
 
+        List<GetProjectResponse> getProjectResponses = projectEntities.stream()
+                .map(projectEntity -> GetProjectResponse.builder()
+                        .projectId(projectEntity.getProjectId())
+                        .projectName(projectEntity.getProjectName())
+                        .projectUnitCode(projectEntity.getUnitCode())
+                        .projectYear(projectEntity.getProjectYear())
+                        .projectSemester(projectEntity.getProjectSemester())
+                        .projectTimesheet(projectEntity.getProjectTimesheet())
+                        .build())
+                .collect(Collectors.toList());
+
         log.info("{\"message\":\"Got all Projects \"}");
-        return new GetAllProjectsResponse(projectEntities);
+        return new GetAllProjectsResponse(getProjectResponses);
     }
 
 }

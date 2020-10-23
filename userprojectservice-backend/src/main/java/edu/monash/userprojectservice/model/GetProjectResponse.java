@@ -15,13 +15,7 @@ public class GetProjectResponse {
     private String projectId;
     private String projectName;
     private String projectUnitCode;
-    private Integer projectYear;
+    private int projectYear;
     private String projectSemester;
     private String projectTimesheet;
-    private String projectUnitMoodle;
-    private List<IntegrationObjectResponse> projectGitIntegration;
-    private List<IntegrationObjectResponse> projectGoogleDriveIntegration;
-    private List<IntegrationObjectResponse> projectTrelloIntegration;
-    private List<IntegrationTableObjectResponse> projectIntegrationTable;
-    private List<ReminderTableObjectResponse> projectReminderTable;
 }
