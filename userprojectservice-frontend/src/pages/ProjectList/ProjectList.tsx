@@ -28,10 +28,13 @@ export interface ProjectData {
 const ProjectList: Page = ({ integration, state, dispatch }) => {
   const { googleUser, isInitialized, isSignedIn } = useGoogleAuth()
   const emailAddress = googleUser?.getBasicProfile()?.getEmail()
+  const givenName = googleUser?.getBasicProfile()?.getGivenName()
+  const familyName = googleUser?.getBasicProfile()?.getFamilyName()
 
   useLayoutEffect(() => {
     if (state.userDetailStatus === AppStatus.INITIAL && emailAddress) {
       dispatch(AppAction.userDetailLoading())
+
       integration
         .getUser(emailAddress)
         .then((user) => {
@@ -44,12 +47,20 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
           if (response.status === 400) {
             dispatch(AppAction.userDetailFailure(true))
           } else if (response.status === 404) {
+            givenName &&
+              familyName &&
+              integration
+                .createUser(emailAddress, givenName, familyName)
+                .then((user) => {
+                  dispatch(AppAction.userDetailSuccess(user))
+                })
+                .catch(() => dispatch(AppAction.userDetailFailure(false)))
           } else {
             dispatch(AppAction.userDetailFailure(false))
           }
         })
     }
-  }, [dispatch, integration, state.userDetailStatus, state.user, isInitialized, emailAddress])
+  }, [dispatch, integration, state.userDetailStatus, state.user, isInitialized, emailAddress, givenName, familyName])
 
   const isLoading =
     !isInitialized ||
