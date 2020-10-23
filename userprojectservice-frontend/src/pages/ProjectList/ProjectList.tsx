@@ -54,9 +54,19 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
   useLayoutEffect(() => {
     if (state.userDetailStatus === AppStatus.INITIAL && emailAddress) {
       dispatch(AppAction.userDetailLoading())
-      integration.getUser(emailAddress).then((user) => {
-        dispatch(AppAction.userDetailSuccess(user))
-      })
+      integration
+        .getUser(emailAddress)
+        .then((user) => {
+          dispatch(AppAction.userDetailSuccess(user))
+        })
+        .catch((e) => {
+          const response = e as Response
+
+          // bad request means email is not Monash email
+          if (e.status === 400) {
+            dispatch(AppAction.userDetailFailure(true))
+          }
+        })
     }
 
     setProjectList(state.user?.projects)
@@ -163,14 +173,6 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
         emailAddress ? (
           <BarContainer shouldContainSideBar={false}>
             <div className={classes.root}>
-              {/*<CssBaseline />*/}
-              {/*<AppBar position="absolute" color="primary" className={clsx(classes.appBar, !open && classes.appBarShift)}>*/}
-              {/*  <Toolbar className={classes.toolbar}>*/}
-              {/*    <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>*/}
-              {/*      Project List*/}
-              {/*    </Typography>*/}
-              {/*  </Toolbar>*/}
-              {/*</AppBar>*/}
               <main className={classes.content}>
                 <div className={classes.appBarSpacer} />
                 <Container maxWidth="lg" className={classes.container}>

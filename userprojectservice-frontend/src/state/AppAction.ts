@@ -9,6 +9,7 @@ export type AppActionType =
   | "PROJECT_DETAIL_FAILURE"
   | "USER_DETAIL_LOADING"
   | "USER_DETAIL_SUCCESS"
+  | "USER_DETAIL_FAILURE"
 
 export interface AppAction<T extends AppActionType, P> {
   type: T
@@ -24,6 +25,8 @@ export type ProjectDetailFailureAction = AppAction<"PROJECT_DETAIL_FAILURE", und
 export type UserDetailLoadingAction = AppAction<"USER_DETAIL_LOADING", undefined>
 
 export type UserDetailSuccessAction = AppAction<"USER_DETAIL_SUCCESS", UserResponse>
+
+export type UserDetailFailureAction = AppAction<"USER_DETAIL_FAILURE", boolean>
 
 export const projectDetailLoading = (): ProjectDetailLoadingAction => ({
   type: "PROJECT_DETAIL_LOADING",
@@ -48,4 +51,9 @@ export const userDetailLoading = (): UserDetailLoadingAction => ({
 export const userDetailSuccess = (user: UserResponse): UserDetailSuccessAction => ({
   type: "USER_DETAIL_SUCCESS",
   payload: user
+})
+
+export const userDetailFailure = (isEmailInvalid: boolean): UserDetailFailureAction => ({
+  type: "USER_DETAIL_FAILURE",
+  payload: isEmailInvalid
 })

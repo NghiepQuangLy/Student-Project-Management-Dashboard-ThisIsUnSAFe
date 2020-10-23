@@ -51,6 +51,7 @@ export interface User {
 export interface AppState {
   projectDetailStatus: AppStatus
   userDetailStatus: AppStatus
+  isUserEmailInvalid: boolean
   currentProject: ProjectDetail | null
   user: User | null
 }
@@ -58,6 +59,7 @@ export interface AppState {
 const AppInitialState: AppState = {
   projectDetailStatus: AppStatus.INITIAL,
   userDetailStatus: AppStatus.INITIAL,
+  isUserEmailInvalid: false,
   currentProject: null,
   user: null
 }

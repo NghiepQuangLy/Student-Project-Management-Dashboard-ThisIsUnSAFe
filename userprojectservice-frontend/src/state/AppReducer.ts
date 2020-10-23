@@ -1,4 +1,4 @@
-import { AppAction, AppActionType, ProjectDetailSuccessAction, UserDetailSuccessAction } from "./AppAction"
+import { AppAction, AppActionType, ProjectDetailSuccessAction, UserDetailFailureAction, UserDetailSuccessAction } from "./AppAction"
 import { AppState } from "./AppState"
 import { Reducer } from "react"
 import { AppStatus } from "../models/AppStatus"
@@ -69,6 +69,16 @@ const AppReducer: Reducer<AppState, AppAction<AppActionType, any>> = (prevState,
           projects: projects
         },
         userDetailStatus: AppStatus.SUCCESS
+      }
+    }
+
+    case "USER_DETAIL_FAILURE": {
+      const userDetailFailureAction = action as UserDetailFailureAction
+
+      return {
+        ...prevState,
+        userDetailStatus: AppStatus.FAILURE,
+        isUserEmailInvalid: userDetailFailureAction.payload
       }
     }
 
