@@ -171,7 +171,9 @@ const ProjectListLanding: FunctionComponent<ProjectListLandingProps> = ({ state 
 
                   <InputBase
                     style={{
-                      float: "right"
+                      float: "left",
+                      width: "50vh",
+                      minWidth: "150px"
                     }}
                     placeholder="🔍 Search Projects"
                     inputProps={{ "aria-label": "search" }}
