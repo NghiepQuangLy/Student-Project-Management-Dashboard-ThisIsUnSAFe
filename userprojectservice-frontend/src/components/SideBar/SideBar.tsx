@@ -1,5 +1,4 @@
-import React, { FunctionComponent, useContext } from "react"
-import { BarContainerContext } from "../BarContainer/BarContainer"
+import React, { FunctionComponent, useState } from "react"
 import { Breadcrumb, Layout, Menu } from "antd"
 import "antd/dist/antd.css"
 import {
@@ -8,10 +7,10 @@ import {
   DashboardOutlined,
   DesktopOutlined,
   ExportOutlined,
+  LinkOutlined,
   LogoutOutlined,
   ScheduleOutlined,
-  WarningOutlined,
-  LinkOutlined
+  WarningOutlined
 } from "@ant-design/icons"
 import Copyright from "../../pages/Resources/Styles"
 import { Link, useHistory } from "react-router-dom"
@@ -63,7 +62,7 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
 
   const { signOut } = useGoogleAuth()
 
-  const { isShowSidebar, setIsShowSidebar } = useContext(BarContainerContext)
+  const [isShowSidebar, setIsShowSidebar] = useState(false)
 
   const handleOnShowProjectDetailClicked = (path: string) => {
     history.push(path)
