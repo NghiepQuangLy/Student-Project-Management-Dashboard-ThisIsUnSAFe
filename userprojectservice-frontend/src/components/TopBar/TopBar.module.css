@@ -27,6 +27,7 @@
   background-color: Transparent;
   font-family: "RobotoCondensed";
   border: none;
+  outline: none;
 }
 
 .Logout {

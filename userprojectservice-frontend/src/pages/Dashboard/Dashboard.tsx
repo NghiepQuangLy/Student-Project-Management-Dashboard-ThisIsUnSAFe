@@ -28,11 +28,11 @@ const Dashboard: FunctionComponent<DashboardProps> = ({ projectDetails }) => {
               {projectDetails?.projectReminderTable.map((data) => (
                 <TableRow key={data.reminderActivity}>
                   <TableCell className={styles.Icon}>
-                    <NotificationsNoneIcon></NotificationsNoneIcon>
+                    <NotificationsNoneIcon />
                   </TableCell>
                   <TableCell component="th" scope="row" className={styles.Rows}>
                     {data.reminderActivity}
-                    <br></br>
+                    <br />
                     {data.reminderUnitCode} {data.reminderUnitName}
                   </TableCell>
                   <TableCell align="right">{data.reminderDate}</TableCell>
@@ -78,7 +78,7 @@ const Dashboard: FunctionComponent<DashboardProps> = ({ projectDetails }) => {
         </TableContainer>
         <div className={styles.IntegrationHeader}>
           <h2>Moodle Link: </h2>
-          <a className={styles.Logo} href={`${projectDetails?.moodleLink}`}></a>
+          <a className={styles.Logo} href={`${projectDetails?.moodleLink}`} />
         </div>
       </div>
     </div>

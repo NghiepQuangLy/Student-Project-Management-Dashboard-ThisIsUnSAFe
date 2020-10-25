@@ -1,5 +1,8 @@
 import { Integration } from "./Integration"
 
+/*
+Mock API response
+ */
 const MockIntegration: Integration = {
   getProject: async (emailAddress: string, projectId: string) =>
     new Promise((resolve) => {
