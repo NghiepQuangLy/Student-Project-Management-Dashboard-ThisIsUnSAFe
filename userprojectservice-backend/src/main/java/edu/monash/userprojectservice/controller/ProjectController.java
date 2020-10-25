@@ -30,7 +30,7 @@ public class ProjectController {
 
     @ResponseStatus(OK)
     @GetMapping("/get-project")
-    public ResponseEntity<GetProjectResponse> getProject(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
+    public ResponseEntity<GetProjectDetailsResponse> getProject(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
         return projectService.getProject(emailAddress, projectId);
     }
 

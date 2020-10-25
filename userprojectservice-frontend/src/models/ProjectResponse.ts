@@ -1,12 +1,12 @@
 export interface ProjectResponse {
-  projectId: string | null
+  projectId: string
   projectName: string | null
   moodleLink: string | null
   projectGitIntegration: Integration[]
   projectGoogleDriveIntegration: Integration[]
   projectGoogleFolderIds: string[]
   projectTrelloIntegration: Integration[]
-  projectTimesheet: string
+  projectTimesheet: string | null
   projectIntegrationTable: IntegrationTable[]
   projectReminderTable: ReminderTable[]
 }

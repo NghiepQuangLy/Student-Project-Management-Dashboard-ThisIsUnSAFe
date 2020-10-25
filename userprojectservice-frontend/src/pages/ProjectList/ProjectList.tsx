@@ -39,33 +39,39 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
       integration
         .getUser(emailAddress)
         .then((user) => {
+          // if name not match, update user
           if (user.firstName !== givenName || user.lastName !== familyName) {
             givenName &&
               familyName &&
               integration.updateUser(emailAddress, givenName, familyName).then(() => {
+                // update user successfully
                 user.firstName = givenName
                 user.lastName = familyName
                 dispatch(AppAction.userDetailSuccess(user))
               })
           }
+          // get user successfully
           dispatch(AppAction.userDetailSuccess(user))
         })
         .catch((e) => {
           const response = e as Response
 
-          // bad request means email is not Monash email
           if (response.status === 400) {
+            // email is not Monash email
             dispatch(AppAction.userDetailFailure(true))
           } else if (response.status === 404) {
+            // user not found
             givenName &&
               familyName &&
               integration
                 .createUser(emailAddress, givenName, familyName)
                 .then((user) => {
+                  // create user successfully
                   dispatch(AppAction.userDetailSuccess(user))
                 })
-                .catch(() => dispatch(AppAction.userDetailFailure(false)))
+                .catch(() => dispatch(AppAction.userDetailFailure(false))) //something went wrong
           } else {
+            //something went wrong
             dispatch(AppAction.userDetailFailure(false))
           }
         })

@@ -2,8 +2,9 @@ import { AppStatus } from "../models/AppStatus"
 
 export interface ProjectDetail {
   projectName: string | null
-  projectId: string | null
+  projectId: string
   moodleLink: string | null
+  projectTimesheet: string | null
   projectGitIntegrations: ProjectIntegration[]
   projectGoogleDriveIntegrations: ProjectIntegration[]
   projectGoogleFolderIds: string[]

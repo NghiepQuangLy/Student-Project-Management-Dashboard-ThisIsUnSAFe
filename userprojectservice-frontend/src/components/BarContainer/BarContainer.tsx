@@ -1,4 +1,4 @@
-import React, { Dispatch, FunctionComponent, SetStateAction, useState } from "react"
+import React, { FunctionComponent } from "react"
 import TopBar from "../TopBar/TopBar"
 import styles from "./BarContainer.module.css"
 import SideBar from "../SideBar/SideBar"
@@ -10,25 +10,19 @@ interface BarContainerProps {
   projectDetails?: ProjectDetail
 }
 
-interface ContextInterface {
-  isShowSidebar: boolean
-  setIsShowSidebar: Dispatch<SetStateAction<boolean>>
-}
-
-export const BarContainerContext = React.createContext({} as ContextInterface)
-
+/*
+ Top Bar and Side Bar component,
+ when shouldContainSideBar = true, display top bar and side bar,
+ when shouldContainSideBar = false, display top bar only
+*/
 const BarContainer: FunctionComponent<BarContainerProps> = ({ shouldContainSideBar, projectDetails, children }) => {
-  const [isShowSidebar, setIsShowSidebar] = useState(false)
-
   return (
-    <BarContainerContext.Provider value={{ isShowSidebar, setIsShowSidebar }}>
-      <Layout>
-        <TopBar />
-        <div className={styles.BottomContainer}>
-          {shouldContainSideBar ? <SideBar projectDetails={projectDetails}>{children}</SideBar> : <div>{children}</div>}
-        </div>
-      </Layout>
-    </BarContainerContext.Provider>
+    <Layout>
+      <TopBar />
+      <div className={styles.BottomContainer}>
+        {shouldContainSideBar ? <SideBar projectDetails={projectDetails}>{children}</SideBar> : <div>{children}</div>}
+      </div>
+    </Layout>
   )
 }
 

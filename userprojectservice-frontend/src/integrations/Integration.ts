@@ -8,6 +8,9 @@ export interface Integration {
   updateUser(emailAddress: string, givenName: string, familyName: string): Promise<void>
 }
 
+/*
+functions of calling APIs
+ */
 const Integration: Integration = {
   async getProject(emailAddress: string, projectId: string) {
     return fetch(`${process.env.REACT_APP_HOST}/get-project?email=${emailAddress}&projectId=${projectId}`, {

@@ -7,28 +7,21 @@ import { useHistory } from "react-router-dom"
 
 interface TopBarProps {}
 
-const { Header } = Layout
-
+/*
+Top Bar Component
+ */
 const TopBar: FunctionComponent<TopBarProps> = () => {
+  const { Header } = Layout
   const { signOut } = useGoogleAuth()
-
   let history = useHistory()
-
-  const redirect = () => {
-    history.push("/projects")
-  }
-
-  const redirect1 = () => {
-    history.push("/example")
-  }
 
   return (
     <Header className={styles.TopBar}>
       <div className={styles.Logo} />
-      <button onClick={redirect1} className={styles.SAFeAndAgileFeatures}>
+      <button onClick={() => history.push("/example")} className={styles.SAFeAndAgileFeatures}>
         SAFe & Agile Features
       </button>
-      <button onClick={redirect} className={styles.Projects}>
+      <button onClick={() => history.push("/projects")} className={styles.Projects}>
         Projects
       </button>
       <button className={styles.Logout} onClick={signOut}>

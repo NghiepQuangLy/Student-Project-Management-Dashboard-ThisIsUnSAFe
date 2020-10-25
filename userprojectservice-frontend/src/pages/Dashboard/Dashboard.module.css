@@ -42,37 +42,6 @@
   flex-wrap: wrap;
 }
 
-.ExmapleChart {
-  margin: 10px;
-  /*display: flex;*/
-  /*border-width: 2px;*/
-  /*border-color: black;*/
-  /*flex-direction: row;*/
-
-  /*display: grid;*/
-  /*grid-template-areas:*/
-  /*        "eta header"*/
-  /*        ". details"*/
-  /*        "actions actions";*/
-
-  /*grid-template-rows: auto auto min-content;*/
-  /*grid-template-columns: 60px auto;*/
-  /*gap: 5px;*/
-
-  height: 250px;
-  width: 250px;
-  min-height: 250px;
-  min-width: 250px;
-  border: 1px dotted grey;
-}
-
-.ExmapleContents {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
 .Table {
   width: 500px;
 }

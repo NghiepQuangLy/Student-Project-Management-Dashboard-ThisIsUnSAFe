@@ -2,9 +2,11 @@ import { useGoogleLogin } from "react-use-googlelogin"
 import React, { FunctionComponent } from "react"
 import { HookReturnValue } from "react-use-googlelogin/dist/types"
 
-export const GoogleAuthContext = React.createContext({} as HookReturnValue)
-
+/*
+Google Login Authentication
+ */
 const GoogleAuthProvider: FunctionComponent = ({ children }) => {
+  // google login configuration
   const googleAuth = useGoogleLogin({
     clientId: "12178522373-e5nmdu6ogip7e70f2sn645j30n55fgke.apps.googleusercontent.com",
     persist: true,
@@ -13,9 +15,15 @@ const GoogleAuthProvider: FunctionComponent = ({ children }) => {
     redirectUri: process.env.REACT_APP_GOOGLE_REDIRECT_URI
   })
 
+  // use provider to store the googleAuth
   return <GoogleAuthContext.Provider value={googleAuth}>{children}</GoogleAuthContext.Provider>
 }
 
+export const GoogleAuthContext = React.createContext({} as HookReturnValue)
+
+/*
+Get googleAuth stored in provider
+ */
 export const useGoogleAuth = () => React.useContext(GoogleAuthContext)
 
 export default GoogleAuthProvider

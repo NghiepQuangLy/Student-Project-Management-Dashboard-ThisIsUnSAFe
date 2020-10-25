@@ -1,5 +1,4 @@
-import React, { FunctionComponent, useContext } from "react"
-import { BarContainerContext } from "../BarContainer/BarContainer"
+import React, { FunctionComponent, useState } from "react"
 import { Breadcrumb, Layout, Menu } from "antd"
 import "antd/dist/antd.css"
 import {
@@ -8,10 +7,10 @@ import {
   DashboardOutlined,
   DesktopOutlined,
   ExportOutlined,
+  LinkOutlined,
   LogoutOutlined,
   ScheduleOutlined,
-  WarningOutlined,
-  LinkOutlined
+  WarningOutlined
 } from "@ant-design/icons"
 import Copyright from "../../pages/Resources/Styles"
 import { Link, useHistory } from "react-router-dom"
@@ -58,23 +57,24 @@ const SideBarKey = {
   logOut: "menu-item-logout"
 }
 
+/*
+Side Bar and Content Component:
+Display content according to current url path
+ */
 const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) => {
   const history = useHistory()
+  const query: URLSearchParams = useQuery()
+  const [isShowSidebar, setIsShowSidebar] = useState(false)
 
   const { signOut } = useGoogleAuth()
-
-  const { isShowSidebar, setIsShowSidebar } = useContext(BarContainerContext)
-
-  const handleOnShowProjectDetailClicked = (path: string) => {
-    history.push(path)
-  }
-
   const currentPath = window.location.pathname
-  const query: URLSearchParams = useQuery()
+
+  // default value
   let defaultSelectedKey = SideBarKey.landing
   let defaultOpenKeys = ["menu-item-integration"]
   let currentPathName = "Dashboard"
 
+  // get current integration base on url path
   switch (currentPath) {
     case PROJECT_DETAIL_GIT_PATH: {
       const id = query?.get(GIT_ID_QUERY)
@@ -128,13 +128,13 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
   }
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
-      <Sider collapsible collapsed={isShowSidebar} onCollapse={setIsShowSidebar} className={styles.SideBar}>
+    <Layout className={styles.SideBar}>
+      <Sider collapsible collapsed={isShowSidebar} onCollapse={setIsShowSidebar}>
         <Menu defaultSelectedKeys={[defaultSelectedKey]} defaultOpenKeys={defaultOpenKeys} mode="inline" theme="dark">
           <Menu.Item
             key={SideBarKey.landing}
             icon={<DashboardOutlined />}
-            onClick={() => handleOnShowProjectDetailClicked(`${PROJECT_DETAIL_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)}
+            onClick={() => history.push(`${PROJECT_DETAIL_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)}
           >
             Dashboard
           </Menu.Item>
@@ -143,9 +143,7 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
               <Menu.Item
                 key={SideBarKey.linkGit}
                 icon={<LinkOutlined />}
-                onClick={() =>
-                  handleOnShowProjectDetailClicked(`${PROJECT_DETAIL_GIT_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)
-                }
+                onClick={() => history.push(`${PROJECT_DETAIL_GIT_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)}
               >
                 Git
               </Menu.Item>
@@ -155,7 +153,7 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
                     <Menu.Item
                       key={`${SideBarKey.git}-${projectIntegration.integrationId}`}
                       onClick={() =>
-                        handleOnShowProjectDetailClicked(
+                        history.push(
                           `${PROJECT_DETAIL_GIT_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}&${GIT_ID_QUERY}=${projectIntegration.integrationId}`
                         )
                       }
@@ -169,9 +167,7 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
               <Menu.Item
                 key={SideBarKey.linkTrello}
                 icon={<LinkOutlined />}
-                onClick={() =>
-                  handleOnShowProjectDetailClicked(`${PROJECT_DETAIL_TRELLO_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)
-                }
+                onClick={() => history.push(`${PROJECT_DETAIL_TRELLO_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)}
               >
                 Trello
               </Menu.Item>
@@ -181,7 +177,7 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
                     <Menu.Item
                       key={`${SideBarKey.trello}-${projectIntegration.integrationId}`}
                       onClick={() =>
-                        handleOnShowProjectDetailClicked(
+                        history.push(
                           `${PROJECT_DETAIL_TRELLO_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}&${TRELLO_ID_QUERY}=${projectIntegration.integrationId}`
                         )
                       }
@@ -195,9 +191,7 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
               <Menu.Item
                 key={SideBarKey.linkGoogleDrive}
                 icon={<LinkOutlined />}
-                onClick={() =>
-                  handleOnShowProjectDetailClicked(`${PROJECT_DETAIL_GOOGLE_DRIVE_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)
-                }
+                onClick={() => history.push(`${PROJECT_DETAIL_GOOGLE_DRIVE_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)}
               >
                 Google Drive
               </Menu.Item>
@@ -207,7 +201,7 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
                     <Menu.Item
                       key={`${SideBarKey.googleDrive}-${projectIntegration.integrationId}`}
                       onClick={() =>
-                        handleOnShowProjectDetailClicked(
+                        history.push(
                           `${PROJECT_DETAIL_GOOGLE_DRIVE_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}&${GOOGLE_DRIVE_ID_QUERY}=${projectIntegration.integrationId}`
                         )
                       }
@@ -221,45 +215,35 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
           <Menu.Item
             key={SideBarKey.reminder}
             icon={<ClockCircleOutlined />}
-            onClick={() =>
-              handleOnShowProjectDetailClicked(`${PROJECT_DETAIL_REMINDERS_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)
-            }
+            onClick={() => history.push(`${PROJECT_DETAIL_REMINDERS_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)}
           >
             Reminders
           </Menu.Item>
           <Menu.Item
             key={SideBarKey.projectProblems}
             icon={<WarningOutlined />}
-            onClick={() =>
-              handleOnShowProjectDetailClicked(`${PROJECT_DETAIL_PROJECT_PROBLEMS_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)
-            }
+            onClick={() => history.push(`${PROJECT_DETAIL_PROJECT_PROBLEMS_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)}
           >
             Project Problems
           </Menu.Item>
           <Menu.Item
             key={SideBarKey.exportData}
             icon={<ExportOutlined />}
-            onClick={() =>
-              handleOnShowProjectDetailClicked(`${PROJECT_DETAIL_EXPORT_DATA_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)
-            }
+            onClick={() => history.push(`${PROJECT_DETAIL_EXPORT_DATA_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)}
           >
             Export Data
           </Menu.Item>
           <Menu.Item
             key={SideBarKey.timeTracking}
             icon={<ScheduleOutlined />}
-            onClick={() =>
-              handleOnShowProjectDetailClicked(`${PROJECT_DETAIL_TIME_TRACKING_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)
-            }
+            onClick={() => history.push(`${PROJECT_DETAIL_TIME_TRACKING_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)}
           >
             Time Tracking
           </Menu.Item>
           <Menu.Item
             key={SideBarKey.contacts}
             icon={<ContactsOutlined />}
-            onClick={() =>
-              handleOnShowProjectDetailClicked(`${PROJECT_DETAIL_CONTACTS_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)
-            }
+            onClick={() => history.push(`${PROJECT_DETAIL_CONTACTS_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)}
           >
             Contacts
           </Menu.Item>
@@ -269,8 +253,8 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
         </Menu>
       </Sider>
       <Layout className="site-layout">
-        <Content style={{ margin: "10px 50px" }}>
-          <Breadcrumb style={{ margin: "16px 0" }}>
+        <Content className={styles.Content}>
+          <Breadcrumb>
             <Breadcrumb.Item>
               <Link to={{ pathname: "/projects" }}>Project List</Link>
             </Breadcrumb.Item>
@@ -278,7 +262,7 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
           </Breadcrumb>
           {children}
         </Content>
-        <Footer style={{ textAlign: "center" }}>
+        <Footer className={styles.Content}>
           <Copyright />
         </Footer>
       </Layout>
