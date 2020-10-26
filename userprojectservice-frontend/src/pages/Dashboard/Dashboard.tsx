@@ -26,17 +26,18 @@ const Dashboard: FunctionComponent<DashboardProps> = ({ projectDetails }) => {
           <Table className={styles.Table} aria-label="Reminders">
             <TableBody>
               {projectDetails?.projectReminderTable.map((data) => (
-                <TableRow key={data.reminderActivity}>
+                <TableRow key={data.reminderName}>
                   <TableCell className={styles.Icon}>
                     <NotificationsNoneIcon />
                   </TableCell>
                   <TableCell component="th" scope="row" className={styles.Rows}>
-                    {data.reminderActivity}
+                    {data.reminderName}
                     <br />
-                    {data.reminderUnitCode} {data.reminderUnitName}
+                    {data.reminderProject}
+                    <br />
+                    {data.reminderDesc}
                   </TableCell>
-                  <TableCell align="right">{data.reminderDate}</TableCell>
-                  <TableCell align="right">{data.reminderTime}</TableCell>
+                  <TableCell align="right">{data.reminderDueDate}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

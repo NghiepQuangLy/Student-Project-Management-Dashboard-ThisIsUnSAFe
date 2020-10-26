@@ -101,25 +101,22 @@ const MockIntegration: Integration = {
           ],
           projectReminderTable: [
             {
-              reminderActivity: "test1",
-              reminderUnitCode: "FIT3170",
-              reminderUnitName: "Software Engineering Practices",
-              reminderDate: "11/10/2020",
-              reminderTime: "11:30PM"
+              reminderName: "test1",
+              reminderProject: "FIT3170",
+              reminderDueDate: "2020-09-08T00:00:00.000+00:00",
+              reminderDesc: "This is a sample description for Software Engineering Practices"
             },
             {
-              reminderActivity: "test2",
-              reminderUnitCode: "FIT3170",
-              reminderUnitName: "Software Engineering Practices",
-              reminderDate: "25/10/2020",
-              reminderTime: "3:30PM"
+              reminderName: "test2",
+              reminderProject: "FIT3170",
+              reminderDueDate: "2020-09-09T00:00:00.000+00:00",
+              reminderDesc: "This is a sample description for Software Engineering Practices"
             },
             {
-              reminderActivity: "test3",
-              reminderUnitCode: "FIT3170",
-              reminderUnitName: "Software Engineering Practices",
-              reminderDate: "11/10/2020",
-              reminderTime: "7:30AM"
+              reminderName: "test3",
+              reminderProject: "FIT3170",
+              reminderDueDate: "2020-09-10T00:00:00.000+00:00",
+              reminderDesc: "This is a sample description for Software Engineering Practices"
             }
           ]
         })

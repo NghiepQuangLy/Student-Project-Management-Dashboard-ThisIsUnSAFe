@@ -13,10 +13,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ReminderTableResponse {
 
-    private String reminderActivity;
-    private String reminderUnitCode;
-    private String reminderUnitName;
-    private String reminderDate;
-    private String reminderTime;
+    private String name;
+    private String project;
+    private String dueDate;
+    private String desc;
 
 }
