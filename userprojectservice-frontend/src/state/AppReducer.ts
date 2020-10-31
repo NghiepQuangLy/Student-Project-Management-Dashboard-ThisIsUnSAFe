@@ -1,4 +1,11 @@
-import { AppAction, AppActionType, ProjectDetailSuccessAction, UserDetailFailureAction, UserDetailSuccessAction } from "./AppAction"
+import {
+  AppAction,
+  AppActionType,
+  ProjectDetailSuccessAction,
+  TrelloBurndownSuccessAction,
+  UserDetailFailureAction,
+  UserDetailSuccessAction
+} from "./AppAction"
 import { AppState } from "./AppState"
 import { Reducer } from "react"
 import { AppStatus } from "../models/AppStatus"
@@ -27,7 +34,8 @@ const AppReducer: Reducer<AppState, AppAction<AppActionType, any>> = (prevState,
           projectGoogleFolderIds: projectSuccessAction.payload.projectGoogleFolderIds,
           projectTrelloIntegrations: projectSuccessAction.payload.projectTrelloIntegration,
           projectIntegrationTable: projectSuccessAction.payload.projectIntegrationTable,
-          projectReminderTable: projectSuccessAction.payload.projectReminderTable
+          projectReminderTable: projectSuccessAction.payload.projectReminderTable,
+          projectBurndownChart: prevState.currentProject?.projectBurndownChart ?? null
         },
         projectDetailStatus: AppStatus.SUCCESS
       }
@@ -80,6 +88,27 @@ const AppReducer: Reducer<AppState, AppAction<AppActionType, any>> = (prevState,
         ...prevState,
         userDetailStatus: AppStatus.FAILURE,
         isUserEmailInvalid: userDetailFailureAction.payload
+      }
+    }
+
+    case "TRELLO_BURNDOWN_SUCCESS": {
+      const burndownSuccessAction = action as TrelloBurndownSuccessAction
+
+      return {
+        ...prevState,
+        currentProject: {
+          projectId: prevState.currentProject?.projectId ?? "",
+          projectName: prevState.currentProject?.projectName ?? null,
+          moodleLink: prevState.currentProject?.moodleLink ?? null,
+          projectTimesheet: prevState.currentProject?.projectTimesheet ?? null,
+          projectGitIntegrations: prevState.currentProject?.projectGitIntegrations ?? [],
+          projectGoogleDriveIntegrations: prevState.currentProject?.projectGoogleDriveIntegrations ?? [],
+          projectGoogleFolderIds: prevState.currentProject?.projectGoogleFolderIds ?? [],
+          projectTrelloIntegrations: prevState.currentProject?.projectTrelloIntegrations ?? [],
+          projectIntegrationTable: prevState.currentProject?.projectIntegrationTable ?? [],
+          projectReminderTable: prevState.currentProject?.projectReminderTable ?? [],
+          projectBurndownChart: burndownSuccessAction.payload
+        }
       }
     }
 

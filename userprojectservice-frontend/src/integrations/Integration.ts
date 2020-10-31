@@ -1,9 +1,11 @@
 import { ProjectResponse } from "../models/ProjectResponse"
 import { UserResponse } from "../models/UserResponse"
+import {BurndownChartResponse} from "../models/BurndownChartResponse";
 
 export interface Integration {
   getProject(emailAddress: string, projectId: string): Promise<ProjectResponse>
   getUser(emailAddress: string): Promise<UserResponse>
+  getBurndownChart(integrationId: string, token: string): Promise<BurndownChartResponse>
   createUser(emailAddress: string, givenName: string, familyName: string): Promise<UserResponse>
   updateUser(emailAddress: string, givenName: string, familyName: string): Promise<void>
 }
@@ -85,6 +87,23 @@ const Integration: Integration = {
         }
       }
       return Promise.resolve()
+    })
+  },
+
+  async getBurndownChart(integrationId: string, token: string) {
+    return fetch(`${process.env.REACT_APP_TRELLO_URL}/trello-service/data/burndown/${integrationId}?token=${token}`, {
+      method: "GET"
+    }).then(async (response) => {
+      const responseBody = await response.text()
+
+      if (response.status < 200 || response.status > 299) {
+        try {
+          return Promise.reject(JSON.parse(responseBody))
+        } catch {
+          return Promise.reject(responseBody)
+        }
+      }
+      return Promise.resolve(JSON.parse(responseBody))
     })
   }
 }

@@ -165,6 +165,37 @@ const MockIntegration: Integration = {
       }, 1000)
     }),
 
+  getBurndownChart: async () =>
+      new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            boardName: "TestBoard",
+            listSizes: {
+              "2020-10-11T00:00:00Z": {
+                "5ee7d560904e87427e0a1465": {
+                  "name": "Stuff To Try (this is a list)",
+                  "size": 1
+                },
+                "5f5c5762e82773415a6b7043": {
+                  "name": "foo",
+                  "size": 3
+                }
+              },
+              "2020-10-11T06:59:30.713Z": {
+                "5ee7d560904e87427e0a1465": {
+                  "name": "Stuff To Try (this is a list)",
+                  "size": 1
+                },
+                "5f5c5762e82773415a6b7043": {
+                  "name": "foo",
+                  "size": 1
+                }
+              }
+            }
+          })
+        }, 1000)
+      }),
+
   createUser: async () =>
     new Promise((resolve) => {
       setTimeout(() => {

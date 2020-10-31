@@ -11,6 +11,7 @@ export interface ProjectDetail {
   projectTrelloIntegrations: ProjectIntegration[]
   projectIntegrationTable: IntegrationTable[]
   projectReminderTable: ReminderTable[]
+  projectBurndownChart: BurndownChart | null
 }
 
 export interface ProjectIntegration {
@@ -54,6 +55,24 @@ export interface AppState {
   isUserEmailInvalid: boolean
   currentProject: ProjectDetail | null
   user: User | null
+}
+
+export interface BurndownChart{
+  boardName: string
+  listSizes: TrelloMap
+}
+
+export interface TrelloMap {
+  [trelloKey: string]: CardMap
+}
+
+export interface CardMap {
+  [cardKey: string]: TrelloCard
+}
+
+export interface TrelloCard {
+  name: string
+  size: number
 }
 
 const AppInitialState: AppState = {
