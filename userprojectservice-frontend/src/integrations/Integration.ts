@@ -5,7 +5,7 @@ import {BurndownChartResponse} from "../models/BurndownChartResponse";
 export interface Integration {
   getProject(emailAddress: string, projectId: string): Promise<ProjectResponse>
   getUser(emailAddress: string): Promise<UserResponse>
-  getBurndownChart(integrationId: string, token: string): Promise<BurndownChartResponse>
+  getBurndownChart(integrationId: string | undefined, token: string): Promise<BurndownChartResponse>
   createUser(emailAddress: string, givenName: string, familyName: string): Promise<UserResponse>
   updateUser(emailAddress: string, givenName: string, familyName: string): Promise<void>
 }

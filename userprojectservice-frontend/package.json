@@ -20,8 +20,10 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-google-button": "^0.7.1",
+    "react-google-charts": "^3.0.15",
     "react-helmet": "^6.1.0",
     "react-router-dom": "^5.2.0",
+    "react-trello-client": "^1.1.6",
     "react-use-googlelogin": "^0.12.5"
   },
   "devDependencies": {
