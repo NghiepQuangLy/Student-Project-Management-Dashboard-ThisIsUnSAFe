@@ -25,7 +25,8 @@ import static org.springframework.http.HttpStatus.OK;
         "http://localhost:3001",
         "http://spmd-git-frontend.s3-website-ap-southeast-2.amazonaws.com/",
         "http://localhost:3002",
-        "http://localhost:3003"
+        "http://localhost:3003",
+        "http://d21emc0xlr7tto.cloudfront.net"
 }, maxAge = 0)
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
