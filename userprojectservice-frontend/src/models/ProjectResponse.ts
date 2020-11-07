@@ -24,9 +24,8 @@ export interface IntegrationTable {
 }
 
 export interface ReminderTable {
-  reminderActivity: string
-  reminderUnitCode: string
-  reminderUnitName: string
-  reminderDate: string
-  reminderTime: string
+  reminderName: string
+  reminderProject: string
+  reminderDueDate: string
+  reminderDesc: string
 }

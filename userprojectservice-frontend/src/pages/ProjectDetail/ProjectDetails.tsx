@@ -34,6 +34,13 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
           dispatch(AppAction.projectDetailSuccess(project))
         })
         .catch(() => dispatch(AppAction.projectDetailFailure()))
+
+      integration
+          .getBurndownChart(state.currentProject?.projectTrelloIntegrations[0].integrationId,"test")
+          .then((project) => {
+            dispatch(AppAction.trelloBurndownSuccess(project))
+          })
+          .catch(() => dispatch(AppAction.projectDetailFailure()))
     }
   }, [dispatch, integration, state.projectDetailStatus, emailAddress, projectId, state.currentProject])
 

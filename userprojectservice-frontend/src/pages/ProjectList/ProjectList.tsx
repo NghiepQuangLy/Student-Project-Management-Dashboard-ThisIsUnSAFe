@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from "react"
+import React, {useLayoutEffect, useState} from "react"
 import { Page } from "../Page"
 import { Redirect } from "react-router-dom"
 import * as AppAction from "../../state/AppAction"
@@ -8,6 +8,8 @@ import { useGoogleAuth } from "../../components/GoogleAuthProvider/GoogleAuthPro
 import Loading from "../../components/Loading/Loading"
 import ProjectListLanding from "../../components/ProjectListLanding/ProjectListLanding"
 import styles from "../ProjectDetail/ProjectDetails.module.css"
+// @ts-ignore
+import TrelloClient, {Trello} from "react-trello-client"
 
 export interface Dictionary<T> {
   [id: string]: T
@@ -78,12 +80,48 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
     }
   }, [dispatch, integration, state.userDetailStatus, state.user, isInitialized, emailAddress, givenName, familyName])
 
+  const [trelloToken, setToken] = useState(undefined)
+  /* Auth with Trello */
+  // const isAuthed = Trello.authorized && Trello.authorized()
+  /* Authenticate if we need to */
+  if (!trelloToken) {
+    console.log("Authenticating Trello")
+    return (<TrelloClient
+        apiKey="38e2c9e0bd5f083ac3e8e19ed8a1a5fa" // Get the API key from https://trello.com/app-key/
+        clientVersion={1} // number: {1}, {2}, {3}
+        apiEndpoint="https://api.trello.com" // string: "https://api.trello.com"
+        authEndpoint="https://trello.com" // string: "https://trello.com"
+        intentEndpoint="https://trello.com" // string: "https://trello.com"
+        authorizeName="React Trello Client" // string: "React Trello Client"
+        authorizeType="popup" // string: popup | redirect
+        authorizePersist={true}
+        authorizeInteractive={false}
+        authorizeScopeRead={true} // boolean: {true} | {false}
+        authorizeScopeWrite={true} // boolean: {true} | {false}
+        authorizeScopeAccount={true} // boolean: {true} | {false}
+        authorizeExpiration="never" // string: "1hour", "1day", "30days" | "never"
+        authorizeOnSuccess={() => {
+          console.log("Authenticated Trello")
+          setToken(Trello.token())
+          console.log(Trello.token())
+        }}
+        authorizeOnError={() => {
+          console.log("Failed to auth Trello")
+        }}
+        autoAuthorize={true} // boolean: {true} | {false}
+        authorizeButton={true} // boolean: {true} | {false}
+        buttonStyle="flat" // string: "metamorph" | "flat"
+        buttonColor="grayish-blue" // string: "green" | "grayish-blue" | "light"
+        buttonText="Authenticate" // string: "Login with Trello"
+    />)
+  }
+
   const isLoading =
     !isInitialized ||
     (isInitialized &&
       isSignedIn &&
       emailAddress &&
-      (state.userDetailStatus === AppStatus.INITIAL || state.userDetailStatus === AppStatus.LOADING))
+      (state.userDetailStatus === AppStatus.INITIAL || state.userDetailStatus === AppStatus.LOADING)) || !trelloToken
   const isRedirectToLogin = !isLoading && !isSignedIn
   const isEmailInvalid = state.userDetailStatus === AppStatus.FAILURE && state.isUserEmailInvalid
   const isErr = !isEmailInvalid && !isLoading && (state.userDetailStatus === AppStatus.FAILURE || (isSignedIn && !emailAddress))

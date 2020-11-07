@@ -26,6 +26,7 @@ const Login: Page = ({ integration, state, dispatch }) => {
           <h1 className={styles.Welcome}>Welcome to SPMD</h1>
           <img src={monash} alt="profile" className={styles.MonashLogo} />
           <GoogleButton className={styles.GoogleButton} onClick={() => signIn()} />
+          
         </div>
       )}
     </div>
