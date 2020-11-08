@@ -12,5 +12,5 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetIntegrationsResponse {
-    private List<IntegrationObjectResponse> gitIntegrations;
+    private List<IntegrationObjectResponse> integrations;
 }

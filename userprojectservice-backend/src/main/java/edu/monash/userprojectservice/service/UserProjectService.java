@@ -1,25 +1,33 @@
 package edu.monash.userprojectservice.service;
 
-import edu.monash.userprojectservice.ValidationHandler;
 import edu.monash.userprojectservice.HTTPResponseHandler;
-import edu.monash.userprojectservice.model.*;
+import edu.monash.userprojectservice.ValidationHandler;
+import edu.monash.userprojectservice.model.AddProjectUserRequest;
+import edu.monash.userprojectservice.model.GetUserProjectsResponse;
+import edu.monash.userprojectservice.model.ProjectListResponse;
+import edu.monash.userprojectservice.model.ProjectUsers;
+import edu.monash.userprojectservice.model.RemoveProjectUserRequest;
+import edu.monash.userprojectservice.repository.AddProjectUserRepository;
 import edu.monash.userprojectservice.repository.RemoveProjectUserRepository;
 import edu.monash.userprojectservice.repository.project.ProjectEntity;
 import edu.monash.userprojectservice.repository.project.ProjectsRepository;
+import edu.monash.userprojectservice.repository.user.UsersRepository;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsEntity;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsRepository;
-import edu.monash.userprojectservice.repository.AddProjectUserRepository;
-import edu.monash.userprojectservice.repository.user.UsersRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.OK;
 
 @Slf4j
 @Service
@@ -44,14 +52,13 @@ public class UserProjectService {
     private ValidationHandler validationHandler;
 
 
-
     public GetUserProjectsResponse getUsersByProject(String emailAddress, String projectId) {
         log.info("{\"message\":\"Getting projects\", \"user\":\"{}\"}", projectId);
 
         // Validation Check
         try {
             validationHandler.isUserAdmin(emailAddress);
-        } catch (HTTPResponseHandler.ForbiddenException e){
+        } catch (HTTPResponseHandler.ForbiddenException e) {
             validationHandler.isUserOwnProject(emailAddress, projectId);
         }
 
@@ -109,7 +116,7 @@ public class UserProjectService {
 
         // check if the project exists in the database
         if (projectsRepository.findProjectEntityByProjectId(addProjectUserRequest.getProjectId()) == null) {
-            log.warn( addProjectUserRequest.getProjectId() +"not found!");
+            log.warn(addProjectUserRequest.getProjectId() + "not found!");
             return new ResponseEntity<>(
                     null, NOT_FOUND
             );
@@ -117,7 +124,7 @@ public class UserProjectService {
 
         // To handle case when an empty list with no users is passed
         if (addProjectUserRequest.getEmailAddress().size() == 0) {
-            log.warn( "There are no users to add to Project ID: "+ addProjectUserRequest.getProjectId());
+            log.warn("There are no users to add to Project ID: " + addProjectUserRequest.getProjectId());
             return new ResponseEntity<>(
                     null, BAD_REQUEST
             );
@@ -126,7 +133,7 @@ public class UserProjectService {
         for (int i = 0; i < addProjectUserRequest.getEmailAddress().size(); i++) {
             // check if new member exists in database
             if (usersRepository.findUserEntityByEmailAddress(addProjectUserRequest.getEmailAddress().get(i)) == null) {
-                log.warn(addProjectUserRequest.getEmailAddress().get(i)+" not found!");
+                log.warn(addProjectUserRequest.getEmailAddress().get(i) + " not found!");
                 return new ResponseEntity<>(
                         null, NOT_FOUND
                 );
@@ -134,14 +141,14 @@ public class UserProjectService {
         }
 
         //flag to check if all the users in the list have been added
-        Boolean hasAddedAllUsers=true;
+        Boolean hasAddedAllUsers = true;
         for (int i = 0; i < addProjectUserRequest.getEmailAddress().size(); i++) {
             // edit in db when project and user exist
             System.out.println(addProjectUserRequest.getEmailAddress().get(i));
             Boolean isSuccessful = addProjectUserRepository.save(addProjectUserRequest.getProjectId(), addProjectUserRequest.getEmailAddress().get(i));
             if (!(isSuccessful)) {
-                log.info(addProjectUserRequest.getEmailAddress().get(i)+" could not be added!");
-                hasAddedAllUsers=false; // in the case that a user cannot be added, this will be set to false to indicate a user from the list of users could not be added.
+                log.info(addProjectUserRequest.getEmailAddress().get(i) + " could not be added!");
+                hasAddedAllUsers = false; // in the case that a user cannot be added, this will be set to false to indicate a user from the list of users could not be added.
             }
             if (isSuccessful) {
                 log.info(addProjectUserRequest.getEmailAddress().get(i) + " has been added!");
@@ -153,8 +160,7 @@ public class UserProjectService {
             return new ResponseEntity<>(
                     null, OK
             );
-        }
-        else{
+        } else {
             return new ResponseEntity<>(
                     null, INTERNAL_SERVER_ERROR
             );
@@ -162,15 +168,16 @@ public class UserProjectService {
 
     }
 
+    @Transactional
     // method is called to remove a list of users from a project
-    public ResponseEntity<GetUserProjectsResponse> removeProjectUser(RemoveProjectUserRequest removeProjectUserRequest) throws SQLException {
+    public ResponseEntity removeProjectUser(RemoveProjectUserRequest removeProjectUserRequest) throws SQLException {
 
         // Validation Check
         validationHandler.isUserAdmin(removeProjectUserRequest.getRequestorEmail());
 
         // check if the project exists in the database
         if (projectsRepository.findProjectEntityByProjectId(removeProjectUserRequest.getProjectId()) == null) {
-            log.warn( removeProjectUserRequest.getProjectId() +"not found!");
+            log.warn(removeProjectUserRequest.getProjectId() + "not found!");
             return new ResponseEntity<>(
                     null, NOT_FOUND
             );
@@ -179,7 +186,7 @@ public class UserProjectService {
         // To handle case when an empty list with no users is passed
         if (removeProjectUserRequest.getEmailAddress().size() == 0) {
             // log an warning that there are no users in the list
-            log.warn( "There are no users to add to Project ID: "+ removeProjectUserRequest.getProjectId());
+            log.warn("There are no users to add to Project ID: " + removeProjectUserRequest.getProjectId());
             return new ResponseEntity<>(
                     null, BAD_REQUEST
             );
@@ -189,38 +196,25 @@ public class UserProjectService {
         for (int i = 0; i < removeProjectUserRequest.getEmailAddress().size(); i++) {
             // check if new member exists in database
             if (usersRepository.findUserEntityByEmailAddress(removeProjectUserRequest.getEmailAddress().get(i)) == null) {
-                log.warn(removeProjectUserRequest.getEmailAddress().get(i)+" not found!");
+                log.warn(removeProjectUserRequest.getEmailAddress().get(i) + " not found!");
                 return new ResponseEntity<>(
                         null, NOT_FOUND
                 );
             }
         }
 
-        //flag to check if all the users in the list have been removed
-        Boolean hasRemovedAllUsers=true;
         for (int i = 0; i < removeProjectUserRequest.getEmailAddress().size(); i++) {
-            // edit in db when project and user exist
-            Boolean isSuccessful = removeProjectUserRepository.delete(removeProjectUserRequest.getProjectId(), removeProjectUserRequest.getEmailAddress().get(i));
-            if (!(isSuccessful)) {
-                log.info(removeProjectUserRequest.getEmailAddress().get(i)+" could not be removed!");
-                hasRemovedAllUsers=false; // in the case that a user cannot be removed, this will be set to false to indicate a user from the list of users could not be removed.
-            }
-            if (isSuccessful) {
-                log.info(removeProjectUserRequest.getEmailAddress().get(i) + " has been removed!");
-            }
-        }
-        // if all the users in the list have been removed, return status 200; else return internal server error
-        if (hasRemovedAllUsers) {
-            return new ResponseEntity<>(
-                    null, OK
+            // delete in db when project and user exist
+            usersProjectsRepository.deleteUsersProjectsEntityByEmailAddressAndProjectId(
+                    removeProjectUserRequest.getEmailAddress().get(i),
+                    removeProjectUserRequest.getProjectId()
             );
-        }
-        else{
-            return new ResponseEntity<>(
-                    null, INTERNAL_SERVER_ERROR
-            );
-        }
 
+            log.info("User [{}] has been removed from project [{}]", removeProjectUserRequest.getEmailAddress().get(i), removeProjectUserRequest.getProjectId());
+        }
+        return new ResponseEntity<>(
+                null, OK
+        );
     }
 }
 

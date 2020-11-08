@@ -10,4 +10,5 @@ public interface UsersProjectsRepository extends CrudRepository<UsersProjectsEnt
 
     List<UsersProjectsEntity> findUsersProjectsEntitiesByEmailAddress(String emailAddress);
     List<UsersProjectsEntity> findUsersProjectsEntitiesByProjectId(String projectId);
+    void deleteUsersProjectsEntityByEmailAddressAndProjectId(String emailAddress, String projectId);
 }
