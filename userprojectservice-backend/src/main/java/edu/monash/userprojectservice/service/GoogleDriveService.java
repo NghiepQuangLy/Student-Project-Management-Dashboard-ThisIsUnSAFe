@@ -1,7 +1,6 @@
 package edu.monash.userprojectservice.service;
 
 import edu.monash.userprojectservice.ValidationHandler;
-import edu.monash.userprojectservice.model.GetGitResponse;
 import edu.monash.userprojectservice.model.GetGoogleDriveResponse;
 import edu.monash.userprojectservice.model.SaveGoogleDriveRequest;
 import edu.monash.userprojectservice.model.RemoveGoogleDriveRequest;
@@ -35,7 +34,7 @@ public class GoogleDriveService {
         log.info("{\"message\":\"Getting GoogleDrive data\", \"project\":\"{}\"}, \"googleDrive\":\"{}\"}", projectId);
 
         // Validation Check
-        validationHandler.isValid(emailAddress, projectId);
+        validationHandler.isUserOwnProject(emailAddress, projectId);
 
         // get from database
         List<GoogleDriveEntity> googleDriveEntities = googleDriveRepository.findGoogleDriveEntitiesByProjectId(projectId);
@@ -49,7 +48,7 @@ public class GoogleDriveService {
         log.info("{\"message\":\"Insert GoogleDrive data\", \"project\":\"{}\"}", saveGoogleDriveRequest);
 
         // Validation Check
-        validationHandler.isValid(saveGoogleDriveRequest.getEmailAddress(), saveGoogleDriveRequest.getProjectId());
+        validationHandler.isUserOwnProject(saveGoogleDriveRequest.getEmailAddress(), saveGoogleDriveRequest.getProjectId());
 
         // Store into database
         googleDriveRepository.save(new GoogleDriveEntity(saveGoogleDriveRequest.getGoogleDriveId(), saveGoogleDriveRequest.getProjectId(), saveGoogleDriveRequest.getGoogleDriveName()));
@@ -62,7 +61,7 @@ public class GoogleDriveService {
         log.info("{\"message\":\"Remove GoogleDrive data\", \"project\":\"{}\"}", removeGoogleDriveRequest);
 
         // Validation Check
-        validationHandler.isValid(removeGoogleDriveRequest.getEmailAddress(), removeGoogleDriveRequest.getProjectId());
+        validationHandler.isUserOwnProject(removeGoogleDriveRequest.getEmailAddress(), removeGoogleDriveRequest.getProjectId());
 
         // Get list of google drive integrations for the project
         List<GoogleDriveEntity> googleDriveEntity = googleDriveRepository.findGoogleDriveEntitiesByProjectId(removeGoogleDriveRequest.getProjectId());

@@ -87,7 +87,7 @@ public class ProjectService {
         log.info("{\"message\":\"Getting project\", \"project\":\"{}\"}", projectId);
 
         // Validation Check
-        validationHandler.isValid(emailAddress, projectId);
+        validationHandler.isUserOwnProject(emailAddress, projectId);
 
         // get project from database
         ProjectEntity projectEntity = projectsRepository.findProjectEntityByProjectId(projectId);
@@ -365,7 +365,7 @@ public class ProjectService {
         log.info("{\"message\":\"Getting project\", \"project\":\"{}\"}", projectId);
 
         // Validation Check
-        validationHandler.isValid(emailAddress, projectId);
+        validationHandler.isUserOwnProject(emailAddress, projectId);
 
         // get from database
         ProjectEntity projectEntity = projectsRepository.findProjectEntityByProjectId(projectId);
@@ -384,7 +384,7 @@ public class ProjectService {
         log.info("{\"message\":\"Inserting timesheet\", \"project\":\"{}\"}", saveTimesheetRequest);
 
         // Validation Check
-        validationHandler.isValid(saveTimesheetRequest.getEmailAddress(), saveTimesheetRequest.getProjectId());
+        validationHandler.isUserOwnProject(saveTimesheetRequest.getEmailAddress(), saveTimesheetRequest.getProjectId());
 
         ProjectEntity projectEntity = projectsRepository.findProjectEntityByProjectId(saveTimesheetRequest.getProjectId());
         projectEntity.setTimesheet(saveTimesheetRequest.getTimesheet());
@@ -400,7 +400,7 @@ public class ProjectService {
         log.info("{\"message\":\"Removing timesheet\", \"project\":\"{}\"}", removeTimesheetRequest);
 
         // Validation Check
-        validationHandler.isValid(removeTimesheetRequest.getEmailAddress(), removeTimesheetRequest.getProjectId());
+        validationHandler.isUserOwnProject(removeTimesheetRequest.getEmailAddress(), removeTimesheetRequest.getProjectId());
 
         ProjectEntity projectEntity = projectsRepository.findProjectEntityByProjectId(removeTimesheetRequest.getProjectId());
 
