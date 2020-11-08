@@ -2,6 +2,8 @@ import React, { FunctionComponent } from "react"
 import styles from "./Dashboard.module.css"
 import { ProjectDetail } from "../../state/AppState"
 import Table from "@material-ui/core/Table"
+import Tooltip from "@material-ui/core/Tooltip"
+import HelpOutline from '@material-ui/icons/HelpOutline'
 import TableBody from "@material-ui/core/TableBody"
 import TableCell from "@material-ui/core/TableCell"
 import TableContainer from "@material-ui/core/TableContainer"
@@ -44,13 +46,23 @@ const Dashboard: FunctionComponent<DashboardProps> = ({ projectDetails }) => {
         </TableContainer>
         <span>&nbsp;&nbsp;</span>
         <div className={styles.IntegrationHeader}>
-          <h2>Integration History:</h2>
+          <h2>Integration History:
+            </h2>
         </div>
         <TableContainer component={Paper} className={styles.Container}>
           <Table className={styles.Table} aria-label="customized table">
             <TableHead>
               <TableRow>
-                <TableCell className={styles.StyledTableCellHead}>Email Address</TableCell>
+                <TableCell className={styles.StyledTableCellHead}>
+                Email Address
+                <Tooltip
+                    title="Enter the Team Drive ID you wish to add to, or remove from, this project."
+                    placement="right-end"
+                    disableFocusListener
+                    disableTouchListener
+                    className={styles.Tooltip}
+                  ><HelpOutline></HelpOutline></Tooltip>
+                </TableCell>
                 <TableCell className={styles.StyledTableCellHead} align="left">
                   Git
                 </TableCell>

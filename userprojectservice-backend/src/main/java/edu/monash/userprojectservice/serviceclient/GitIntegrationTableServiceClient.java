@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class GitIntegrationTableServiceClient {
 
-    private static final String GIT_INTEGRATION_URL = "http://localhost:5000/user-project-service/test-array-request-param?emails={id}&git-ids={ids}";
+    private static final String GIT_INTEGRATION_URL = "http://spmdgitbackend-env.eba-dyda2zrz.ap-southeast-2.elasticbeanstalk.com/git/projects/project-id/repository/last-changed-email?emails={id}&git-ids={ids}";
     private RestTemplate restTemplate;
 
     public List<IntegrationTableResponse> getGitIntegrationTable(List<String> emails, List<String> gitIds) {

@@ -4,10 +4,8 @@ import {
   GIT_ID_QUERY,
   GOOGLE_DRIVE_ID_QUERY,
   PROJECT_DETAIL_CONTACTS_PATH,
-  PROJECT_DETAIL_EXPORT_DATA_PATH,
   PROJECT_DETAIL_GIT_PATH,
   PROJECT_DETAIL_GOOGLE_DRIVE_PATH,
-  PROJECT_DETAIL_PROJECT_PROBLEMS_PATH,
   PROJECT_DETAIL_REMINDERS_PATH,
   PROJECT_DETAIL_TIME_TRACKING_PATH,
   PROJECT_DETAIL_TRELLO_PATH,
@@ -23,6 +21,7 @@ Iframe component:
 Display different pages in iframe according to url
  */
 const ProjectDetailsIntegration: FunctionComponent<ProjectDetailsIntegrationProps> = () => {
+
   // get project id from url
   let query = useQuery()
   const projectId = query?.get(PROJECT_ID_QUERY)
@@ -35,7 +34,7 @@ const ProjectDetailsIntegration: FunctionComponent<ProjectDetailsIntegrationProp
     case PROJECT_DETAIL_GIT_PATH:
       const gitId = query?.get(GIT_ID_QUERY)
       integrationIdQuery = gitId ? `&git-id=${gitId}` : ""
-      url = `${process.env.REACT_APP_GIT_URL}?project-id=${projectId}${integrationIdQuery}`
+      url = `${process.env.REACT_APP_GIT_URL}git?project-id=${projectId}${integrationIdQuery}`
       break
     case PROJECT_DETAIL_TRELLO_PATH:
       const trelloId = query?.get(TRELLO_ID_QUERY)
@@ -49,12 +48,6 @@ const ProjectDetailsIntegration: FunctionComponent<ProjectDetailsIntegrationProp
       break
     case PROJECT_DETAIL_REMINDERS_PATH:
       url = `${process.env.REACT_APP_REMINDER_URL}?project-id=${projectId}`
-      break
-    case PROJECT_DETAIL_PROJECT_PROBLEMS_PATH:
-      url = `${process.env.REACT_APP_PROJECT_PROBLEM_URL}?project-id=${projectId}`
-      break
-    case PROJECT_DETAIL_EXPORT_DATA_PATH:
-      url = `${process.env.REACT_APP_EXPORT_DATA_URL}?project-id=${projectId}`
       break
     case PROJECT_DETAIL_TIME_TRACKING_PATH:
       url = `${process.env.REACT_APP_TIME_TRACKING_URL}?project-id=${projectId}`

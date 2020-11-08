@@ -46,6 +46,10 @@
   width: 500px;
 }
 
+.Tooltip{
+  padding-top: 10px;
+}
+
 .Container {
   display: flex;
   justify-content: center;

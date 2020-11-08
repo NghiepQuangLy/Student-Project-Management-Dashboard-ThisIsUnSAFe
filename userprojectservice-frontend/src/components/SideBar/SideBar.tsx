@@ -6,11 +6,9 @@ import {
   ContactsOutlined,
   DashboardOutlined,
   DesktopOutlined,
-  ExportOutlined,
   LinkOutlined,
   LogoutOutlined,
-  ScheduleOutlined,
-  WarningOutlined
+  ScheduleOutlined
 } from "@ant-design/icons"
 import Copyright from "../../pages/Resources/Styles"
 import { Link, useHistory } from "react-router-dom"
@@ -20,11 +18,9 @@ import {
   GIT_ID_QUERY,
   GOOGLE_DRIVE_ID_QUERY,
   PROJECT_DETAIL_CONTACTS_PATH,
-  PROJECT_DETAIL_EXPORT_DATA_PATH,
   PROJECT_DETAIL_GIT_PATH,
   PROJECT_DETAIL_GOOGLE_DRIVE_PATH,
   PROJECT_DETAIL_PATH,
-  PROJECT_DETAIL_PROJECT_PROBLEMS_PATH,
   PROJECT_DETAIL_REMINDERS_PATH,
   PROJECT_DETAIL_TIME_TRACKING_PATH,
   PROJECT_DETAIL_TRELLO_PATH,
@@ -50,8 +46,6 @@ const SideBarKey = {
   linkGoogleDrive: "sub-menu-google-drive-item-link-new",
   googleDrive: "sub-menu-google-drive-item",
   reminder: "menu-item-reminders",
-  projectProblems: "menu-item-project-problems",
-  exportData: "menu-item-export-data",
   timeTracking: "menu-item-time-tracking",
   contacts: "menu-item-contacts",
   logOut: "menu-item-logout"
@@ -100,16 +94,6 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
     case PROJECT_DETAIL_REMINDERS_PATH: {
       defaultSelectedKey = SideBarKey.reminder
       currentPathName = "Reminders"
-      break
-    }
-    case PROJECT_DETAIL_PROJECT_PROBLEMS_PATH: {
-      defaultSelectedKey = SideBarKey.projectProblems
-      currentPathName = "Project Problems"
-      break
-    }
-    case PROJECT_DETAIL_EXPORT_DATA_PATH: {
-      defaultSelectedKey = SideBarKey.exportData
-      currentPathName = "Export Data"
       break
     }
     case PROJECT_DETAIL_TIME_TRACKING_PATH: {
@@ -218,20 +202,6 @@ const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) 
             onClick={() => history.push(`${PROJECT_DETAIL_REMINDERS_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)}
           >
             Reminders
-          </Menu.Item>
-          <Menu.Item
-            key={SideBarKey.projectProblems}
-            icon={<WarningOutlined />}
-            onClick={() => history.push(`${PROJECT_DETAIL_PROJECT_PROBLEMS_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)}
-          >
-            Project Problems
-          </Menu.Item>
-          <Menu.Item
-            key={SideBarKey.exportData}
-            icon={<ExportOutlined />}
-            onClick={() => history.push(`${PROJECT_DETAIL_EXPORT_DATA_PATH}?${PROJECT_ID_QUERY}=${projectDetails?.projectId}`)}
-          >
-            Export Data
           </Menu.Item>
           <Menu.Item
             key={SideBarKey.timeTracking}
