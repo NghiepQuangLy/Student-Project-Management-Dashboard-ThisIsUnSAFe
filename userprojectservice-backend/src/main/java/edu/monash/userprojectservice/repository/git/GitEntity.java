@@ -1,6 +1,5 @@
 package edu.monash.userprojectservice.repository.git;
 
-import edu.monash.userprojectservice.repository.trello.TrelloPrimaryKey;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

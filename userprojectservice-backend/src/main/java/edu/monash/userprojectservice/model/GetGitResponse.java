@@ -1,6 +1,5 @@
 package edu.monash.userprojectservice.model;
 
-import edu.monash.userprojectservice.repository.git.GitEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,5 +12,5 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetGitResponse {
-    private List<GitEntity> gitId;
+    private List<IntegrationObjectResponse> gitId;
 }

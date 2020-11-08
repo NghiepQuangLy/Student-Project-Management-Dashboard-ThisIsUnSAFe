@@ -52,7 +52,7 @@ public class UserProjectService {
         try {
             validationHandler.isUserAdmin(emailAddress);
         } catch (HTTPResponseHandler.ForbiddenException e){
-            validationHandler.isValid(emailAddress, projectId);
+            validationHandler.isUserOwnProject(emailAddress, projectId);
         }
 
         ProjectEntity projectEntity = projectsRepository.findProjectEntityByProjectId(projectId);
