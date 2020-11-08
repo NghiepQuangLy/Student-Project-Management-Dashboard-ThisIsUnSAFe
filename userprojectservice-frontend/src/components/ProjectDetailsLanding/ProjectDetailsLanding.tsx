@@ -15,6 +15,11 @@ interface ProjectDetailsLandingProps {
   state: AppState
 }
 
+/**
+ * This method returns the ProjectDetailsLanding component
+ * @param state The state of the application
+ * @return The HTML for the ProjectDetailsLanding component
+ */
 const ProjectDetailsLanding: FunctionComponent<ProjectDetailsLandingProps> = ({ state }) => {
   // Page Styling
   const classes = useStyles()

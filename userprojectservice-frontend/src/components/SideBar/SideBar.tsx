@@ -57,9 +57,11 @@ const SideBarKey = {
   logOut: "menu-item-logout"
 }
 
-/*
-Side Bar and Content Component:
-Display content according to current url path
+/**
+ * This methods the Side Bar component.
+ * @param projectDetails Stores the different integration information of the project
+ * @param children The children components
+ * @return The HTML for the SideBar component
  */
 const SideBar: FunctionComponent<SideBarProps> = ({ projectDetails, children }) => {
   const history = useHistory()
