@@ -8,7 +8,6 @@ import edu.monash.userprojectservice.model.ProjectListResponse;
 import edu.monash.userprojectservice.model.ProjectUsers;
 import edu.monash.userprojectservice.model.RemoveProjectUserRequest;
 import edu.monash.userprojectservice.repository.AddProjectUserRepository;
-import edu.monash.userprojectservice.repository.RemoveProjectUserRepository;
 import edu.monash.userprojectservice.repository.project.ProjectEntity;
 import edu.monash.userprojectservice.repository.project.ProjectsRepository;
 import edu.monash.userprojectservice.repository.user.UsersRepository;
@@ -44,9 +43,6 @@ public class UserProjectService {
 
     @Autowired
     private AddProjectUserRepository addProjectUserRepository;
-
-    @Autowired
-    private RemoveProjectUserRepository removeProjectUserRepository;
 
     @Autowired
     private ValidationHandler validationHandler;
