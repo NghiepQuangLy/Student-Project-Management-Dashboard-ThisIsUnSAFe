@@ -37,7 +37,7 @@ public class AdminController {
 
     @ResponseStatus(OK)
     @GetMapping("/check-admin")
-    public ResponseEntity<CheckAdminResponse> checkAdmin(@RequestParam("email") String emailAddress) {
+    public CheckAdminResponse checkAdmin(@RequestParam("email") String emailAddress) {
         return adminService.checkAdminByEmail(emailAddress);
     }
 }

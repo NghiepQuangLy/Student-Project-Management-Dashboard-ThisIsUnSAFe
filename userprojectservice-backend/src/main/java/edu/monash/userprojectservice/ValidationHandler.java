@@ -77,9 +77,14 @@ public class ValidationHandler {
         }
     }
 
+    /*
+     * This method is used to check if a given email is blank
+     * @param emailAddress The email address to be validated
+     * @exception BadRequestException when email is empty
+     */
     public void isEmailNotBlank(String emailAddress) {
         if (emailAddress.equals("")) {
-            throw new HTTPResponseHandler.BadRequestException("Email address can not be empty");
+            throw new HTTPResponseHandler.BadRequestException("Email address must not be blank");
         }
     }
 }
