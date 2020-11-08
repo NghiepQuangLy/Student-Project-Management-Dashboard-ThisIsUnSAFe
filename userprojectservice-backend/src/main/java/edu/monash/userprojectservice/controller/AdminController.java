@@ -18,6 +18,12 @@ public class AdminController {
 
     private AdminService adminService;
 
+    /*
+     * This method is used to check if a given email is admin
+     * @requestParam emailAddress The email address to be validated
+     * @return 200 CheckAdminResponse isAdmin = true when the email is admin, else isAdmin = false
+     * @return 400 when email is empty
+     */
     @ResponseStatus(OK)
     @GetMapping("/check-admin")
     public CheckAdminResponse checkAdmin(@RequestParam("email") String emailAddress) {
