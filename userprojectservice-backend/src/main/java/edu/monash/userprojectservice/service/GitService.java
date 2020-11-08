@@ -1,23 +1,19 @@
 package edu.monash.userprojectservice.service;
 
+import edu.monash.userprojectservice.HTTPResponseHandler;
 import edu.monash.userprojectservice.ValidationHandler;
 import edu.monash.userprojectservice.model.GetGitResponse;
-import edu.monash.userprojectservice.model.SaveGitRequest;
+import edu.monash.userprojectservice.model.IntegrationObjectResponse;
 import edu.monash.userprojectservice.model.RemoveGitRequest;
+import edu.monash.userprojectservice.model.SaveGitRequest;
 import edu.monash.userprojectservice.repository.git.GitEntity;
 import edu.monash.userprojectservice.repository.git.GitRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.http.ResponseEntity;
-
-import java.sql.SQLException;
 
 import java.util.List;
-
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.OK;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -29,26 +25,47 @@ public class GitService {
     @Autowired
     private ValidationHandler validationHandler;
 
-    // Get from Git table
+    /*
+     * This method is to get list of git data
+     * @param emailAddress The email address to be validated
+     * @param projectId The project that contains the git ids
+     * @return GetGitResponse This returns list of git ids
+     * @exception BadRequestException when email is empty or not monash email, when project id is empty,
+     * @exception ForbiddenException when project does not belong to the email
+     */
     public GetGitResponse getGit(String emailAddress, String projectId) {
         log.info("{\"message\":\"Getting git data\", \"project\":\"{}\"}}", projectId);
 
         // Validation Check
-        validationHandler.isValid(emailAddress, projectId);
+        validationHandler.isUserOwnProject(emailAddress, projectId);
 
-        // get from database
+        // Get list of git entities from database by project id
         List<GitEntity> gitEntities = gitRepository.findGitEntitiesByProjectId(projectId);
 
-        log.info("{\"message\":\"Got git data\", \"project\":\"{}\"}, \"git\":\"{}\"}", projectId, gitEntities);
-        return new GetGitResponse(gitEntities);
+        // Convert to response
+        List<IntegrationObjectResponse> gitIntegrations = gitEntities.stream().map(gitEntity ->
+                IntegrationObjectResponse
+                        .builder()
+                        .integrationId(gitEntity.getGitId())
+                        .integrationName(gitEntity.getGitName())
+                        .build()
+        ).collect(Collectors.toList());
+
+        log.info("{\"message\":\"Got git data\", \"project\":\"{}\"}, \"git\":\"{}\"}", projectId, gitIntegrations);
+        return new GetGitResponse(gitIntegrations);
     }
 
-    // Insert into Git table
+    /*
+     * This method is to store git data to a project
+     * @param saveGitRequest git data, project id and email address
+     * @exception BadRequestException when email is empty or not monash email, when project id is empty
+     * @exception ForbiddenException when project does not belong to the email
+     */
     public void insertGit(SaveGitRequest saveGitRequest) {
         log.info("{\"message\":\"Insert Git data\", \"project\":\"{}\"}", saveGitRequest);
 
         // Validation Check
-        validationHandler.isValid(saveGitRequest.getEmailAddress(), saveGitRequest.getProjectId());
+        validationHandler.isUserOwnProject(saveGitRequest.getEmailAddress(), saveGitRequest.getProjectId());
 
         // Store into database
         gitRepository.save(new GitEntity(saveGitRequest.getGitId(), saveGitRequest.getProjectId(), saveGitRequest.getGitName()));
@@ -56,37 +73,34 @@ public class GitService {
         log.info("{\"message\":\"Inserted into Git\", \"project\":\"{}\"}", saveGitRequest);
     }
 
-    // Remove from Git table
-    public ResponseEntity<GetGitResponse> removeGit(RemoveGitRequest removeGitRequest) throws SQLException {
+    /*
+     * This method is to remove git data from a project
+     * @param removeGitRequest git id, project id and email address
+     * @exception BadRequestException when email is empty or not monash email, when project id is empty
+     * @exception NotFoundException when git id is not found in the project data
+     * @exception ForbiddenException when project does not belong to the email
+     */
+    public void removeGit(RemoveGitRequest removeGitRequest) {
         log.info("{\"message\":\"Remove Git data\", \"project\":\"{}\"}", removeGitRequest);
 
         // Validation Check
-        validationHandler.isValid(removeGitRequest.getEmailAddress(), removeGitRequest.getProjectId());
+        validationHandler.isUserOwnProject(removeGitRequest.getEmailAddress(), removeGitRequest.getProjectId());
 
         // Get list of git integrations for the project
-        List<GitEntity> gitEntity = gitRepository.findGitEntitiesByProjectId(removeGitRequest.getProjectId());
+        List<GitEntity> gitEntities = gitRepository.findGitEntitiesByProjectId(removeGitRequest.getProjectId());
 
-        if (gitEntity.size() > 0) {
-            for (int i = 0; i < gitEntity.size(); i++) {
-                if (removeGitRequest.getGitId().equals(gitEntity.get(i).getGitId())) {
-                    // Delete from database
-                    gitRepository.delete(gitEntity.get(i));
-                    log.info("{\"message\":\"Removed from Git\", \"project\":\"{}\"}", removeGitRequest.getGitId());
-                    return new ResponseEntity<>(
-                            null, OK
-                    );
-                }
-            }
-            log.warn("A Git integration with the gitId does not exist: ", removeGitRequest.getGitId());
-            return new ResponseEntity<>(
-                    null, NOT_FOUND
-            );
-        }
-        else {
-            log.warn("Project has no git integrations: ", removeGitRequest.getGitId());
-            return new ResponseEntity<>(
-                    null, BAD_REQUEST
-            );
+        GitEntity gitEntity = gitEntities.stream()
+                .filter(g -> g.getGitId().equals(removeGitRequest.getGitId()))
+                .findFirst()
+                .orElse(null);
+
+        if (gitEntity == null) {
+            log.warn("A Git integration [{}] does not exist: ", removeGitRequest.getGitId());
+            throw new HTTPResponseHandler.NotFoundException("Git id not found.");
+        } else {
+            // Delete git data from database
+            gitRepository.delete(gitEntity);
+            log.info("{\"message\":\"Removed Git [{}] from project [{}]\"}", removeGitRequest.getGitId(), removeGitRequest.getProjectId());
         }
     }
 }
