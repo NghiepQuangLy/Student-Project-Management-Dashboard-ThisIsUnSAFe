@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class ReminderTableServiceClient {
 
-    private static final String REMINDER_TABLE_URL = "http://localhost:5000/user-project-service/test-array-request-param?emails={id}&trello-ids={ids}";
+    private static final String REMINDER_TABLE_URL = "http://localhost:5000/spmd_reminders/sorted/{projectId}";
     private RestTemplate restTemplate;
 
     public List<ReminderTableResponse> getReminderTable(String projectId) {

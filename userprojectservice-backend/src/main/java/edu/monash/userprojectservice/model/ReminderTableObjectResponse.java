@@ -11,9 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReminderTableObjectResponse {
 
-    private String reminderActivity;
-    private String reminderUnitCode;
-    private String reminderUnitName;
-    private String reminderDate;
-    private String reminderTime;
+    private String reminderName;
+    private String reminderProject;
+    private String reminderDueDate;
+    private String reminderDesc;
 }

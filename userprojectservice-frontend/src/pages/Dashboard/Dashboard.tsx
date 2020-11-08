@@ -11,12 +11,43 @@ import TableRow from "@material-ui/core/TableRow"
 import Paper from "@material-ui/core/Paper"
 import TableHead from "@material-ui/core/TableHead"
 import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone"
+import Chart from "react-google-charts"
 
 interface DashboardProps {
   projectDetails?: ProjectDetail
 }
 
 const Dashboard: FunctionComponent<DashboardProps> = ({ projectDetails }) => {
+    const distinct_columns = new Set();
+    distinct_columns.add("Date")
+    for (let key in projectDetails?.projectBurndownChart?.listSizes) {
+        let value = projectDetails?.projectBurndownChart?.listSizes[key];
+        for (let key2 in value) {
+            let value2 = value[key2];
+            distinct_columns.add(value2.name)
+        }
+    }
+
+    let columns = Array.from( distinct_columns )
+    const data = [
+        columns
+       ];
+
+    for (let key in projectDetails?.projectBurndownChart?.listSizes) {
+        const rowData = []
+        for (let i = 0; i < columns.length; i++) {
+            rowData.push(0)
+        }
+        let value = projectDetails?.projectBurndownChart?.listSizes[key];
+        rowData[0] = key
+
+        for (let key2 in value) {
+            let value2 = value[key2];
+            rowData[columns.indexOf(value2.name)] = value2.size
+        }
+        data.push(rowData)
+    }
+
   return (
     <div className={styles.Dashboard}>
       <div className={styles.Header}>Dashboard</div>
@@ -28,22 +59,44 @@ const Dashboard: FunctionComponent<DashboardProps> = ({ projectDetails }) => {
           <Table className={styles.Table} aria-label="Reminders">
             <TableBody>
               {projectDetails?.projectReminderTable.map((data) => (
-                <TableRow key={data.reminderActivity}>
+                <TableRow key={data.reminderName}>
                   <TableCell className={styles.Icon}>
                     <NotificationsNoneIcon />
                   </TableCell>
                   <TableCell component="th" scope="row" className={styles.Rows}>
-                    {data.reminderActivity}
+                    {data.reminderName}
                     <br />
-                    {data.reminderUnitCode} {data.reminderUnitName}
+                    {data.reminderProject}
+                    <br />
+                    {data.reminderDesc}
                   </TableCell>
-                  <TableCell align="right">{data.reminderDate}</TableCell>
-                  <TableCell align="right">{data.reminderTime}</TableCell>
+                  <TableCell align="right">{data.reminderDueDate}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
+        <div className={styles.IntegrationHeader}>
+            <h2>&ensp;&ensp;Trello Progress Chart:</h2>
+        </div>
+      <TableContainer className={styles.Container2}>
+        <Chart
+            width='90%'
+            height='240px'
+            chartType="ColumnChart"
+            loader={<div>Loading Chart</div>}
+            data={data}
+            options = {{
+                    chartArea: { width: '80%' },
+                    legend: { position: 'right', maxLines: 3, alignment:'start' },
+                    bar: { groupWidth: '50%' },
+                    isStacked: 'percent',
+                    vAxes: { 0: {title: 'Card Percentage' }},
+                    hAxes: { 0: {title: 'Date' }}
+                  }}
+            legendToggle
+          />
+          </TableContainer>
         <span>&nbsp;&nbsp;</span>
         <div className={styles.IntegrationHeader}>
           <h2>Integration History:

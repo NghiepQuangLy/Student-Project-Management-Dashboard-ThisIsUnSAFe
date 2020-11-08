@@ -62,6 +62,13 @@
   padding-top: 0px;
 }
 
+.Container2 {
+  width: 100px;
+  height: 250px;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .Rows {
   display: flex;
   alignitems: center;

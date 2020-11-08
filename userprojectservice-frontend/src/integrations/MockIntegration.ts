@@ -101,25 +101,22 @@ const MockIntegration: Integration = {
           ],
           projectReminderTable: [
             {
-              reminderActivity: "test1",
-              reminderUnitCode: "FIT3170",
-              reminderUnitName: "Software Engineering Practices",
-              reminderDate: "11/10/2020",
-              reminderTime: "11:30PM"
+              reminderName: "test1",
+              reminderProject: "FIT3170",
+              reminderDueDate: "2020-09-08T00:00:00.000+00:00",
+              reminderDesc: "This is a sample description for Software Engineering Practices"
             },
             {
-              reminderActivity: "test2",
-              reminderUnitCode: "FIT3170",
-              reminderUnitName: "Software Engineering Practices",
-              reminderDate: "25/10/2020",
-              reminderTime: "3:30PM"
+              reminderName: "test2",
+              reminderProject: "FIT3170",
+              reminderDueDate: "2020-09-09T00:00:00.000+00:00",
+              reminderDesc: "This is a sample description for Software Engineering Practices"
             },
             {
-              reminderActivity: "test3",
-              reminderUnitCode: "FIT3170",
-              reminderUnitName: "Software Engineering Practices",
-              reminderDate: "11/10/2020",
-              reminderTime: "7:30AM"
+              reminderName: "test3",
+              reminderProject: "FIT3170",
+              reminderDueDate: "2020-09-10T00:00:00.000+00:00",
+              reminderDesc: "This is a sample description for Software Engineering Practices"
             }
           ]
         })
@@ -167,6 +164,62 @@ const MockIntegration: Integration = {
         })
       }, 1000)
     }),
+
+  getBurndownChart: async () =>
+      new Promise((resolve) => {
+        setTimeout(() => {
+          resolve({
+            boardName: "TestBoard",
+            listSizes: {
+              "2020-10-11T00:00:00Z": {
+
+                "5ee7d560904e87427e0a1465": {
+                  "name": "Stuff To Try (this is a list)",
+                  "size": 1
+                },
+                "5f5c5762e82773415a6b7043": {
+                  "name": "foo",
+                  "size": 3
+                }
+              },
+              "2020-10-11T06:59:30.713Z": {
+                "5ee7d560904e87427e0a1465": {
+                  "name": "Stuff To Try (this is a list)",
+                  "size": 1
+                },
+                "5f5c5762e82773415a6b7043": {
+                  "name": "foo",
+                  "size": 1
+                },
+                "34": {
+                  "name": "New List",
+                  "size": 1
+                }
+              },
+              "2021-10-11T00:00:00Z": {
+                "5f5c5762e82773415a6b7043": {
+                  "name": "foo",
+                  "size": 3
+                },
+                "34": {
+                  "name": "New List",
+                  "size": 5
+                }
+              },
+              "2022-10-11T00:00:00Z": {
+                "5f5c5762e82773415a6b7043": {
+                  "name": "foo",
+                  "size": 3
+                },
+                "34": {
+                  "name": "New",
+                  "size": 5
+                }
+              }
+            }
+          })
+        }, 1000)
+      }),
 
   createUser: async () =>
     new Promise((resolve) => {

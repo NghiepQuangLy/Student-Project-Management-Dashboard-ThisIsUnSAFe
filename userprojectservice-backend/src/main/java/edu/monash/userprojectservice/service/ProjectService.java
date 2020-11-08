@@ -168,16 +168,15 @@ public class ProjectService {
                 .collect(Collectors.toList());
 
         List<ReminderTableObjectResponse> projectReminderTable = reminderTableData.stream()
-                .map(data -> new ReminderTableObjectResponse(data.getReminderActivity(), data.getReminderUnitCode(), data.getReminderUnitName(), data.getReminderDate(), data.getReminderTime()))
+                .map(data -> new ReminderTableObjectResponse(data.getName(), data.getProject(), data.getDueDate(), data.getDesc()))
                 .collect(Collectors.toList());
 
         if (projectReminderTable.isEmpty()) {
             projectReminderTable.add(ReminderTableObjectResponse.builder()
-                    .reminderActivity("Unavailable")
-                    .reminderDate("Unavailable")
-                    .reminderTime("Unavailable")
-                    .reminderUnitCode("Unavailable")
-                    .reminderUnitName("Unavailable")
+                    .reminderName("Unavailable")
+                    .reminderProject("Unavailable")
+                    .reminderDueDate("Unavailable")
+                    .reminderDesc("Unavailable")
                     .build());
         }
 
