@@ -10,7 +10,7 @@ import { PROJECT_DETAIL_PATH, PROJECT_ID_QUERY, useQuery } from "../../util/useQ
 import ProjectDetailsIntegration from "../../components/ProjectDetailsIntegration/ProjectDetailsIntegration"
 import Loading from "../../components/Loading/Loading"
 import styles from "./ProjectDetails.module.css"
-import Dashboard from "../Dashboard/Dashboard"
+import Dashboard from "../../components/Dashboard/Dashboard"
 
 /** This method returns the Project Details component which displays either the Dashboard page or if the url is for an
  * Integration the Project Integration page.
