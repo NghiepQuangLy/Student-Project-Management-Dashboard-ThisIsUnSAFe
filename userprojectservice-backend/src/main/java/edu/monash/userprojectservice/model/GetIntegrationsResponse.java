@@ -11,6 +11,6 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetGitResponse {
-    private List<IntegrationObjectResponse> gitId;
+public class GetIntegrationsResponse {
+    private List<IntegrationObjectResponse> gitIntegrations;
 }

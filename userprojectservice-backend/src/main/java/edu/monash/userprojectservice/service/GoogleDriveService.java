@@ -1,23 +1,19 @@
 package edu.monash.userprojectservice.service;
 
+import edu.monash.userprojectservice.HTTPResponseHandler;
 import edu.monash.userprojectservice.ValidationHandler;
-import edu.monash.userprojectservice.model.GetGoogleDriveResponse;
-import edu.monash.userprojectservice.model.SaveGoogleDriveRequest;
+import edu.monash.userprojectservice.model.GetIntegrationsResponse;
+import edu.monash.userprojectservice.model.IntegrationObjectResponse;
 import edu.monash.userprojectservice.model.RemoveGoogleDriveRequest;
+import edu.monash.userprojectservice.model.SaveGoogleDriveRequest;
 import edu.monash.userprojectservice.repository.googleDrive.GoogleDriveEntity;
 import edu.monash.userprojectservice.repository.googleDrive.GoogleDriveRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.http.ResponseEntity;
-
-import java.sql.SQLException;
 
 import java.util.List;
-
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.OK;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -29,9 +25,16 @@ public class GoogleDriveService {
     @Autowired
     private ValidationHandler validationHandler;
 
-    // Get from GoogleDrive table
-    public GetGoogleDriveResponse getgoogleDrive(String emailAddress, String projectId) {
-        log.info("{\"message\":\"Getting GoogleDrive data\", \"project\":\"{}\"}, \"googleDrive\":\"{}\"}", projectId);
+    /*
+     * This method is to get list of GoogleDrive data
+     * @param emailAddress The email address to be validated
+     * @param projectId The project that contains the google drive ids
+     * @return GetIntegrationsResponse This returns list of google drive ids
+     * @exception BadRequestException when email is empty or not monash email, when project id is empty,
+     * @exception ForbiddenException when project does not belong to the email
+     */
+    public GetIntegrationsResponse getgoogleDrive(String emailAddress, String projectId) {
+        log.info("{\"message\":\"Getting google drive data\", \"project\":\"{}\"}}", projectId);
 
         // Validation Check
         validationHandler.isUserOwnProject(emailAddress, projectId);
@@ -39,13 +42,27 @@ public class GoogleDriveService {
         // get from database
         List<GoogleDriveEntity> googleDriveEntities = googleDriveRepository.findGoogleDriveEntitiesByProjectId(projectId);
 
-        log.info("{\"message\":\"Got GoogleDrive data\", \"project\":\"{}\"}, \"googleDrive\":\"{}\"}", projectId);
-        return new GetGoogleDriveResponse(googleDriveEntities);
+        // Convert to response
+        List<IntegrationObjectResponse> googleDriveIntegrations = googleDriveEntities.stream().map(googleDriveEntity ->
+                IntegrationObjectResponse
+                        .builder()
+                        .integrationId(googleDriveEntity.getGoogleDriveId())
+                        .integrationName(googleDriveEntity.getGoogleDriveName())
+                        .build()
+        ).collect(Collectors.toList());
+
+        log.info("{\"message\":\"Got google drive data\", \"project\":\"{}\"}, \"google drive\":\"{}\"}", projectId, googleDriveIntegrations);
+        return new GetIntegrationsResponse(googleDriveIntegrations);
     }
 
-    // Insert into GoogleDrive table
+    /*
+     * This method is to store google drive data to a project
+     * @param SaveGoogleDriveRequest google drive data, project id and email address
+     * @exception BadRequestException when email is empty or not monash email, when project id is empty
+     * @exception ForbiddenException when project does not belong to the email
+     */
     public void saveGoogleDrive(SaveGoogleDriveRequest saveGoogleDriveRequest) {
-        log.info("{\"message\":\"Insert GoogleDrive data\", \"project\":\"{}\"}", saveGoogleDriveRequest);
+        log.info("{\"message\":\"Inserting GoogleDrive data\", \"project\":\"{}\"}", saveGoogleDriveRequest);
 
         // Validation Check
         validationHandler.isUserOwnProject(saveGoogleDriveRequest.getEmailAddress(), saveGoogleDriveRequest.getProjectId());
@@ -57,36 +74,34 @@ public class GoogleDriveService {
     }
 
     // Remove from GoogleDrive table
-    public ResponseEntity<GetGoogleDriveResponse> removeGoogleDrive(RemoveGoogleDriveRequest removeGoogleDriveRequest) throws SQLException {
-        log.info("{\"message\":\"Remove GoogleDrive data\", \"project\":\"{}\"}", removeGoogleDriveRequest);
+    /*
+     * This method is to remove google drive data from a project
+     * @param removeGoogleDriveRequest google drive id, project id and email address
+     * @exception BadRequestException when email is empty or not monash email, when project id is empty
+     * @exception NotFoundException when google drive id is not found in the project data
+     * @exception ForbiddenException when project does not belong to the email
+     */
+    public void removeGoogleDrive(RemoveGoogleDriveRequest removeGoogleDriveRequest) {
+        log.info("{\"message\":\"Removing GoogleDrive data\", \"project\":\"{}\"}", removeGoogleDriveRequest);
 
         // Validation Check
         validationHandler.isUserOwnProject(removeGoogleDriveRequest.getEmailAddress(), removeGoogleDriveRequest.getProjectId());
 
         // Get list of google drive integrations for the project
-        List<GoogleDriveEntity> googleDriveEntity = googleDriveRepository.findGoogleDriveEntitiesByProjectId(removeGoogleDriveRequest.getProjectId());
+        List<GoogleDriveEntity> googleDriveEntities = googleDriveRepository.findGoogleDriveEntitiesByProjectId(removeGoogleDriveRequest.getProjectId());
 
-        if (googleDriveEntity.size() > 0) {
-            for (int i = 0; i < googleDriveEntity.size(); i++) {
-                if (removeGoogleDriveRequest.getGoogleDriveId().equals(googleDriveEntity.get(i).getGoogleDriveId())) {
-                    // Delete from database
-                    googleDriveRepository.delete(googleDriveEntity.get(i));
-                    log.info("{\"message\":\"Removed from GoogleDrive\", \"project\":\"{}\"}", removeGoogleDriveRequest.getGoogleDriveId());
-                    return new ResponseEntity<>(
-                            null, OK
-                    );
-                }
-            }
-            log.warn("A GoogleDrive integration with the googleDriveId does not exist: ", removeGoogleDriveRequest.getGoogleDriveId());
-            return new ResponseEntity<>(
-                    null, NOT_FOUND
-            );
-        }
-        else {
-            log.warn("Project has no googleDrive integrations: ", removeGoogleDriveRequest.getGoogleDriveId());
-            return new ResponseEntity<>(
-                    null, BAD_REQUEST
-            );
+        GoogleDriveEntity googleDriveEntity = googleDriveEntities.stream()
+                .filter(g -> g.getGoogleDriveId().equals(removeGoogleDriveRequest.getGoogleDriveId()))
+                .findFirst()
+                .orElse(null);
+
+        if (googleDriveEntity == null) {
+            log.warn("A google drive integration [{}] does not exist: ", removeGoogleDriveRequest.getGoogleDriveId());
+            throw new HTTPResponseHandler.NotFoundException("Google drive id not found.");
+        } else {
+            // Delete google drive data from database
+            googleDriveRepository.delete(googleDriveEntity);
+            log.info("{\"message\":\"Removed google drive [{}] from project [{}]\"}", removeGoogleDriveRequest.getGoogleDriveId(), removeGoogleDriveRequest.getProjectId());
         }
     }
 }

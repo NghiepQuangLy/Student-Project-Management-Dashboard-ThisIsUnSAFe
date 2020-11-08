@@ -1,6 +1,6 @@
 package edu.monash.userprojectservice.controller;
 
-import edu.monash.userprojectservice.model.GetGitResponse;
+import edu.monash.userprojectservice.model.GetIntegrationsResponse;
 import edu.monash.userprojectservice.model.RemoveGitRequest;
 import edu.monash.userprojectservice.model.SaveGitRequest;
 import edu.monash.userprojectservice.service.GitService;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.sql.SQLException;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
@@ -31,13 +30,13 @@ public class GitController {
      * This method is to get list of git data
      * @requestParam emailAddress The email address to be validated
      * @requestParam projectId The project that contains the git ids
-     * @return 200 GetGitResponse This returns list of git ids
+     * @return 200 GetIntegrationsResponse This returns list of git ids
      * @return 400 when email is empty or not monash email, when project id is empty,
      * @return 403 when project does not belong to the email
      */
     @ResponseStatus(OK)
     @GetMapping("/get-git")
-    public GetGitResponse getGit(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
+    public GetIntegrationsResponse getGit(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
         return gitService.getGit(emailAddress, projectId);
     }
 

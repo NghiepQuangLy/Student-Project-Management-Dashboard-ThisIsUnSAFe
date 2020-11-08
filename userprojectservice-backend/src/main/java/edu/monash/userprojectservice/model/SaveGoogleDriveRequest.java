@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
@@ -12,15 +14,15 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class SaveGoogleDriveRequest {
 
-    @NotNull
+    @NotBlank
     private String emailAddress;
 
-    @NotNull
+    @NotBlank
     private String googleDriveId;
 
-    @NotNull
+    @NotBlank
     private String projectId;
 
-    @NotNull
+    @NotBlank
     private String googleDriveName;
 }

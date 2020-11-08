@@ -2,7 +2,7 @@ package edu.monash.userprojectservice.service;
 
 import edu.monash.userprojectservice.HTTPResponseHandler;
 import edu.monash.userprojectservice.ValidationHandler;
-import edu.monash.userprojectservice.model.GetGitResponse;
+import edu.monash.userprojectservice.model.GetIntegrationsResponse;
 import edu.monash.userprojectservice.model.IntegrationObjectResponse;
 import edu.monash.userprojectservice.model.RemoveGitRequest;
 import edu.monash.userprojectservice.model.SaveGitRequest;
@@ -29,11 +29,11 @@ public class GitService {
      * This method is to get list of git data
      * @param emailAddress The email address to be validated
      * @param projectId The project that contains the git ids
-     * @return GetGitResponse This returns list of git ids
+     * @return GetIntegrationsResponse This returns list of git ids
      * @exception BadRequestException when email is empty or not monash email, when project id is empty,
      * @exception ForbiddenException when project does not belong to the email
      */
-    public GetGitResponse getGit(String emailAddress, String projectId) {
+    public GetIntegrationsResponse getGit(String emailAddress, String projectId) {
         log.info("{\"message\":\"Getting git data\", \"project\":\"{}\"}}", projectId);
 
         // Validation Check
@@ -52,7 +52,7 @@ public class GitService {
         ).collect(Collectors.toList());
 
         log.info("{\"message\":\"Got git data\", \"project\":\"{}\"}, \"git\":\"{}\"}", projectId, gitIntegrations);
-        return new GetGitResponse(gitIntegrations);
+        return new GetIntegrationsResponse(gitIntegrations);
     }
 
     /*
@@ -62,7 +62,7 @@ public class GitService {
      * @exception ForbiddenException when project does not belong to the email
      */
     public void insertGit(SaveGitRequest saveGitRequest) {
-        log.info("{\"message\":\"Insert Git data\", \"project\":\"{}\"}", saveGitRequest);
+        log.info("{\"message\":\"Inserting Git data\", \"project\":\"{}\"}", saveGitRequest);
 
         // Validation Check
         validationHandler.isUserOwnProject(saveGitRequest.getEmailAddress(), saveGitRequest.getProjectId());
@@ -81,7 +81,7 @@ public class GitService {
      * @exception ForbiddenException when project does not belong to the email
      */
     public void removeGit(RemoveGitRequest removeGitRequest) {
-        log.info("{\"message\":\"Remove Git data\", \"project\":\"{}\"}", removeGitRequest);
+        log.info("{\"message\":\"Removing Git data\", \"project\":\"{}\"}", removeGitRequest);
 
         // Validation Check
         validationHandler.isUserOwnProject(removeGitRequest.getEmailAddress(), removeGitRequest.getProjectId());
@@ -95,12 +95,12 @@ public class GitService {
                 .orElse(null);
 
         if (gitEntity == null) {
-            log.warn("A Git integration [{}] does not exist: ", removeGitRequest.getGitId());
+            log.warn("A git integration [{}] does not exist: ", removeGitRequest.getGitId());
             throw new HTTPResponseHandler.NotFoundException("Git id not found.");
         } else {
             // Delete git data from database
             gitRepository.delete(gitEntity);
-            log.info("{\"message\":\"Removed Git [{}] from project [{}]\"}", removeGitRequest.getGitId(), removeGitRequest.getProjectId());
+            log.info("{\"message\":\"Removed git [{}] from project [{}]\"}", removeGitRequest.getGitId(), removeGitRequest.getProjectId());
         }
     }
 }
