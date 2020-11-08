@@ -10,10 +10,11 @@ export interface Integration {
   updateUser(emailAddress: string, givenName: string, familyName: string): Promise<void>
 }
 
-/*
-functions of calling APIs
+ /*
+  Functions for calling APIs
  */
 const Integration: Integration = {
+  // Get the project information using main API
   async getProject(emailAddress: string, projectId: string) {
     return fetch(`${process.env.REACT_APP_HOST}/get-project?email=${emailAddress}&projectId=${projectId}`, {
       method: "GET"
@@ -31,6 +32,7 @@ const Integration: Integration = {
     })
   },
 
+  // Get the user information using main API
   async getUser(emailAddress: string) {
     return fetch(`${process.env.REACT_APP_HOST}/get-user?email=${emailAddress}`, {
       method: "GET"
@@ -48,6 +50,7 @@ const Integration: Integration = {
     })
   },
 
+  // Create the user using main API
   async createUser(emailAddress: string, givenName: string, familyName: string) {
     return fetch(`${process.env.REACT_APP_HOST}/create-user`, {
       method: "POST",
@@ -69,6 +72,7 @@ const Integration: Integration = {
     })
   },
 
+  // Update the user information using main API
   async updateUser(emailAddress: string, givenName: string, familyName: string) {
     return fetch(`${process.env.REACT_APP_HOST}/update-user`, {
       method: "POST",
@@ -90,6 +94,7 @@ const Integration: Integration = {
     })
   },
 
+  // Get the burndown chart data using Trello API call
   async getBurndownChart(integrationId: string, token: string) {
     return fetch(`${process.env.REACT_APP_TRELLO_URL}/trello-service/data/burndown/${integrationId}?token=${token}`, {
       method: "GET"

@@ -11,22 +11,31 @@ import styles from "../ProjectDetail/ProjectDetails.module.css"
 // @ts-ignore
 import TrelloClient, {Trello} from "react-trello-client"
 
+// Provide Dictionary of any data type (T) interface
 export interface Dictionary<T> {
   [id: string]: T
 }
 
+// Provide ProjectDictionary interface
 export interface ProjectDictionary {
   id: Dictionary<ProjectDictionary>
   key: string
   data?: ProjectData[] | undefined
 }
 
+// Provide ProjectData interface
 export interface ProjectData {
   projectId: string
   projectKey: string
   projectName: string
 }
 
+/** This method returns the Project List component which displays the Project List landing page.
+ * @param integration Allows API calls to be used in function
+ * @param state The react state of the application
+ * @param dispatch The react dispatch of the application
+ * @return The HTML for the ProjectDetails
+ */
 const ProjectList: Page = ({ integration, state, dispatch }) => {
   const { googleUser, isInitialized, isSignedIn } = useGoogleAuth()
 
@@ -34,10 +43,13 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
   const givenName = googleUser?.getBasicProfile()?.getGivenName()
   const familyName = googleUser?.getBasicProfile()?.getFamilyName()
 
+  // useLayoutEffect will execute before return
   useLayoutEffect(() => {
+    // Call APIs
     if (state.userDetailStatus === AppStatus.INITIAL && emailAddress) {
       dispatch(AppAction.userDetailLoading())
 
+      // Get User API
       integration
         .getUser(emailAddress)
         .then((user) => {

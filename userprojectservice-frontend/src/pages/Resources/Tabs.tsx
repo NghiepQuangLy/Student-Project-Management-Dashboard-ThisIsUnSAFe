@@ -8,6 +8,11 @@ interface TabPanelProps {
   value: any
 }
 
+/** This method returns the Tab Panel component which provides the tabs for the three integrations on the
+ * Project Details Landing page
+ * @param props Provides the chilrdren, value, index and ...other.
+ * @return The HTML for the TabPanel
+ */
 export default function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props
 

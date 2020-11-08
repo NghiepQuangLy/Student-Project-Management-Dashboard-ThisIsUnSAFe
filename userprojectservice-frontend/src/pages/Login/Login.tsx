@@ -7,10 +7,17 @@ import styles from "./Login.module.css"
 import { useGoogleAuth } from "../../components/GoogleAuthProvider/GoogleAuthProvider"
 import Loading from "../../components/Loading/Loading"
 
+/** This method returns the Login Frontend component which validates the user.
+ * @param integration Allows API calls to be used in function
+ * @param state The react state of the application
+ * @param dispatch The react dispatch of the application
+ * @return The HTML for the Login
+ */
 const Login: Page = ({ integration, state, dispatch }) => {
   const { signIn, googleUser, isInitialized, isSignedIn } = useGoogleAuth()
   const emailAddress = googleUser?.getBasicProfile()?.getEmail()
 
+  // Will only sign in if useGoogleAuth isSignedIn is true
   return (
     <div className={styles.Login}>
       {!isInitialized ? (

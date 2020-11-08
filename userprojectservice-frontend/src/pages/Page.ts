@@ -3,6 +3,7 @@ import { Dispatch, FunctionComponent } from "react"
 import { AppState } from "../state/AppState"
 import { AppAction, AppActionType } from "../state/AppAction"
 
+// Provide PageProps interface
 export interface PageProps<T> {
   integration: Integration
   state: T
