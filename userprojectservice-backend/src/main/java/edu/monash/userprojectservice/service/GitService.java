@@ -31,7 +31,7 @@ public class GitService {
 
     // Get from Git table
     public GetGitResponse getGit(String emailAddress, String projectId) {
-        log.info("{\"message\":\"Getting git data\", \"project\":\"{}\"}, \"git\":\"{}\"}", projectId);
+        log.info("{\"message\":\"Getting git data\", \"project\":\"{}\"}}", projectId);
 
         // Validation Check
         validationHandler.isValid(emailAddress, projectId);
@@ -39,7 +39,7 @@ public class GitService {
         // get from database
         List<GitEntity> gitEntities = gitRepository.findGitEntitiesByProjectId(projectId);
 
-        log.info("{\"message\":\"Got git data\", \"project\":\"{}\"}, \"git\":\"{}\"}", projectId);
+        log.info("{\"message\":\"Got git data\", \"project\":\"{}\"}, \"git\":\"{}\"}", projectId, gitEntities);
         return new GetGitResponse(gitEntities);
     }
 
