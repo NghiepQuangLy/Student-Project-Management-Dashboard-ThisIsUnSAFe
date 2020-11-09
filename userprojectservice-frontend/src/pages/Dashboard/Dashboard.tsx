@@ -82,7 +82,7 @@ const Dashboard: FunctionComponent<DashboardProps> = ({ projectDetails }) => {
       <TableContainer className={styles.Container2}>
         <Chart
             width='90%'
-            height='240px'
+            height='290px'
             chartType="ColumnChart"
             loader={<div>Loading Chart</div>}
             data={data}
