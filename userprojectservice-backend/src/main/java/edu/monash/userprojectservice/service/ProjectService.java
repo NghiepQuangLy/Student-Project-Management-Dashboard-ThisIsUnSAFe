@@ -1,5 +1,6 @@
 package edu.monash.userprojectservice.service;
 
+import edu.monash.userprojectservice.HTTPResponseHandler;
 import edu.monash.userprojectservice.ValidationHandler;
 import edu.monash.userprojectservice.model.*;
 import edu.monash.userprojectservice.repository.CreateProjectRepository;
@@ -83,28 +84,29 @@ public class ProjectService {
     @Autowired
     private ReminderTableServiceClient reminderTableServiceClient;
 
-    public ResponseEntity<GetProjectDetailsResponse> getProject(String emailAddress, String projectId) {
+    /*
+     * This method is to get project by project id
+     * @param emailAddress The email address to be validated
+     * @param projectId The project id
+     * @return GetProjectDetailsResponse This returns project details
+     * @exception BadRequestException when email is empty or not monash email, when project id is empty,
+     * @exception NotFoundException when project is not found
+     * @exception ForbiddenException when project does not belong to the email
+     */
+    public GetProjectDetailsResponse getProject(String emailAddress, String projectId) {
         log.info("{\"message\":\"Getting project\", \"project\":\"{}\"}", projectId);
 
         // Validation Check
         validationHandler.isUserOwnProject(emailAddress, projectId);
 
-        // get project from database
+        // Get project from database
         ProjectEntity projectEntity = projectsRepository.findProjectEntityByProjectId(projectId);
 
+        // Project not found
         if (projectEntity == null) {
-
-            System.out.println("Project does not exist.");
-            return new ResponseEntity<>(
-                    null, NOT_FOUND
-            );
+            log.warn("{\"message\":\"Project [{}] does not exist.\"}", projectId);
+            throw new HTTPResponseHandler.NotFoundException("Project does not exist.");
         }
-
-        List<UnitEntity> unitEntities = unitsRepository.findAll();
-        UnitEntity unitEntity = unitEntities.stream()
-                .filter(unitsEntity -> unitsEntity.getUnitCode().equals(projectEntity.getUnitCode()))
-                .findFirst()
-                .get();
 
         // get integration ids from database
         List<GitEntity> gitEntities = gitRepository.findGitEntitiesByProjectId(projectId);
@@ -138,12 +140,9 @@ public class ProjectService {
         );
 
         // get reminder table data
-        List<ReminderTableResponse> reminderTableData = reminderTableServiceClient.getReminderTable(
-                projectId
-        );
+        List<ReminderTableResponse> reminderTableData = reminderTableServiceClient.getReminderTable(projectId);
 
-        log.info("{\"message\":\"Got project\", \"project\":\"{}\"}", projectId);
-
+        // Convert entities to response
         List<IntegrationObjectResponse> projectGitIntegration = gitEntities.stream()
                 .map(gitEntity -> new IntegrationObjectResponse(gitEntity.getGitId(), gitEntity.getGitName()))
                 .collect(Collectors.toList());
@@ -158,6 +157,7 @@ public class ProjectService {
                 .map(trelloEntity -> new IntegrationObjectResponse(trelloEntity.getTrelloId(), trelloEntity.getTrelloName()))
                 .collect(Collectors.toList());
 
+        // Convert integration table data to response
         List<IntegrationTableObjectResponse> projectIntegrationTableData = emails.stream()
                 .map(email -> createIntegrationTableObjectResponse(
                         email,
@@ -167,6 +167,7 @@ public class ProjectService {
                 )
                 .collect(Collectors.toList());
 
+        // Convert reminder data to response
         List<ReminderTableObjectResponse> projectReminderTable = reminderTableData.stream()
                 .map(data -> new ReminderTableObjectResponse(data.getName(), data.getProject(), data.getDueDate(), data.getDesc()))
                 .collect(Collectors.toList());
@@ -177,24 +178,25 @@ public class ProjectService {
                     .reminderProject("Unavailable")
                     .reminderDueDate("Unavailable")
                     .reminderDesc("Unavailable")
-                    .build());
+                    .build()
+            );
         }
 
-        return new ResponseEntity(
-                new GetProjectDetailsResponse(
-                        String.valueOf(projectEntity.getProjectId()),
-                        projectEntity.getProjectName(),
-                        projectEntity.getUnitCode(),
-                        projectEntity.getProjectYear(),
-                        projectEntity.getProjectSemester(),
-                        projectEntity.getProjectTimesheet(),
-                        unitEntity.getUnitMoodle(),
-                        projectGitIntegration,
-                        projectGoogleDriveIntegration,
-                        projectTrelloIntegration,
-                        projectIntegrationTableData,
-                        projectReminderTable
-                ), OK
+        log.info("{\"message\":\"Got project\", \"project\":\"{}\"}", projectId);
+
+        return new GetProjectDetailsResponse(
+                String.valueOf(projectEntity.getProjectId()),
+                projectEntity.getProjectName(),
+                projectEntity.getUnitCode(),
+                projectEntity.getProjectYear(),
+                projectEntity.getProjectSemester(),
+                projectEntity.getProjectTimesheet(),
+                projectEntity.getUnitEntity().getUnitMoodle(),
+                projectGitIntegration,
+                projectGoogleDriveIntegration,
+                projectTrelloIntegration,
+                projectIntegrationTableData,
+                projectReminderTable
         );
     }
 

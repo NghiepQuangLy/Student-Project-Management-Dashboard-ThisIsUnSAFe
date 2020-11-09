@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.Table;
 import java.io.Serializable;
 
@@ -16,12 +15,11 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "UNITS", schema = "SPMD")
-@IdClass(UnitsPrimaryKey.class)
 public class UnitEntity implements Serializable {
 
     @Id
     @Column(name = "unit_code")
-    private String unitCode; // primary key of the table
+    private String unitCode;
 
     @Column(name = "unit_name")
     private String unitName;

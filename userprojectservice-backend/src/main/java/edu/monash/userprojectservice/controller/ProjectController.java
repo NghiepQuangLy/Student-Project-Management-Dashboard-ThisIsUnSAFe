@@ -33,9 +33,18 @@ public class ProjectController {
 
     private ProjectService projectService;
 
+    /*
+     * This method is to get project by project id
+     * @requestParam emailAddress The email address to be validated
+     * @requestParam projectId The project id
+     * @return 200 This returns project details
+     * @exception 400 when email is empty or not monash email, when project id is empty,
+     * @exception 404 when project is not found
+     * @exception 403 when project does not belong to the email
+     */
     @ResponseStatus(OK)
     @GetMapping("/get-project")
-    public ResponseEntity<GetProjectDetailsResponse> getProject(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
+    public GetProjectDetailsResponse getProject(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
         return projectService.getProject(emailAddress, projectId);
     }
 

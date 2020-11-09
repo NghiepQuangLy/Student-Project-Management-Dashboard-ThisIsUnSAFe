@@ -20,7 +20,6 @@ public class ReminderTableServiceClient {
     public List<ReminderTableResponse> getReminderTable(String projectId) {
 
         try {
-
             return restTemplate.exchange(
                     REMINDER_TABLE_URL,
                     HttpMethod.GET,
@@ -29,7 +28,6 @@ public class ReminderTableServiceClient {
                     },
                     projectId
             ).getBody();
-
         } catch (Exception e) {
             return new ArrayList<>();
         }

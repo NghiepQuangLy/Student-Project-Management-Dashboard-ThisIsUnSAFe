@@ -27,7 +27,6 @@ public class TrelloEntity implements Serializable {
     @Column(name = "project_id")
     private String projectId;
 
-    @Id
     @Column(name = "trello_name")
     private String trelloName;
 

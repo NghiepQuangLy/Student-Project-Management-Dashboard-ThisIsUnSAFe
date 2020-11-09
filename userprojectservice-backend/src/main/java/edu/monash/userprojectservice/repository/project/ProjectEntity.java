@@ -1,5 +1,6 @@
 package edu.monash.userprojectservice.repository.project;
 
+import edu.monash.userprojectservice.repository.units.UnitEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,6 +37,10 @@ public class ProjectEntity implements Serializable {
 
     @Column(name = "project_semester")
     private String projectSemester;
+
+    @ManyToOne
+    @JoinColumn(name = "unit_code", updatable = false, insertable = false)
+    private UnitEntity unitEntity;
 
     public void setTimesheet(String timesheet) {
         this.projectTimesheet = timesheet;
