@@ -35,6 +35,11 @@ public class UserService {
     @Autowired
     private UserGroupHelper userGroupHelper;
 
+    /*
+     * This method is to create user
+     * @param createUserRequest user details
+     * @exception BadRequestException when email is not monash format, or user already exist
+     */
     public GetUserResponse createUser(CreateUserRequest createUserRequest) {
         log.info("{\"message\":\"Creating user\", \"user\":\"{}\"}", createUserRequest);
 
@@ -68,6 +73,12 @@ public class UserService {
         }
     }
 
+    /*
+     * This method is to update a user
+     * @param updateUserRequest user details
+     * @exception BadRequestException when fields in updateUserRequest is empty
+     * @exception NotFoundException user not found
+     */
     public void updateUser(UpdateUserRequest updateUserRequest) {
         log.info("{\"message\":\"Updating user\", \"user\":\"{}\"}", updateUserRequest);
 
@@ -95,6 +106,13 @@ public class UserService {
         }
     }
 
+    /*
+     * This method is to get user by email
+     * @param emailAddress The email address to be validated
+     * @return GetUserResponse This returns user details
+     * @exception BadRequestException when email is empty or not monash email
+     * @exception NotFoundException when user is not found
+     */
     public GetUserResponse getUserByEmail(String emailAddress) {
 
         validationHandler.isEmailNotBlank(emailAddress);
