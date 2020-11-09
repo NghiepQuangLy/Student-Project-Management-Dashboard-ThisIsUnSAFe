@@ -14,7 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class IntegrationTableResponse {
 
-    private String emailAddress;
+    private String email;
     private LocalDateTime lastModified;
 
 }

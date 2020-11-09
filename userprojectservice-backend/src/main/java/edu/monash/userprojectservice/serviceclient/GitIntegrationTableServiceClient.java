@@ -14,10 +14,10 @@ import java.util.List;
 @Service
 public class GitIntegrationTableServiceClient {
 
-    private static final String GIT_INTEGRATION_URL = "http://spmdgitbackend-env.eba-dyda2zrz.ap-southeast-2.elasticbeanstalk.com/git/projects/{projectId}/repository/last-changed-email?emails={id}&git-ids={ids}&id-token={idToken}";
+    private static final String GIT_INTEGRATION_URL = "http://spmdgitbackend-env.eba-dyda2zrz.ap-southeast-2.elasticbeanstalk.com/git/project/repository/last-changed-email?emails={id}&git-ids={ids}&project-id={projectId}";
     private RestTemplate restTemplate;
 
-    public List<IntegrationTableResponse> getGitIntegrationTable(List<String> emails, List<String> gitIds, String idToken, String projectId) {
+    public List<IntegrationTableResponse> getGitIntegrationTable(List<String> emails, List<String> gitIds, String projectId) {
 
         try {
             String emailsString = emails.toString();
@@ -26,16 +26,28 @@ public class GitIntegrationTableServiceClient {
             String gitIdsString =gitIds.toString();
             gitIdsString = gitIdsString.substring(1, gitIdsString.length() - 1);
 
+            System.out.println(gitIdsString);
+            System.out.println(emailsString);
+             System.out.println("TEST: " + restTemplate.exchange(
+                    GIT_INTEGRATION_URL,
+                    HttpMethod.GET,
+                    null,
+                    new ParameterizedTypeReference<List<IntegrationTableResponse>>() {
+                    },
+                    emailsString,
+                    gitIdsString,
+                    projectId
+            ).getBody());
+
             return restTemplate.exchange(
                     GIT_INTEGRATION_URL,
                     HttpMethod.GET,
                     null,
                     new ParameterizedTypeReference<List<IntegrationTableResponse>>() {
                     },
-                    projectId,
                     emailsString,
                     gitIdsString,
-                    idToken
+                    projectId
             ).getBody();
 
         } catch (Exception e) {

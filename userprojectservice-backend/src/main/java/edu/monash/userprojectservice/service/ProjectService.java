@@ -14,7 +14,6 @@ import edu.monash.userprojectservice.repository.project.ProjectEntity;
 import edu.monash.userprojectservice.repository.project.ProjectsRepository;
 import edu.monash.userprojectservice.repository.trello.TrelloEntity;
 import edu.monash.userprojectservice.repository.trello.TrelloRepository;
-import edu.monash.userprojectservice.repository.units.UnitEntity;
 import edu.monash.userprojectservice.repository.units.UnitsRepository;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsEntity;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsRepository;
@@ -123,15 +122,14 @@ public class ProjectService {
                 .map(UsersProjectsEntity::getEmailAddress).collect(Collectors.toList());
 
         List<IntegrationTableResponse> gitIntegrationTableDataExtract = new ArrayList<>();
-        if (!idToken.equals("") && idToken != null) {
+        //if (idToken != null && !idToken.equals("")) {
             // get git activity tracker table data
             gitIntegrationTableDataExtract = gitIntegrationTableServiceClient.getGitIntegrationTable(
                     emails,
                     gitEntities.stream().map(GitEntity::getGitId).collect(Collectors.toList()),
-                    idToken,
                     projectId
             );
-        }
+        //}
 
         final List<IntegrationTableResponse> gitIntegrationTableData = gitIntegrationTableDataExtract;
 
@@ -227,7 +225,7 @@ public class ProjectService {
             return "N/A";
         }
         LocalDateTime lastModifiedDate = integrationTableData.stream()
-                .filter(data -> data.getEmailAddress().equals(email))
+                .filter(data -> data.getEmail().equals(email))
                 .map(IntegrationTableResponse::getLastModified)
                 .findFirst()
                 .orElse(null);
