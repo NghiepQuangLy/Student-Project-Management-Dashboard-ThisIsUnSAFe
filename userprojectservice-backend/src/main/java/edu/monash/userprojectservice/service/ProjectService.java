@@ -13,7 +13,7 @@ import edu.monash.userprojectservice.repository.project.ProjectEntity;
 import edu.monash.userprojectservice.repository.project.ProjectsRepository;
 import edu.monash.userprojectservice.repository.trello.TrelloEntity;
 import edu.monash.userprojectservice.repository.trello.TrelloRepository;
-import edu.monash.userprojectservice.repository.units.UnitsEntity;
+import edu.monash.userprojectservice.repository.units.UnitEntity;
 import edu.monash.userprojectservice.repository.units.UnitsRepository;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsEntity;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsRepository;
@@ -100,8 +100,8 @@ public class ProjectService {
             );
         }
 
-        List<UnitsEntity> unitsEntities = unitsRepository.findAll();
-        UnitsEntity unitEntity = unitsEntities.stream()
+        List<UnitEntity> unitEntities = unitsRepository.findAll();
+        UnitEntity unitEntity = unitEntities.stream()
                 .filter(unitsEntity -> unitsEntity.getUnitCode().equals(projectEntity.getUnitCode()))
                 .findFirst()
                 .get();
