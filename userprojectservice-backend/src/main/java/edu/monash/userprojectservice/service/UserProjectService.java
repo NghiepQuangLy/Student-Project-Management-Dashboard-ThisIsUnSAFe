@@ -47,7 +47,15 @@ public class UserProjectService {
     @Autowired
     private ValidationHandler validationHandler;
 
-
+    /*
+     * This method is to get users that have access permision to the project
+     * @param emailAddress The email address to be validated
+     * @param projectId The project id
+     * @return GetUserProjectsResponse This returns users members
+     * @exception BadRequestException when email is empty or not monash email, when project id is empty,
+     * @exception NotFoundException when project is not found
+     * @exception ForbiddenException when project does not belong to the email and user email is not admin
+     */
     public GetUserProjectsResponse getUsersByProject(String emailAddress, String projectId) {
         log.info("{\"message\":\"Getting projects\", \"user\":\"{}\"}", projectId);
 
@@ -89,7 +97,7 @@ public class UserProjectService {
             return getUserProjectsResponse;
         } else {
             // show return 404 not founduserProjectService
-            throw new HTTPResponseHandler.NotFoundException("User not found.");
+            throw new HTTPResponseHandler.NotFoundException("Project not found.");
         }
     }
 
@@ -141,6 +149,7 @@ public class UserProjectService {
         for (int i = 0; i < addProjectUserRequest.getEmailAddress().size(); i++) {
             // edit in db when project and user exist
             System.out.println(addProjectUserRequest.getEmailAddress().get(i));
+            validationHandler.isMonashEmail(addProjectUserRequest.getEmailAddress().get(i));
             Boolean isSuccessful = addProjectUserRepository.save(addProjectUserRequest.getProjectId(), addProjectUserRequest.getEmailAddress().get(i));
             if (!(isSuccessful)) {
                 log.info(addProjectUserRequest.getEmailAddress().get(i) + " could not be added!");
