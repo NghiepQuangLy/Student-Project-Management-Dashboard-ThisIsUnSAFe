@@ -1,14 +1,26 @@
 package edu.monash.userprojectservice.controller;
 
-import edu.monash.userprojectservice.model.*;
+import edu.monash.userprojectservice.model.CreateProjectRequest;
+import edu.monash.userprojectservice.model.EditProjectRequest;
+import edu.monash.userprojectservice.model.GetAllProjectsResponse;
+import edu.monash.userprojectservice.model.GetProjectDetailsResponse;
+import edu.monash.userprojectservice.model.GetTimesheetResponse;
+import edu.monash.userprojectservice.model.RemoveProjectRequest;
+import edu.monash.userprojectservice.model.RemoveTimesheetRequest;
+import edu.monash.userprojectservice.model.SaveTimesheetRequest;
 import edu.monash.userprojectservice.service.ProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-
 import java.sql.SQLException;
 
 import static org.springframework.http.HttpStatus.CREATED;

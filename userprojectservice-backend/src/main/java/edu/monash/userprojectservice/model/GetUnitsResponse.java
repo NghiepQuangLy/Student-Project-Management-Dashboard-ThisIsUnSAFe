@@ -1,7 +1,7 @@
 package edu.monash.userprojectservice.model;
 
 
-import edu.monash.userprojectservice.repository.units.UnitsEntity;
+import edu.monash.userprojectservice.repository.units.UnitEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,5 +15,5 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetUnitsResponse {
-    private List<UnitsEntity> units; // list of units
+    private List<UnitEntity> units; // list of units
 }

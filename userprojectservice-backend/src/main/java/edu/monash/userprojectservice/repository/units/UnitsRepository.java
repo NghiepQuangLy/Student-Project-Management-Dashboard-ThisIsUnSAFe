@@ -7,6 +7,6 @@ import java.util.List;
 
 
 @Repository
-public interface UnitsRepository extends CrudRepository<UnitsEntity, String> {
-    List<UnitsEntity> findAll();
+public interface UnitsRepository extends CrudRepository<UnitEntity, String> {
+    List<UnitEntity> findAll();
 }

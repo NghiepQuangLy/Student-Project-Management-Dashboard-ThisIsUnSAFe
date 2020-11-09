@@ -3,7 +3,7 @@ package edu.monash.userprojectservice.service;
 
 import edu.monash.userprojectservice.ValidationHandler;
 import edu.monash.userprojectservice.model.GetUnitsResponse;
-import edu.monash.userprojectservice.repository.units.UnitsEntity;
+import edu.monash.userprojectservice.repository.units.UnitEntity;
 import edu.monash.userprojectservice.repository.units.UnitsRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +28,10 @@ public class UnitsService {
 
         log.info("{\"message\":\"Getting Units \"}");
         // get from database
-        List<UnitsEntity> unitsEntities = unitsRepository.findAll();
+        List<UnitEntity> unitsEntities = unitsRepository.findAll();
 
         log.info("{\"message\":\"Got all Units \"}");
         return new GetUnitsResponse(unitsEntities);
     }
-
-
 }
 

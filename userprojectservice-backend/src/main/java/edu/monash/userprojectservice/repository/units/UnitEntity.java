@@ -17,7 +17,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Table(name = "UNITS", schema = "SPMD")
 @IdClass(UnitsPrimaryKey.class)
-public class UnitsEntity implements Serializable {
+public class UnitEntity implements Serializable {
 
     @Id
     @Column(name = "unit_code")

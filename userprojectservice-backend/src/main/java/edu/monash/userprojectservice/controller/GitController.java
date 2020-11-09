@@ -62,7 +62,7 @@ public class GitController {
      */
     @ResponseStatus(OK)
     @PostMapping("/remove-git")
-    public void removeGit(@RequestBody @Valid RemoveGitRequest removeGitRequest){
+    public void removeGit(@RequestBody @Valid RemoveGitRequest removeGitRequest) {
         gitService.removeGit(removeGitRequest);
     }
 }
