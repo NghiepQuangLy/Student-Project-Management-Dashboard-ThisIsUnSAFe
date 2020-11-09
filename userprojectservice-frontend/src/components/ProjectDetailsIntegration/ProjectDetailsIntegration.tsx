@@ -16,9 +16,10 @@ import {
 
 interface ProjectDetailsIntegrationProps {}
 
-/*
-Iframe component:
-Display different pages in iframe according to url
+/**
+ * This method returns the Iframe component (different integration pages such as Git, Trello, etc will be displayed in
+ * this iframe component according to URL
+ * @return The HTML for the iframe component containing the content according to the URL
  */
 const ProjectDetailsIntegration: FunctionComponent<ProjectDetailsIntegrationProps> = () => {
 

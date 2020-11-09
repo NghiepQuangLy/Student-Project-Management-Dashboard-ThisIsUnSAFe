@@ -7,8 +7,9 @@ import { useHistory } from "react-router-dom"
 
 interface TopBarProps {}
 
-/*
-Top Bar Component
+/**
+ * This methods the Top Bar component which holds buttons and links that are universal across the application
+ * @return The HTML for the TopBar component
  */
 const TopBar: FunctionComponent<TopBarProps> = () => {
   const { Header } = Layout

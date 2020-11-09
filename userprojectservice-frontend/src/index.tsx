@@ -7,6 +7,7 @@ import { Helmet } from "react-helmet"
 
 const TITLE = "Student Project Management Dashboard"
 
+// Initializes the application
 const init = async () => {
   const integrationModule = await import(`./integrations/${process.env.REACT_APP_INTEGRATION_TYPE}Integration.ts`)
 

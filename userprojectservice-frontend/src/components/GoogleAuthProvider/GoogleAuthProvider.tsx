@@ -2,8 +2,10 @@ import { useGoogleLogin } from "react-use-googlelogin"
 import React, { FunctionComponent } from "react"
 import { HookReturnValue } from "react-use-googlelogin/dist/types"
 
-/*
-Google Login Authentication
+/**
+ * This method returns the GoogleAuthProvider component which is a context provider for all its children components
+ * @param children The children components that will / may use the context provided by the GoogleAuthProvider component
+ * @return The HTML for the GoogleAuthProvider component
  */
 const GoogleAuthProvider: FunctionComponent = ({ children }) => {
   // google login configuration
@@ -21,8 +23,8 @@ const GoogleAuthProvider: FunctionComponent = ({ children }) => {
 
 export const GoogleAuthContext = React.createContext({} as HookReturnValue)
 
-/*
-Get googleAuth stored in provider
+/**
+ * This method gets googleAuth stored in Provider
  */
 export const useGoogleAuth = () => React.useContext(GoogleAuthContext)
 

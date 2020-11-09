@@ -22,6 +22,15 @@ interface ProjectListLandingProps {
   state: AppState
 }
 
+/**
+ * This method returns the ProjectListLanding component which displays all of the user projects (appropriately
+ * categorized into semester, year, and unit.
+ * This components allows user to:
+ *    1. Search for projects
+ *    2. Interact with projects similar to navigating File Explorer in Windows
+ * @param state The application state containing the user information including their projects and their information
+ * @return The HTML for the ProjectListLanding component
+ */
 const ProjectListLanding: FunctionComponent<ProjectListLandingProps> = ({ state }) => {
   const history = useHistory()
   const [expandedItems, setExpandedItems] = useState([])

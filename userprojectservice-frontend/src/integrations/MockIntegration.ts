@@ -2,6 +2,7 @@ import { Integration } from "./Integration"
 
 /*
 Mock API response
+Only used when calling APIs locally.
  */
 const MockIntegration: Integration = {
   getProject: async (emailAddress: string, projectId: string) =>
