@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -93,7 +94,7 @@ public class ProjectService {
      * @exception NotFoundException when project is not found
      * @exception ForbiddenException when project does not belong to the email
      */
-    public GetProjectDetailsResponse getProject(String emailAddress, String projectId) {
+    public GetProjectDetailsResponse getProject(String emailAddress, String projectId, String idToken) {
         log.info("{\"message\":\"Getting project\", \"project\":\"{}\"}", projectId);
 
         // Validation Check
@@ -121,11 +122,18 @@ public class ProjectService {
                 .filter(usersProjectsEntity -> usersProjectsEntity.getUserEntity().getUserGroup().equals("STUDENT"))
                 .map(UsersProjectsEntity::getEmailAddress).collect(Collectors.toList());
 
-        // get git activity tracker table data
-        List<IntegrationTableResponse> gitIntegrationTableData = gitIntegrationTableServiceClient.getGitIntegrationTable(
-                emails,
-                gitEntities.stream().map(GitEntity::getGitId).collect(Collectors.toList())
-        );
+        List<IntegrationTableResponse> gitIntegrationTableDataExtract = new ArrayList<>();
+        if (!idToken.equals("") && idToken != null) {
+            // get git activity tracker table data
+            gitIntegrationTableDataExtract = gitIntegrationTableServiceClient.getGitIntegrationTable(
+                    emails,
+                    gitEntities.stream().map(GitEntity::getGitId).collect(Collectors.toList()),
+                    idToken,
+                    projectId
+            );
+        }
+
+        final List<IntegrationTableResponse> gitIntegrationTableData = gitIntegrationTableDataExtract;
 
         // get trello activity tracker table data
         List<IntegrationTableResponse> trelloIntegrationTableData = trelloIntegrationTableServiceClient.getTrelloIntegrationTable(

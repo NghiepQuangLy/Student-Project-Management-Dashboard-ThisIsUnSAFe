@@ -14,10 +14,10 @@ import java.util.List;
 @Service
 public class GitIntegrationTableServiceClient {
 
-    private static final String GIT_INTEGRATION_URL = "http://spmdgitbackend-env.eba-dyda2zrz.ap-southeast-2.elasticbeanstalk.com/git/projects/project-id/repository/last-changed-email?emails={id}&git-ids={ids}";
+    private static final String GIT_INTEGRATION_URL = "http://spmdgitbackend-env.eba-dyda2zrz.ap-southeast-2.elasticbeanstalk.com/git/projects/{projectId}/repository/last-changed-email?emails={id}&git-ids={ids}&id-token={idToken}";
     private RestTemplate restTemplate;
 
-    public List<IntegrationTableResponse> getGitIntegrationTable(List<String> emails, List<String> gitIds) {
+    public List<IntegrationTableResponse> getGitIntegrationTable(List<String> emails, List<String> gitIds, String idToken, String projectId) {
 
         try {
             String emailsString = emails.toString();
@@ -32,11 +32,14 @@ public class GitIntegrationTableServiceClient {
                     null,
                     new ParameterizedTypeReference<List<IntegrationTableResponse>>() {
                     },
+                    projectId,
                     emailsString,
-                    gitIdsString
+                    gitIdsString,
+                    idToken
             ).getBody();
 
         } catch (Exception e) {
+            System.out.println("Issue: " + e);
             return new ArrayList<>();
         }
     }

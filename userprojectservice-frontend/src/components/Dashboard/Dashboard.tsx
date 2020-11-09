@@ -118,7 +118,7 @@ const Dashboard: FunctionComponent<DashboardProps> = ({ projectDetails }) => {
                 <TableCell className={styles.StyledTableCellHead}>
                   Email Address
                   <Tooltip
-                    title="Enter the Team Drive ID you wish to add to, or remove from, this project."
+                    title="Please ensure you use your Monash email address when modifying on external integrations otherwise this table will not capture your updates."
                     placement="right-end"
                     disableFocusListener
                     disableTouchListener

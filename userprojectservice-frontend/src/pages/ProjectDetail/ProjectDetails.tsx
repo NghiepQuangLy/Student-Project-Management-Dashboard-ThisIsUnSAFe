@@ -36,10 +36,10 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
     // Call APIs
     if (emailAddress && projectId && shouldGetProject) {
       dispatch(AppAction.projectDetailLoading())
-
+      console.log("Id-token: " + googleUser?.getAuthResponse().id_token)
       // Get Project API
       integration
-        .getProject(emailAddress, projectId)
+        .getProject(emailAddress, projectId, googleUser?.getAuthResponse().id_token ?? "")
         .then((project) => {
           dispatch(AppAction.projectDetailSuccess(project))
 

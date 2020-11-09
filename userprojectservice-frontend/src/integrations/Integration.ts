@@ -3,7 +3,7 @@ import { UserResponse } from "../models/UserResponse"
 import { BurndownChartResponse } from "../models/BurndownChartResponse"
 
 export interface Integration {
-  getProject(emailAddress: string, projectId: string): Promise<ProjectResponse>
+  getProject(emailAddress: string, projectId: string, idToken: string): Promise<ProjectResponse>
   getUser(emailAddress: string): Promise<UserResponse>
   getBurndownChart(integrationId: string | undefined, token: string): Promise<BurndownChartResponse>
   createUser(emailAddress: string, givenName: string, familyName: string): Promise<UserResponse>
@@ -15,8 +15,8 @@ export interface Integration {
  */
 const Integration: Integration = {
   // Get the project information using main API
-  async getProject(emailAddress: string, projectId: string) {
-    return fetch(`${process.env.REACT_APP_HOST}/get-project?email=${emailAddress}&projectId=${projectId}`, {
+  async getProject(emailAddress: string, projectId: string, idToken: string) {
+    return fetch(`${process.env.REACT_APP_HOST}/get-project?email=${emailAddress}&projectId=${projectId}&idToken=${idToken}`, {
       method: "GET"
     }).then(async (response) => {
       const responseBody = await response.text()

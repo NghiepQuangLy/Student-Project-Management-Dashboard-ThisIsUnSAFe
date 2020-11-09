@@ -44,8 +44,9 @@ public class ProjectController {
      */
     @ResponseStatus(OK)
     @GetMapping("/get-project")
-    public GetProjectDetailsResponse getProject(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
-        return projectService.getProject(emailAddress, projectId);
+    public GetProjectDetailsResponse getProject(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId, @RequestParam(value = "idToken", required = false
+    ) String idToken) {
+        return projectService.getProject(emailAddress, projectId, idToken);
     }
 
     @ResponseStatus(OK)
