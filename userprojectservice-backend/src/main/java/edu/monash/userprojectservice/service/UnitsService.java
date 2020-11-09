@@ -21,7 +21,13 @@ public class UnitsService {
     @Autowired
     private ValidationHandler validationHandler;
 
-    // Get all units from the Units table
+    /*
+     * This method is to get all units
+     * @param emailAddress The email address to be validated
+     * @return GetUnitsResponse This returns all units' details
+     * @exception BadRequestException when email is empty
+     * @exception ForbiddenException when requestor is not admin
+     */
     public GetUnitsResponse getUnits(String emailAddress) {
 
         validationHandler.isUserAdmin(emailAddress);
