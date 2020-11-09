@@ -1,11 +1,9 @@
 import React from "react"
 import { Page } from "../Page"
 import styles from "./Example.module.css"
-import BarContainer from "../../components/BarContainer/BarContainer";
 
 const Example: Page = ({ integration, state, dispatch }) => {
   return (
-      <BarContainer shouldContainSideBar={false}>
         <div className={styles.Example}>
           <div className={styles.ExampleHeader}>Example Header</div>
           <div className={styles.ExampleCharts}>
@@ -17,7 +15,6 @@ const Example: Page = ({ integration, state, dispatch }) => {
             <div className={styles.ExmapleContent}>Git Content</div>
           </div>
         </div>
-      </BarContainer>
   )
 }
 

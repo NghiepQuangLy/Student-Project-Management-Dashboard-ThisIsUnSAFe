@@ -9,7 +9,13 @@ import ProjectList from "./pages/ProjectList/ProjectList"
 import ProjectDetails from "./pages/ProjectDetail/ProjectDetails"
 import GoogleAuthProvider from "./components/GoogleAuthProvider/GoogleAuthProvider"
 import Example from "./pages/Example/Example"
-import { PROJECT_DETAIL_PATH } from "./util/useQuery"
+import {
+  PROJECT_DETAIL_CONTACTS_PATH, PROJECT_DETAIL_GIT_PATH,
+  PROJECT_DETAIL_GOOGLE_DRIVE_PATH,
+  PROJECT_DETAIL_PATH,
+  PROJECT_DETAIL_REMINDERS_PATH, PROJECT_DETAIL_TIME_TRACKING_PATH, PROJECT_DETAIL_TRELLO_PATH
+} from "./util/useQuery"
+import SAFeAndAgileFeatures from "./pages/SAFeAndAgileFeatures/SAFeAndAgileFeatures";
 
 setBasepath(process.env.REACT_APP_CONTEXT_PATH || "")
 
@@ -29,6 +35,27 @@ const App: FunctionComponent<AppProps> = ({ integration }) => {
             REMEMBER to have longer path at the top
         */}
           <Switch>
+            <Route path={`${PROJECT_DETAIL_GIT_PATH}`}>
+              <ProjectDetails integration={integration} state={state} dispatch={dispatch} />
+            </Route>
+            <Route path={`${PROJECT_DETAIL_TRELLO_PATH}`}>
+              <ProjectDetails integration={integration} state={state} dispatch={dispatch} />
+            </Route>
+            <Route path={`${PROJECT_DETAIL_GOOGLE_DRIVE_PATH}`}>
+              <ProjectDetails integration={integration} state={state} dispatch={dispatch} />
+            </Route>
+            <Route path={`${PROJECT_DETAIL_REMINDERS_PATH}`}>
+              <ProjectDetails integration={integration} state={state} dispatch={dispatch} />
+            </Route>
+            <Route path={`${PROJECT_DETAIL_TIME_TRACKING_PATH}`}>
+              <ProjectDetails integration={integration} state={state} dispatch={dispatch} />
+            </Route>
+            <Route path={`${PROJECT_DETAIL_CONTACTS_PATH}`}>
+              <ProjectDetails integration={integration} state={state} dispatch={dispatch} />
+            </Route>
+            <Route path="/SAFeAndAgileFeatures">
+              <SAFeAndAgileFeatures integration={integration} state={state} dispatch={dispatch} />
+            </Route>
             <Route path="/projects">
               <ProjectList integration={integration} state={state} dispatch={dispatch} />
             </Route>
