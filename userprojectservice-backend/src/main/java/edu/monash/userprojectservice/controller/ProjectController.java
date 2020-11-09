@@ -49,45 +49,95 @@ public class ProjectController {
         return projectService.getProject(emailAddress, projectId, idToken);
     }
 
-    @ResponseStatus(OK)
-    @GetMapping("/get-all-projects")
-    public GetAllProjectsResponse getAllProjects(@RequestParam("requestorEmail") String emailAddress) {
-        return projectService.getAllProjects(emailAddress);
-    }
-
-    @ResponseStatus(OK)
-    @GetMapping("/get-timesheet")
-    public GetTimesheetResponse getTimesheet(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
-        return projectService.getTimesheet(emailAddress, projectId);
-    }
-
+    /*
+     * This method is to create project
+     * @param createProjectRequest requestor email and project details
+     * @return 400 when email is empty or not monash email, when project id is empty,
+     * @return 403 when requestor is not admin
+     */
     @ResponseStatus(CREATED)
     @PostMapping("/create-project")
     public ResponseEntity setProjectUser(@RequestBody @Valid CreateProjectRequest createProjectRequest) throws SQLException {
         return projectService.createProject(createProjectRequest);
     }
 
+    /*
+     * This method is to remove a project
+     * @requestBody createProjectRequest requestor email and project details
+     * @return 400 when email is empty or fileds in removeProjectRequest is empty
+     * @return 403 when requestor is not admin
+     * @return 404 when project is not found
+     */
     @ResponseStatus(OK)
     @PostMapping("/remove-project")
     public ResponseEntity removeProject(@RequestBody @Valid RemoveProjectRequest removeProjectRequest) throws SQLException {
         return projectService.removeProject(removeProjectRequest);
     }
 
+    /*
+     * This method is to edit a project
+     * @param editProjectRequest requestor email and project details
+     * @return 400 when email is empty or fileds in editProjectRequest is empty
+     * @return 403 when requestor is not admin
+     * @return 404 when project is not found
+     */
     @ResponseStatus(OK)
     @PostMapping("/edit-project")
     public ResponseEntity setProjectName(@RequestBody @Valid EditProjectRequest editProjectRequest) throws SQLException {
         return projectService.editProject(editProjectRequest);
     }
 
+    /*
+     * This method is to get a project timesheet
+     * @param emailAddress The requestor email address
+     * @param projectId The project that contains the timesheet
+     * @return 200 This returns timesheet
+     * @return 400 when email is empty
+     * @return 403 when requestor is not admin
+     * @return 404 when project is not found
+     */
+    @ResponseStatus(OK)
+    @GetMapping("/get-timesheet")
+    public GetTimesheetResponse getTimesheet(@RequestParam("email") String emailAddress, @RequestParam("projectId") String projectId) {
+        return projectService.getTimesheet(emailAddress, projectId);
+    }
+
+    /*
+     * This method is to save timesheet to a project
+     * @param saveTimesheetRequest requestor email, timesheet id and project id
+     * @return 400 when email is empty or fields in saveTimesheetRequest is empty
+     * @return 403 project does not belong to the email
+     * @return 404 when project is not found
+     */
     @ResponseStatus(CREATED)
     @PostMapping("/save-timesheet")
     public void saveTimesheet(@RequestBody @Valid SaveTimesheetRequest saveTimesheetRequest) {
         projectService.saveTimesheet(saveTimesheetRequest);
     }
 
+    /*
+     * This method is to remove timesheet from a project
+     * @param removeTimesheetRequest requestor email and project id
+     * @excepreturntion 400 when email is empty or fields in removeTimesheetRequest is empty
+     * @return 403 project does not belong to the email
+     * @return 404 when project is not found
+     */
     @ResponseStatus(OK)
     @PostMapping("/remove-timesheet")
     public ResponseEntity removeTimesheet(@RequestBody @Valid RemoveTimesheetRequest removeTimesheetRequest) throws SQLException {
         return projectService.removeTimesheet(removeTimesheetRequest);
+    }
+
+    /*
+     * This method is to get all projects
+     * @param emailAddress The email address to be validated
+     * @return 200 This returns all projects' details
+     * @return 400 when email is empty
+     * @return 403 when requestor is not admin
+     */
+    @ResponseStatus(OK)
+    @GetMapping("/get-all-projects")
+    public GetAllProjectsResponse getAllProjects(@RequestParam("requestorEmail") String emailAddress) {
+        return projectService.getAllProjects(emailAddress);
     }
 }

@@ -2,7 +2,18 @@ package edu.monash.userprojectservice.service;
 
 import edu.monash.userprojectservice.HTTPResponseHandler;
 import edu.monash.userprojectservice.ValidationHandler;
-import edu.monash.userprojectservice.model.*;
+import edu.monash.userprojectservice.model.CreateProjectRequest;
+import edu.monash.userprojectservice.model.EditProjectRequest;
+import edu.monash.userprojectservice.model.GetAllProjectsResponse;
+import edu.monash.userprojectservice.model.GetProjectDetailsResponse;
+import edu.monash.userprojectservice.model.GetProjectResponse;
+import edu.monash.userprojectservice.model.GetTimesheetResponse;
+import edu.monash.userprojectservice.model.IntegrationObjectResponse;
+import edu.monash.userprojectservice.model.IntegrationTableObjectResponse;
+import edu.monash.userprojectservice.model.ReminderTableObjectResponse;
+import edu.monash.userprojectservice.model.RemoveProjectRequest;
+import edu.monash.userprojectservice.model.RemoveTimesheetRequest;
+import edu.monash.userprojectservice.model.SaveTimesheetRequest;
 import edu.monash.userprojectservice.repository.CreateProjectRepository;
 import edu.monash.userprojectservice.repository.EditProjectRepository;
 import edu.monash.userprojectservice.repository.RemoveProjectRepository;
@@ -17,22 +28,27 @@ import edu.monash.userprojectservice.repository.trello.TrelloRepository;
 import edu.monash.userprojectservice.repository.units.UnitsRepository;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsEntity;
 import edu.monash.userprojectservice.repository.userproject.UsersProjectsRepository;
-import edu.monash.userprojectservice.serviceclient.*;
+import edu.monash.userprojectservice.serviceclient.GitIntegrationTableServiceClient;
+import edu.monash.userprojectservice.serviceclient.GoogleDriveIntegrationTableServiceClient;
+import edu.monash.userprojectservice.serviceclient.IntegrationTableResponse;
+import edu.monash.userprojectservice.serviceclient.ReminderTableResponse;
+import edu.monash.userprojectservice.serviceclient.ReminderTableServiceClient;
+import edu.monash.userprojectservice.serviceclient.TrelloIntegrationTableServiceClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static java.time.temporal.ChronoUnit.DAYS;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -123,12 +139,12 @@ public class ProjectService {
 
         List<IntegrationTableResponse> gitIntegrationTableDataExtract = new ArrayList<>();
         //if (idToken != null && !idToken.equals("")) {
-            // get git activity tracker table data
-            gitIntegrationTableDataExtract = gitIntegrationTableServiceClient.getGitIntegrationTable(
-                    emails,
-                    gitEntities.stream().map(GitEntity::getGitId).collect(Collectors.toList()),
-                    projectId
-            );
+        // get git activity tracker table data
+        gitIntegrationTableDataExtract = gitIntegrationTableServiceClient.getGitIntegrationTable(
+                emails,
+                gitEntities.stream().map(GitEntity::getGitId).collect(Collectors.toList()),
+                projectId
+        );
         //}
 
         final List<IntegrationTableResponse> gitIntegrationTableData = gitIntegrationTableDataExtract;
@@ -241,10 +257,13 @@ public class ProjectService {
         return diff + diffDaysString;
     }
 
-    // create a method
-    // check for the user first, if it doesnt exist new responseEntity and return not found
-    // if he exists then, return OK
-    public ResponseEntity<GetProjectDetailsResponse> createProject(CreateProjectRequest createProjectRequest) throws SQLException {
+    /*
+     * This method is to create project
+     * @param createProjectRequest requestor email and project details
+     * @exception BadRequestException when email is empty or fields in createProjectRequest is empty
+     * @exception ForbiddenException when requestor is not admin
+     */
+    public ResponseEntity createProject(CreateProjectRequest createProjectRequest) throws SQLException {
         //check if the user is present in the system
 
         // Validation Check
@@ -287,9 +306,13 @@ public class ProjectService {
         }
     }
 
-    // remove a project
-    // check for the user first, if it doesnt exist new responseEntity and return not found
-    // if he exists then, return OK
+    /*
+     * This method is to remove a project
+     * @param createProjectRequest requestor email and project details
+     * @exception BadRequestException when email is empty or fields in removeProjectRequest is empty
+     * @exception ForbiddenException when requestor is not admin
+     * @exception NotFoundException when project is not found
+     */
     public ResponseEntity<GetProjectDetailsResponse> removeProject(RemoveProjectRequest removeProjectRequest) throws SQLException {
 
         // Validation Check
@@ -338,9 +361,13 @@ public class ProjectService {
         }
     }
 
-    // edit a project
-    // check for the user first, if it doesnt exist new responseEntity and return not found
-    // if he exists then, return OK
+    /*
+     * This method is to edit a project
+     * @param editProjectRequest requestor email and project details
+     * @exception BadRequestException when email is empty or fields in editProjectRequest is empty
+     * @exception ForbiddenException when requestor is not admin
+     * @exception NotFoundException when project is not found
+     */
     public ResponseEntity<GetProjectDetailsResponse> editProject(EditProjectRequest editProjectRequest) throws SQLException {
 
         // Validation Check
@@ -350,7 +377,7 @@ public class ProjectService {
         if (projectsRepository.findProjectEntityByProjectId(editProjectRequest.getProjectId()) == null) {
             log.warn("Project not found!");
             return new ResponseEntity<>(
-                    null, INTERNAL_SERVER_ERROR
+                    null, NOT_FOUND
             );
         }
 
@@ -369,6 +396,15 @@ public class ProjectService {
         }
     }
 
+    /*
+     * This method is to get a project timesheet
+     * @param emailAddress The requestor email address
+     * @param projectId The project that contains the timesheet
+     * @return GetTimesheetResponse This returns timesheet
+     * @exception BadRequestException when email is empty
+     * @exception ForbiddenException when requestor is not admin
+     * @exception NotFoundException when project is not found
+     */
     public GetTimesheetResponse getTimesheet(String emailAddress, String projectId) {
         log.info("{\"message\":\"Getting project\", \"project\":\"{}\"}", projectId);
 
@@ -379,15 +415,20 @@ public class ProjectService {
         ProjectEntity projectEntity = projectsRepository.findProjectEntityByProjectId(projectId);
 
         if (projectEntity == null) {
-
-            System.out.println("Project does not exist.");
-            return null;
+            log.warn("A project [{}] does not exist: ", projectId);
+            throw new HTTPResponseHandler.NotFoundException("Project not found.");
         }
 
         return new GetTimesheetResponse(projectEntity.getProjectTimesheet());
     }
 
-    // Save timesheet to a project
+    /*
+     * This method is to save timesheet to a project
+     * @param saveTimesheetRequest requestor email, timesheet id and project id
+     * @exception BadRequestException when email is empty or fields in saveTimesheetRequest is empty
+     * @exception ForbiddenException project does not belong to the email
+     * @exception NotFoundException when project is not found
+     */
     public void saveTimesheet(SaveTimesheetRequest saveTimesheetRequest) {
         log.info("{\"message\":\"Inserting timesheet\", \"project\":\"{}\"}", saveTimesheetRequest);
 
@@ -403,7 +444,13 @@ public class ProjectService {
         log.info("{\"message\":\"Inserted timesheet\", \"project\":\"{}\"}", saveTimesheetRequest);
     }
 
-    // Remove timesheet from a project
+    /*
+     * This method is to remove timesheet from a project
+     * @param removeTimesheetRequest requestor email and project id
+     * @exception BadRequestException when email is empty or fields in removeTimesheetRequest is empty
+     * @exception ForbiddenException project does not belong to the email
+     * @exception NotFoundException when project is not found
+     */
     public ResponseEntity<GetProjectDetailsResponse> removeTimesheet(RemoveTimesheetRequest removeTimesheetRequest) throws SQLException {
         log.info("{\"message\":\"Removing timesheet\", \"project\":\"{}\"}", removeTimesheetRequest);
 
@@ -423,15 +470,21 @@ public class ProjectService {
                     null, OK
             );
         } else {
-            // log an warning that there the timesheet is already empty
-            log.warn("Project Timesheet is already empty: ", removeTimesheetRequest.getProjectId());
+            // when project does not have timesheet
+            log.warn("Project [{}] does not have timesheet: ", removeTimesheetRequest.getProjectId());
             return new ResponseEntity<>(
                     null, BAD_REQUEST
             );
         }
     }
 
-    // get all projects
+    /*
+     * This method is to get all projects
+     * @param emailAddress The email address to be validated
+     * @return GetAllProjectsResponse This returns all projects' details
+     * @exception BadRequestException when email is empty
+     * @exception ForbiddenException when requestor is not admin
+     */
     public GetAllProjectsResponse getAllProjects(String emailAddress) {
 
         validationHandler.isUserAdmin(emailAddress);
