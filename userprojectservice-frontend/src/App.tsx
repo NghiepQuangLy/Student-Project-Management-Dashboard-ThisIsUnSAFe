@@ -10,12 +10,15 @@ import ProjectDetails from "./pages/ProjectDetail/ProjectDetails"
 import GoogleAuthProvider from "./components/GoogleAuthProvider/GoogleAuthProvider"
 import Example from "./pages/Example/Example"
 import {
-  PROJECT_DETAIL_CONTACTS_PATH, PROJECT_DETAIL_GIT_PATH,
+  PROJECT_DETAIL_CONTACTS_PATH,
+  PROJECT_DETAIL_GIT_PATH,
   PROJECT_DETAIL_GOOGLE_DRIVE_PATH,
   PROJECT_DETAIL_PATH,
-  PROJECT_DETAIL_REMINDERS_PATH, PROJECT_DETAIL_TIME_TRACKING_PATH, PROJECT_DETAIL_TRELLO_PATH
+  PROJECT_DETAIL_REMINDERS_PATH,
+  PROJECT_DETAIL_TIME_TRACKING_PATH,
+  PROJECT_DETAIL_TRELLO_PATH
 } from "./util/useQuery"
-import SAFeAndAgileFeatures from "./pages/SAFeAndAgileFeatures/SAFeAndAgileFeatures";
+import SAFeAndAgileFeatures from "./pages/SAFeAndAgileFeatures/SAFeAndAgileFeatures"
 
 setBasepath(process.env.REACT_APP_CONTEXT_PATH || "")
 

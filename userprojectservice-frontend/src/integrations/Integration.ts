@@ -1,6 +1,6 @@
 import { ProjectResponse } from "../models/ProjectResponse"
 import { UserResponse } from "../models/UserResponse"
-import {BurndownChartResponse} from "../models/BurndownChartResponse";
+import { BurndownChartResponse } from "../models/BurndownChartResponse"
 
 export interface Integration {
   getProject(emailAddress: string, projectId: string): Promise<ProjectResponse>
@@ -10,7 +10,7 @@ export interface Integration {
   updateUser(emailAddress: string, givenName: string, familyName: string): Promise<void>
 }
 
- /*
+/*
   Functions for calling APIs
  */
 const Integration: Integration = {

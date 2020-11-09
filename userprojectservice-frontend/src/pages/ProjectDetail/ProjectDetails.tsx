@@ -43,14 +43,17 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
         .then((project) => {
           dispatch(AppAction.projectDetailSuccess(project))
 
-    // Get Burndown Chart API
+          // Get Burndown Chart API
           console.log(project.projectTrelloIntegration[0].integrationId)
           integration
-              .getBurndownChart(project.projectTrelloIntegration[0].integrationId,"d8989708bc9f936bec339c8ecd88ab019e682da9c4f9fcb90f95701a689aa46f")
-              .then((project) => {
-                dispatch(AppAction.trelloBurndownSuccess(project))
-              })
-              .catch(() => console.log("Trello Burndown Chart Endpoint not working"))
+            .getBurndownChart(
+              project.projectTrelloIntegration[0].integrationId,
+              "d8989708bc9f936bec339c8ecd88ab019e682da9c4f9fcb90f95701a689aa46f"
+            )
+            .then((project) => {
+              dispatch(AppAction.trelloBurndownSuccess(project))
+            })
+            .catch(() => console.log("Trello Burndown Chart Endpoint not working"))
         })
         .catch(() => dispatch(AppAction.projectDetailFailure()))
     }

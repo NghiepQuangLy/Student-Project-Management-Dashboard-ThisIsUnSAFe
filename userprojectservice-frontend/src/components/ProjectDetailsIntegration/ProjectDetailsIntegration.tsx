@@ -22,7 +22,6 @@ interface ProjectDetailsIntegrationProps {}
  * @return The HTML for the iframe component containing the content according to the URL
  */
 const ProjectDetailsIntegration: FunctionComponent<ProjectDetailsIntegrationProps> = () => {
-
   // get project id from url
   let query = useQuery()
   const projectId = query?.get(PROJECT_ID_QUERY)

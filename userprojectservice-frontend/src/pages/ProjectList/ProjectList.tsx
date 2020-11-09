@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useState} from "react"
+import React, { useLayoutEffect, useState } from "react"
 import { Page } from "../Page"
 import { Redirect } from "react-router-dom"
 import * as AppAction from "../../state/AppAction"
@@ -9,7 +9,7 @@ import Loading from "../../components/Loading/Loading"
 import ProjectListLanding from "../../components/ProjectListLanding/ProjectListLanding"
 import styles from "../ProjectDetail/ProjectDetails.module.css"
 // @ts-ignore
-import TrelloClient, {Trello} from "react-trello-client"
+import TrelloClient, { Trello } from "react-trello-client"
 
 // Provide Dictionary of any data type (T) interface
 export interface Dictionary<T> {
@@ -98,7 +98,8 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
   /* Authenticate if we need to */
   if (!trelloToken) {
     console.log("Authenticating Trello")
-    return (<TrelloClient
+    return (
+      <TrelloClient
         apiKey="38e2c9e0bd5f083ac3e8e19ed8a1a5fa" // Get the API key from https://trello.com/app-key/
         clientVersion={1} // number: {1}, {2}, {3}
         apiEndpoint="https://api.trello.com" // string: "https://api.trello.com"
@@ -125,7 +126,8 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
         buttonStyle="flat" // string: "metamorph" | "flat"
         buttonColor="grayish-blue" // string: "green" | "grayish-blue" | "light"
         buttonText="Authenticate" // string: "Login with Trello"
-    />)
+      />
+    )
   }
 
   const isLoading =
@@ -133,7 +135,8 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
     (isInitialized &&
       isSignedIn &&
       emailAddress &&
-      (state.userDetailStatus === AppStatus.INITIAL || state.userDetailStatus === AppStatus.LOADING)) || !trelloToken
+      (state.userDetailStatus === AppStatus.INITIAL || state.userDetailStatus === AppStatus.LOADING)) ||
+    !trelloToken
   const isRedirectToLogin = !isLoading && !isSignedIn
   const isEmailInvalid = state.userDetailStatus === AppStatus.FAILURE && state.isUserEmailInvalid
   const isErr = !isEmailInvalid && !isLoading && (state.userDetailStatus === AppStatus.FAILURE || (isSignedIn && !emailAddress))

@@ -1,6 +1,6 @@
 import { ProjectResponse } from "../models/ProjectResponse"
 import { UserResponse } from "../models/UserResponse"
-import {BurndownChartResponse} from "../models/BurndownChartResponse";
+import { BurndownChartResponse } from "../models/BurndownChartResponse"
 
 export type AppActionType =
   | "PROJECT_LIST_LOADING"
