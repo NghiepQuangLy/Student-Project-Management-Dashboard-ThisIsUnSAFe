@@ -13,11 +13,16 @@ import { PROJECT_DETAIL_PATH } from "./util/useQuery"
 
 setBasepath(process.env.REACT_APP_CONTEXT_PATH || "")
 
+// Provides App Props integration
 interface AppProps {
   integration: Integration
   children?: never
 }
 
+/** This method returns the App component which is the root of the entire application.
+ * @param integration Allows API calls to be used in function
+ * @return The HTML for the TabPanel
+ */
 const App: FunctionComponent<AppProps> = ({ integration }) => {
   const [state, dispatch] = useReducer(AppReducer, AppInitialState)
   return (

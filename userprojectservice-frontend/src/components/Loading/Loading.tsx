@@ -4,9 +4,11 @@ import styles from "./Loading.module.css"
 interface LoadingProps {
   iconColor: "white" | "black"
 }
-/*
-Loading animation component
-reference: https://loading.io/css/
+/**
+ * This method returns the Loading animation component (rotating wheel animation)
+ * reference: https://loading.io/css/
+ * @param iconColor The color of the animation icon
+ * @return The HTML for the Loading component
  */
 const Loading: FunctionComponent<LoadingProps> = ({ iconColor }) => {
   // icon color

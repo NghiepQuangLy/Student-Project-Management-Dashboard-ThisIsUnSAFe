@@ -11,13 +11,21 @@ import TableHead from "@material-ui/core/TableHead"
 import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone"
 import Chart from "react-google-charts"
 
+// Provide an interface for the Dashboard
 interface DashboardProps {
   projectDetails?: ProjectDetail
 }
 
+ /** This method returns the Dashboard Frontend component which is comprised of the Reminders Table,
+  * Trello Progress Chart, Integration Data Table and Moodle Link
+  * @param projectDetails The details of the project
+  * @return The HTML for the Dashboard
+ */
 const Dashboard: FunctionComponent<DashboardProps> = ({ projectDetails }) => {
     const distinct_columns = new Set();
     distinct_columns.add("Date")
+
+    // Get distinct columns from burndown chart
     for (let key in projectDetails?.projectBurndownChart?.listSizes) {
         let value = projectDetails?.projectBurndownChart?.listSizes[key];
         for (let key2 in value) {
@@ -31,6 +39,7 @@ const Dashboard: FunctionComponent<DashboardProps> = ({ projectDetails }) => {
         columns
        ];
 
+    // Get row data
     for (let key in projectDetails?.projectBurndownChart?.listSizes) {
         const rowData = []
         for (let i = 0; i < columns.length; i++) {
@@ -53,6 +62,7 @@ const Dashboard: FunctionComponent<DashboardProps> = ({ projectDetails }) => {
         <div className={styles.ReminderHeader}>
           <h2>&ensp;&ensp;Reminders:</h2>
         </div>
+          {/*Reminders Table*/}
         <TableContainer component={Paper} className={styles.Container}>
           <Table className={styles.Table} aria-label="Reminders">
             <TableBody>
@@ -74,10 +84,11 @@ const Dashboard: FunctionComponent<DashboardProps> = ({ projectDetails }) => {
             </TableBody>
           </Table>
         </TableContainer>
+          {/*Trello Progress Chart*/}
         <div className={styles.IntegrationHeader}>
             <h2>&ensp;&ensp;Trello Progress Chart:</h2>
         </div>
-      <TableContainer className={styles.Container2}>
+        <TableContainer className={styles.Container2}>
         <Chart
             width='90%'
             height='240px'
@@ -99,6 +110,7 @@ const Dashboard: FunctionComponent<DashboardProps> = ({ projectDetails }) => {
         <div className={styles.IntegrationHeader}>
           <h2>Integration History:</h2>
         </div>
+         {/*Integration Data Table*/}
         <TableContainer component={Paper} className={styles.Container}>
           <Table className={styles.Table} aria-label="customized table">
             <TableHead>
@@ -129,6 +141,7 @@ const Dashboard: FunctionComponent<DashboardProps> = ({ projectDetails }) => {
             </TableBody>
           </Table>
         </TableContainer>
+          {/*Moodle Link*/}
         <div className={styles.IntegrationHeader}>
           <h2>Moodle Link: </h2>
           <a className={styles.Logo} href={`${projectDetails?.moodleLink}`} />

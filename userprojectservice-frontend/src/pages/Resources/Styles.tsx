@@ -3,6 +3,7 @@ import Typography from "@material-ui/core/Typography"
 import Link from "@material-ui/core/Link"
 import React from "react"
 
+// Provides the Copyright for the Student Project Management Dashboard
 export default function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -16,6 +17,7 @@ export default function Copyright() {
   )
 }
 
+// Stylization
 const drawerWidth = 240
 export const useStyles = makeStyles((theme) => ({
   theme: {

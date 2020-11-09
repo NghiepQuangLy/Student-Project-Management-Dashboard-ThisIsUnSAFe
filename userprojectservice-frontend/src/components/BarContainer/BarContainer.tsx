@@ -10,10 +10,15 @@ interface BarContainerProps {
   projectDetails?: ProjectDetail
 }
 
-/*
- Top Bar and Side Bar component,
- when shouldContainSideBar = true, display top bar and side bar,
- when shouldContainSideBar = false, display top bar only
+/**
+ * This method returns the BarContainer component which is the combination of a Top Bar component and a Side Bar
+ * component
+ * @param shouldContainSideBar Whether the BarContainer component should include a Side Bar component
+ *                             When shouldContainSideBar = true, display Top Bar and Side Bar
+ *                             When shouldContainSideBar = false, display Top Bar only
+ * @param projectDetails The details of the project
+ * @param children The children components
+ * @return The HTML for the BarContainer component
 */
 const BarContainer: FunctionComponent<BarContainerProps> = ({ shouldContainSideBar, projectDetails, children }) => {
   return (

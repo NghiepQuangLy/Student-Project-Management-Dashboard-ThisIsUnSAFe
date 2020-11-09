@@ -10,6 +10,11 @@ import { AppState } from "./AppState"
 import { Reducer } from "react"
 import { AppStatus } from "../models/AppStatus"
 
+/** This method returns the App Reducer component which is the updated react state.
+ * @param prevState The previous react state of the application
+ * @param action The action that was used that requires an updated state
+ * @return The updated react state which is composed on the previous state ...prevState and the updated components.
+ */
 const AppReducer: Reducer<AppState, AppAction<AppActionType, any>> = (prevState, action): AppState => {
   switch (action.type) {
     case "PROJECT_DETAIL_LOADING": {
