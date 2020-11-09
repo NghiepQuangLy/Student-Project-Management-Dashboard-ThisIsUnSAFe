@@ -20,6 +20,13 @@ public class UnitsController {
 
     private UnitsService unitsService;
 
+    /*
+     * This method is to get all units
+     * @param emailAddress The email address to be validated
+     * @return 200 This returns all units' details
+     * @return 400 when email is empty
+     * @return 403 when requestor is not admin
+     */
     @ResponseStatus(OK)
     @GetMapping("/get-units")
     public GetUnitsResponse getUnits(@RequestParam("requestorEmail") String emailAddress) {
