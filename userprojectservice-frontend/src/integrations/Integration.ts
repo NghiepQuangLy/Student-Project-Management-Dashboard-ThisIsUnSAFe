@@ -1,22 +1,22 @@
 import { ProjectResponse } from "../models/ProjectResponse"
 import { UserResponse } from "../models/UserResponse"
-import {BurndownChartResponse} from "../models/BurndownChartResponse";
+import { BurndownChartResponse } from "../models/BurndownChartResponse"
 
 export interface Integration {
-  getProject(emailAddress: string, projectId: string): Promise<ProjectResponse>
+  getProject(emailAddress: string, projectId: string, idToken: string): Promise<ProjectResponse>
   getUser(emailAddress: string): Promise<UserResponse>
   getBurndownChart(integrationId: string | undefined, token: string): Promise<BurndownChartResponse>
   createUser(emailAddress: string, givenName: string, familyName: string): Promise<UserResponse>
   updateUser(emailAddress: string, givenName: string, familyName: string): Promise<void>
 }
 
- /*
+/*
   Functions for calling APIs
  */
 const Integration: Integration = {
   // Get the project information using main API
-  async getProject(emailAddress: string, projectId: string) {
-    return fetch(`${process.env.REACT_APP_HOST}/get-project?email=${emailAddress}&projectId=${projectId}`, {
+  async getProject(emailAddress: string, projectId: string, idToken: string) {
+    return fetch(`${process.env.REACT_APP_HOST}/get-project?email=${emailAddress}&projectId=${projectId}&idToken=${idToken}`, {
       method: "GET"
     }).then(async (response) => {
       const responseBody = await response.text()
@@ -96,7 +96,7 @@ const Integration: Integration = {
 
   // Get the burndown chart data using Trello API call
   async getBurndownChart(integrationId: string, token: string) {
-    return fetch(`${process.env.REACT_APP_TRELLO_URL}/trello-service/data/burndown/${integrationId}?token=${token}`, {
+    return fetch(`${process.env.REACT_APP_TRELLO_BACKEND_URL}data/burndown/${integrationId}?token=${token}`, {
       method: "GET"
     }).then(async (response) => {
       const responseBody = await response.text()

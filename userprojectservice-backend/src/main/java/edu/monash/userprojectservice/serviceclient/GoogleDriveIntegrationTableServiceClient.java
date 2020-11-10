@@ -37,6 +37,7 @@ public class GoogleDriveIntegrationTableServiceClient {
             ).getBody();
 
         } catch (Exception e) {
+            System.out.println("Issue: " + e);
             return new ArrayList<>();
         }
     }

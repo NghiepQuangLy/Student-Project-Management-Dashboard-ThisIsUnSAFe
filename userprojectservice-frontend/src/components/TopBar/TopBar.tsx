@@ -19,7 +19,7 @@ const TopBar: FunctionComponent<TopBarProps> = () => {
   return (
     <Header className={styles.TopBar}>
       <div className={styles.Logo} />
-      <button onClick={() => history.push("/example")} className={styles.SAFeAndAgileFeatures}>
+      <button onClick={() => history.push("/SAFeAndAgileFeatures")} className={styles.SAFeAndAgileFeatures}>
         SAFe & Agile Features
       </button>
       <button onClick={() => history.push("/projects")} className={styles.Projects}>

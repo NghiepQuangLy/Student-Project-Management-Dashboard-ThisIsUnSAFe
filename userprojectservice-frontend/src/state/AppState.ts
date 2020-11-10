@@ -57,7 +57,7 @@ export interface AppState {
   user: User | null
 }
 
-export interface BurndownChart{
+export interface BurndownChart {
   boardName: string
   listSizes: TrelloMap
 }

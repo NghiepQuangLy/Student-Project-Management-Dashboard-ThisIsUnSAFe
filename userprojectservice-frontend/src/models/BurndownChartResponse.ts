@@ -1,17 +1,17 @@
 export interface BurndownChartResponse {
-    boardName: string
-    listSizes: TrelloMap
+  boardName: string
+  listSizes: TrelloMap
 }
 
 export interface TrelloMap {
-    [trelloKey: string]: CardMap
+  [trelloKey: string]: CardMap
 }
 
 export interface CardMap {
-    [cardKey: string]: TrelloCard
+  [cardKey: string]: TrelloCard
 }
 
 export interface TrelloCard {
-    name: string
-    size: number
+  name: string
+  size: number
 }

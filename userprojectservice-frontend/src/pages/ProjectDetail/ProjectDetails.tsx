@@ -36,22 +36,26 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
     // Call APIs
     if (emailAddress && projectId && shouldGetProject) {
       dispatch(AppAction.projectDetailLoading())
-
+      console.log("Id-token: " + googleUser?.getAuthResponse().id_token)
       // Get Project API
       integration
-        .getProject(emailAddress, projectId)
+        .getProject(emailAddress, projectId, googleUser?.getAuthResponse().id_token ?? "")
         .then((project) => {
           dispatch(AppAction.projectDetailSuccess(project))
+
+          // Get Burndown Chart API
+          console.log(project.projectTrelloIntegration[0].integrationId)
+          integration
+            .getBurndownChart(
+              project.projectTrelloIntegration[0].integrationId,
+              "41c9bf19df95453a6c4d91dc168236cd86021b37faf4773e17e1bd273cec6e6e"
+            )
+            .then((project) => {
+              dispatch(AppAction.trelloBurndownSuccess(project))
+            })
+            .catch(() => console.log("Trello Burndown Chart Endpoint not working"))
         })
         .catch(() => dispatch(AppAction.projectDetailFailure()))
-
-      // Get Burndown Chart API
-      integration
-          .getBurndownChart(state.currentProject?.projectTrelloIntegrations[0].integrationId,"test")
-          .then((project) => {
-            dispatch(AppAction.trelloBurndownSuccess(project))
-          })
-          .catch(() => dispatch(AppAction.projectDetailFailure()))
     }
   }, [dispatch, integration, state.projectDetailStatus, emailAddress, projectId, state.currentProject])
 

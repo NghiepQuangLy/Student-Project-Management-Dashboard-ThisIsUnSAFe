@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Optional;
 
 @Data
 @Builder
@@ -14,7 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class IntegrationTableResponse {
 
-    private String emailAddress;
-    private LocalDateTime lastModified;
+    private String email;
+    private Optional<LocalDateTime> lastModified;
 
 }

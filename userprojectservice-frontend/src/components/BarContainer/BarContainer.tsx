@@ -19,7 +19,7 @@ interface BarContainerProps {
  * @param projectDetails The details of the project
  * @param children The children components
  * @return The HTML for the BarContainer component
-*/
+ */
 const BarContainer: FunctionComponent<BarContainerProps> = ({ shouldContainSideBar, projectDetails, children }) => {
   return (
     <Layout>

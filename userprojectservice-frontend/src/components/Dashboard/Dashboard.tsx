@@ -2,6 +2,8 @@ import React, { FunctionComponent } from "react"
 import styles from "./Dashboard.module.css"
 import { ProjectDetail } from "../../state/AppState"
 import Table from "@material-ui/core/Table"
+import Tooltip from "@material-ui/core/Tooltip"
+import HelpOutline from "@material-ui/icons/HelpOutline"
 import TableBody from "@material-ui/core/TableBody"
 import TableCell from "@material-ui/core/TableCell"
 import TableContainer from "@material-ui/core/TableContainer"
@@ -16,44 +18,42 @@ interface DashboardProps {
   projectDetails?: ProjectDetail
 }
 
- /** This method returns the Dashboard Frontend component which is comprised of the Reminders Table,
-  * Trello Progress Chart, Integration Data Table and Moodle Link
-  * @param projectDetails The details of the project
-  * @return The HTML for the Dashboard
+/** This method returns the Dashboard Frontend component which is comprised of the Reminders Table,
+ * Trello Progress Chart, Integration Data Table and Moodle Link
+ * @param projectDetails The details of the project
+ * @return The HTML for the Dashboard
  */
 const Dashboard: FunctionComponent<DashboardProps> = ({ projectDetails }) => {
-    const distinct_columns = new Set();
-    distinct_columns.add("Date")
+  const distinct_columns = new Set()
+  distinct_columns.add("Date")
 
-    // Get distinct columns from burndown chart
-    for (let key in projectDetails?.projectBurndownChart?.listSizes) {
-        let value = projectDetails?.projectBurndownChart?.listSizes[key];
-        for (let key2 in value) {
-            let value2 = value[key2];
-            distinct_columns.add(value2.name)
-        }
+  // Get distinct columns from burndown chart
+  for (let key in projectDetails?.projectBurndownChart?.listSizes) {
+    let value = projectDetails?.projectBurndownChart?.listSizes[key]
+    for (let key2 in value) {
+      let value2 = value[key2]
+      distinct_columns.add(value2.name)
     }
+  }
 
-    let columns = Array.from( distinct_columns )
-    const data = [
-        columns
-       ];
+  let columns = Array.from(distinct_columns)
+  const data = [columns]
 
-    // Get row data
-    for (let key in projectDetails?.projectBurndownChart?.listSizes) {
-        const rowData = []
-        for (let i = 0; i < columns.length; i++) {
-            rowData.push(0)
-        }
-        let value = projectDetails?.projectBurndownChart?.listSizes[key];
-        rowData[0] = key
-
-        for (let key2 in value) {
-            let value2 = value[key2];
-            rowData[columns.indexOf(value2.name)] = value2.size
-        }
-        data.push(rowData)
+  // Get row data
+  for (let key in projectDetails?.projectBurndownChart?.listSizes) {
+    const rowData = []
+    for (let i = 0; i < columns.length; i++) {
+      rowData.push(0)
     }
+    let value = projectDetails?.projectBurndownChart?.listSizes[key]
+    rowData[0] = key
+
+    for (let key2 in value) {
+      let value2 = value[key2]
+      rowData[columns.indexOf(value2.name)] = value2.size
+    }
+    data.push(rowData)
+  }
 
   return (
     <div className={styles.Dashboard}>
@@ -62,7 +62,7 @@ const Dashboard: FunctionComponent<DashboardProps> = ({ projectDetails }) => {
         <div className={styles.ReminderHeader}>
           <h2>&ensp;&ensp;Reminders:</h2>
         </div>
-          {/*Reminders Table*/}
+        {/*Reminders Table*/}
         <TableContainer component={Paper} className={styles.Container}>
           <Table className={styles.Table} aria-label="Reminders">
             <TableBody>
@@ -84,38 +84,49 @@ const Dashboard: FunctionComponent<DashboardProps> = ({ projectDetails }) => {
             </TableBody>
           </Table>
         </TableContainer>
-          {/*Trello Progress Chart*/}
+        {/*Trello Progress Chart*/}
         <div className={styles.IntegrationHeader}>
-            <h2>&ensp;&ensp;Trello Progress Chart:</h2>
+          <h2>&ensp;&ensp;Trello Progress Chart:</h2>
         </div>
         <TableContainer className={styles.Container2}>
-        <Chart
-            width='90%'
-            height='240px'
+          <Chart
+            width="90%"
+            height="290px"
             chartType="ColumnChart"
             loader={<div>Loading Chart</div>}
             data={data}
-            options = {{
-                    chartArea: { width: '80%' },
-                    legend: { position: 'right', maxLines: 3, alignment:'start' },
-                    bar: { groupWidth: '50%' },
-                    isStacked: 'percent',
-                    vAxes: { 0: {title: 'Card Percentage' }},
-                    hAxes: { 0: {title: 'Date' }}
-                  }}
+            options={{
+              chartArea: { width: "80%" },
+              legend: { position: "right", maxLines: 3, alignment: "start" },
+              bar: { groupWidth: "50%" },
+              isStacked: "percent",
+              vAxes: { 0: { title: "Card Percentage" } },
+              hAxes: { 0: { title: "Date" } }
+            }}
             legendToggle
           />
-          </TableContainer>
+        </TableContainer>
         <span>&nbsp;&nbsp;</span>
         <div className={styles.IntegrationHeader}>
           <h2>Integration History:</h2>
         </div>
-         {/*Integration Data Table*/}
+        {/*Integration Data Table*/}
         <TableContainer component={Paper} className={styles.Container}>
           <Table className={styles.Table} aria-label="customized table">
             <TableHead>
               <TableRow>
-                <TableCell className={styles.StyledTableCellHead}>Email Address</TableCell>
+                <TableCell className={styles.StyledTableCellHead}>
+                  Email Address
+                  <Tooltip
+                    title="Please ensure you use your Monash email address when modifying on external integrations otherwise this table will not capture your updates."
+                    placement="right-end"
+                    disableFocusListener
+                    disableTouchListener
+                    className={styles.Tooltip}
+                  >
+                    <HelpOutline></HelpOutline>
+                  </Tooltip>
+                </TableCell>
                 <TableCell className={styles.StyledTableCellHead} align="left">
                   Git
                 </TableCell>
@@ -141,7 +152,7 @@ const Dashboard: FunctionComponent<DashboardProps> = ({ projectDetails }) => {
             </TableBody>
           </Table>
         </TableContainer>
-          {/*Moodle Link*/}
+        {/*Moodle Link*/}
         <div className={styles.IntegrationHeader}>
           <h2>Moodle Link: </h2>
           <a className={styles.Logo} href={`${projectDetails?.moodleLink}`} />

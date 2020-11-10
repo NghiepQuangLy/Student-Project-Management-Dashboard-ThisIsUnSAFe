@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
 @Data
 @Builder
@@ -13,12 +13,12 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class SaveTimesheetRequest {
 
-    @NotNull
+    @NotBlank
     private String emailAddress;
 
-    @NotNull
+    @NotBlank
     private String timesheet;
 
-    @NotNull
+    @NotBlank
     private String projectId;
 }

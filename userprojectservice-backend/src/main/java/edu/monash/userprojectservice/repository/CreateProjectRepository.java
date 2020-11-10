@@ -59,7 +59,7 @@ public class CreateProjectRepository {
         Connection conn = DriverManager.getConnection(url, userName, password);
         try {
             conn.setAutoCommit(false);
-            ProjectEntity projectEntity = new ProjectEntity(projectId, projectName, null, projectUnit, projectYear, projectSemester);
+            ProjectEntity projectEntity = new ProjectEntity(projectId, projectName, null, projectUnit, projectYear, projectSemester, null);
             projectsRepository.save(projectEntity);
 
             emailsUserGroups.forEach((email, userGroup) -> {

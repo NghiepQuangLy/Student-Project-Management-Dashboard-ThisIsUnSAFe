@@ -1,6 +1,5 @@
 package edu.monash.userprojectservice.model;
 
-import edu.monash.userprojectservice.repository.trello.TrelloEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +11,6 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetTrelloResponse {
-    private List<TrelloEntity> trelloId;
+public class GetIntegrationsResponse {
+    private List<IntegrationObjectResponse> integrations;
 }

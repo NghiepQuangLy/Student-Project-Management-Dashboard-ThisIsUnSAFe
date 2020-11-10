@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 
@@ -23,6 +24,7 @@ public class RemoveProjectUserRequest {
     @NotBlank
     private String projectId;
 
+    @NotNull
     private List<String> emailAddress; // list of user email addresses
 
 }

@@ -16,6 +16,9 @@ public class HTTPResponseHandler {
 
     @ResponseStatus(code = HttpStatus.FORBIDDEN)
     public static class ForbiddenException extends RuntimeException {
+        public ForbiddenException(String message) {
+            super(message);
+        }
     }
 
     @ResponseStatus(code = HttpStatus.NOT_FOUND)

@@ -14,17 +14,20 @@ import java.util.List;
 @Service
 public class GitIntegrationTableServiceClient {
 
-    private static final String GIT_INTEGRATION_URL = "http://localhost:5000/user-project-service/test-array-request-param?emails={id}&git-ids={ids}";
+    private static final String GIT_INTEGRATION_URL = "http://spmdgitbackend-env.eba-dyda2zrz.ap-southeast-2.elasticbeanstalk.com/git/project/repository/last-changed-email?emails={id}&git-ids={ids}&project-id={projectId}";
     private RestTemplate restTemplate;
 
-    public List<IntegrationTableResponse> getGitIntegrationTable(List<String> emails, List<String> gitIds) {
+    public List<IntegrationTableResponse> getGitIntegrationTable(List<String> emails, List<String> gitIds, String projectId) {
 
         try {
-            String emailsString = emails.toString();
+            String emailsString = emails.toString().replaceAll("\\s+", "");
             emailsString = emailsString.substring(1, emailsString.length() - 1);
 
-            String gitIdsString =gitIds.toString();
+            String gitIdsString =gitIds.toString().replaceAll("\\s+", "");
             gitIdsString = gitIdsString.substring(1, gitIdsString.length() - 1);
+
+            System.out.println(gitIdsString);
+            System.out.println(emailsString);
 
             return restTemplate.exchange(
                     GIT_INTEGRATION_URL,
@@ -33,7 +36,8 @@ public class GitIntegrationTableServiceClient {
                     new ParameterizedTypeReference<List<IntegrationTableResponse>>() {
                     },
                     emailsString,
-                    gitIdsString
+                    gitIdsString,
+                    projectId
             ).getBody();
 
         } catch (Exception e) {

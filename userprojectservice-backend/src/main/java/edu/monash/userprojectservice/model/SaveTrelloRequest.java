@@ -4,7 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.validation.constraints.NotNull;
+
+import javax.validation.constraints.NotBlank;
 
 @Data
 @Builder
@@ -12,15 +13,15 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class SaveTrelloRequest {
 
-    @NotNull
+    @NotBlank
     private String emailAddress;
 
-    @NotNull
+    @NotBlank
     private String trelloId;
 
-    @NotNull
+    @NotBlank
     private String projectId;
 
-    @NotNull
+    @NotBlank
     private String trelloName;
 }
