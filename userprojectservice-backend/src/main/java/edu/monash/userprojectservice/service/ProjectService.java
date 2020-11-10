@@ -242,7 +242,7 @@ public class ProjectService {
 
         Optional<LocalDateTime> lastModifiedDate = integrationTableData.stream()
                 .filter(data -> data.getEmail().equals(email))
-                .map(data -> data.getLastModified())
+                .map(IntegrationTableResponse::getLastModified)
                 .findAny()
                 .orElse(null);
 

@@ -20,24 +20,14 @@ public class GitIntegrationTableServiceClient {
     public List<IntegrationTableResponse> getGitIntegrationTable(List<String> emails, List<String> gitIds, String projectId) {
 
         try {
-            String emailsString = emails.toString();
+            String emailsString = emails.toString().replaceAll("\\s+", "");
             emailsString = emailsString.substring(1, emailsString.length() - 1);
 
-            String gitIdsString =gitIds.toString();
+            String gitIdsString =gitIds.toString().replaceAll("\\s+", "");
             gitIdsString = gitIdsString.substring(1, gitIdsString.length() - 1);
 
             System.out.println(gitIdsString);
             System.out.println(emailsString);
-             System.out.println("TEST: " + restTemplate.exchange(
-                    GIT_INTEGRATION_URL,
-                    HttpMethod.GET,
-                    null,
-                    new ParameterizedTypeReference<List<IntegrationTableResponse>>() {
-                    },
-                    emailsString,
-                    gitIdsString,
-                    projectId
-            ).getBody());
 
             return restTemplate.exchange(
                     GIT_INTEGRATION_URL,
