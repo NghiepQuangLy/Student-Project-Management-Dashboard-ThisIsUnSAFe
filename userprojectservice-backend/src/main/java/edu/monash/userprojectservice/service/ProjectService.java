@@ -41,11 +41,9 @@ import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -140,6 +138,7 @@ public class ProjectService {
         List<IntegrationTableResponse> gitIntegrationTableDataExtract = new ArrayList<>();
         //if (idToken != null && !idToken.equals("")) {
         // get git activity tracker table data
+
         gitIntegrationTableDataExtract = gitIntegrationTableServiceClient.getGitIntegrationTable(
                 emails,
                 gitEntities.stream().map(GitEntity::getGitId).collect(Collectors.toList()),
@@ -240,17 +239,23 @@ public class ProjectService {
         if (integrationTableData == null) {
             return "N/A";
         }
-        LocalDateTime lastModifiedDate = integrationTableData.stream()
+
+        Optional<LocalDateTime> lastModifiedDate = integrationTableData.stream()
                 .filter(data -> data.getEmail().equals(email))
-                .map(IntegrationTableResponse::getLastModified)
-                .findFirst()
+                .map(data -> data.getLastModified())
+                .findAny()
                 .orElse(null);
+
         if (lastModifiedDate == null) {
             return "Unavailable";
         }
 
+        if (!lastModifiedDate.isPresent()) {
+            return "Unavailable";
+        }
+
         LocalDateTime today = LocalDateTime.now();
-        long diff = DAYS.between(lastModifiedDate, today);
+        long diff = DAYS.between(lastModifiedDate.get(), today);
 
         String diffDaysString = diff > 1 ? " days ago" : " day ago";
 

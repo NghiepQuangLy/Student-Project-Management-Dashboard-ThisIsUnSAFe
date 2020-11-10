@@ -40,28 +40,28 @@ public class AdminController {
     }
 
 
-
-    @ResponseStatus(OK)
-    @GetMapping("/test-array-request-param")
-    public List<IntegrationTableResponse> testArrayRequestParam(
-            @RequestParam(value = "git-ids", required = false) List<String> git,
-            @RequestParam(value = "trello-ids", required = false) List<String> trello,
-            @RequestParam(value = "drive-ids", required = false) List<String> drive,
-            @RequestParam("emails") List<String> emails
-    ) {
-        LocalDateTime newdate = LocalDateTime.now();
-
-        List<IntegrationTableResponse> t = emails.stream().map(email -> {
-            Random rand = new Random();
-            int n = rand.nextInt(50);
-
-            return IntegrationTableResponse.builder()
-                    .email(email)
-                    .lastModified(newdate.minusDays(n))
-                    .build();
-        }).collect(Collectors.toList());
-
-        return t;
-    }
+//
+//    @ResponseStatus(OK)
+//    @GetMapping("/test-array-request-param")
+//    public List<IntegrationTableResponse> testArrayRequestParam(
+//            @RequestParam(value = "git-ids", required = false) List<String> git,
+//            @RequestParam(value = "trello-ids", required = false) List<String> trello,
+//            @RequestParam(value = "drive-ids", required = false) List<String> drive,
+//            @RequestParam("emails") List<String> emails
+//    ) {
+//        LocalDateTime newdate = LocalDateTime.now();
+//
+//        List<IntegrationTableResponse> t = emails.stream().map(email -> {
+//            Random rand = new Random();
+//            int n = rand.nextInt(50);
+//
+//            return IntegrationTableResponse.builder()
+//                    .email(email)
+//                    .lastModified(java.util.Optional.of(newdate.minusDays(n)))
+//                    .build();
+//        }).collect(Collectors.toList());
+//
+//        return t;
+//    }
 
 }

@@ -48,7 +48,7 @@ const ProjectDetails: Page = ({ integration, state, dispatch }) => {
           integration
             .getBurndownChart(
               project.projectTrelloIntegration[0].integrationId,
-              "d8989708bc9f936bec339c8ecd88ab019e682da9c4f9fcb90f95701a689aa46f"
+              "41c9bf19df95453a6c4d91dc168236cd86021b37faf4773e17e1bd273cec6e6e"
             )
             .then((project) => {
               dispatch(AppAction.trelloBurndownSuccess(project))

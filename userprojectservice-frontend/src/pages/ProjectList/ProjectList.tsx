@@ -116,7 +116,7 @@ const ProjectList: Page = ({ integration, state, dispatch }) => {
         authorizeOnSuccess={() => {
           console.log("Authenticated Trello")
           setToken(Trello.token())
-          console.log(Trello.token())
+          console.log("Trello Token: " + Trello.token())
         }}
         authorizeOnError={() => {
           console.log("Failed to auth Trello")
